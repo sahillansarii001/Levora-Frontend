@@ -26,7 +26,7 @@ export default function MegaCMS() {
 
   const fetchData = async (endpoint, key) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/cms/${endpoint}`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/${endpoint}`, { headers: { Authorization: `Bearer ${token}` } });
       const json = await res.json();
       if (json.success) setData(prev => ({ ...prev, [key]: json.data }));
     } catch (err) { console.error(`Failed to fetch ${key}`); }
@@ -34,7 +34,7 @@ export default function MegaCMS() {
 
   const fetchSiteContent = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/cms/content');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/content`);
       const json = await res.json();
       if (json.success) setSiteContent(json.data);
     } catch (err) { console.error('Failed to load content'); }
@@ -54,7 +54,7 @@ export default function MegaCMS() {
   const handleDelete = async (endpoint, id, key) => {
     if (!confirm('Are you sure you want to delete this item?')) return;
     try {
-      await fetch(`http://localhost:5000/api/cms/${endpoint}/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/${endpoint}/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
       fetchData(endpoint, key);
     } catch (err) { console.error('Delete failed'); }
   };
@@ -70,7 +70,7 @@ export default function MegaCMS() {
   const handleSubmit = async (e, endpoint, key) => {
     e.preventDefault();
     try {
-      const url = editId ? `http://localhost:5000/api/cms/${endpoint}/${editId}` : `http://localhost:5000/api/cms/${endpoint}`;
+      const url = editId ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/${endpoint}/${editId}` : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/${endpoint}`;
       const method = editId ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -100,7 +100,7 @@ export default function MegaCMS() {
           return { key, value: siteContent[key], page, section };
         });
 
-      const res = await fetch('http://localhost:5000/api/cms/content', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/content`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ page: activePageEdit, updates })
@@ -357,7 +357,7 @@ export default function MegaCMS() {
                                               const formData = new FormData();
                                               formData.append('image', e.target.files[0]);
                                               try {
-                                                const res = await fetch('http://localhost:5000/api/cms/upload', {
+                                                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/upload`, {
                                                   method: 'POST',
                                                   headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
                                                   body: formData

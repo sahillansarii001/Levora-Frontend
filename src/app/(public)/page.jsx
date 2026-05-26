@@ -4,7 +4,7 @@ export default async function Home() {
   let content = {};
   try {
     // Fetch dynamic content for homepage
-    const res = await fetch('http://localhost:5000/api/cms/content?page=homepage', { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/content?page=homepage`, { 
       next: { revalidate: 0 } // Disable cache so it updates instantly
     });
     const data = await res.json();

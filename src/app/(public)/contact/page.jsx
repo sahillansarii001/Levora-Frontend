@@ -7,7 +7,7 @@ export const metadata = {
 export default async function ContactPage() {
   let content = {};
   try {
-    const res = await fetch('http://localhost:5000/api/cms/content?page=contact', { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/content?page=contact`, { 
       next: { revalidate: 0 } 
     });
     const data = await res.json();

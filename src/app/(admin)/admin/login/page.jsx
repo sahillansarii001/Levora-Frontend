@@ -20,7 +20,7 @@ export default function AdminLogin() {
 
     try {
       // Assuming Next.js is proxying or CORS is allowed from port 5000
-      const response = await fetch('http://localhost:5000/api/auth/admin/login', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
