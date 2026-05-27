@@ -15,7 +15,8 @@ const navItems = [
 export default function StudentSidebar() {
   const pathname = usePathname();
 
-  if (pathname === '/student/login') return null;
+  // Don't render sidebar on login page
+  if (pathname === '/login') return null;
 
   return (
     <aside className="w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
@@ -53,7 +54,12 @@ export default function StudentSidebar() {
 
       <div className="p-4 border-t border-slate-200">
         <Link 
-          href="/student/login" 
+          href="/login" 
+          onClick={() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('email');
+          }}
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors font-medium"
         >
           <LogOut size={20} />

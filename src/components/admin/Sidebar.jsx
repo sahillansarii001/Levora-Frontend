@@ -25,14 +25,14 @@ export default function Sidebar() {
     setRole(localStorage.getItem('role'));
   }, []);
 
-  // Don't show sidebar on login page
-  if (pathname === '/admin/login') return null;
+  // Don't render sidebar on login page
+  if (pathname === '/login') return null;
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('email');
-    router.push('/admin/login');
+    router.push('/login');
   };
 
   return (

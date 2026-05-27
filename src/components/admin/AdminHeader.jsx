@@ -16,7 +16,7 @@ export default function AdminHeader() {
   }, []);
 
   // Don't show header on login page
-  if (pathname === '/admin/login') return null;
+  if (pathname === '/login') return null;
 
   return (
     <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-30">

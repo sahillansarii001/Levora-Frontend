@@ -5,7 +5,7 @@ import StudentSidebar from '@/components/student/StudentSidebar';
 
 export default function StudentLayout({ children }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === '/student/login';
+  const isLoginPage = pathname === '/login';
 
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">

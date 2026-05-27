@@ -9,7 +9,7 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const isLoginPage = pathname === '/admin/login';
+  const isLoginPage = pathname === '/login';
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -20,7 +20,7 @@ export default function AdminLayout({ children }) {
       // Forcibly redirect unauthenticated users (or students) to the login page
       localStorage.removeItem('token');
       localStorage.removeItem('role');
-      router.replace('/admin/login');
+      router.replace('/login');
     } else if (hasAdminAccess && isLoginPage) {
       // Prevent logged-in admins from seeing the login page
       router.replace('/admin/dashboard');

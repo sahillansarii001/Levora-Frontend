@@ -70,9 +70,7 @@ export default function AdmissionsPage() {
       if (json.success) {
         setSuccess(`${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully! Redirecting to login...`);
         setTimeout(() => {
-          if (role === 'student') window.location.href = '/student/login';
-          else if (role === 'parent') window.location.href = '/parent/login';
-          else if (role === 'faculty') window.location.href = '/faculty/login';
+          window.location.href = '/login';
         }, 2000);
       } else {
         setError(json.message || 'Registration failed');
@@ -229,7 +227,7 @@ export default function AdmissionsPage() {
         )}
 
         <div className="relative z-10 text-center mt-8 text-sm text-slate-500">
-          Already have an account? <Link href="/student/login" className="text-gold font-bold hover:underline">Log In</Link>
+          Already have an account? <Link href="/login" className="text-gold font-bold hover:underline">Log In</Link>
         </div>
       </div>
     </div>

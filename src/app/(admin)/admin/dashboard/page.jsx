@@ -20,7 +20,7 @@ export default function AdminDashboard() {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-          router.replace('/admin/login');
+          router.replace('/login');
           return;
         }
 
