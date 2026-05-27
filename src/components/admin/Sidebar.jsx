@@ -15,6 +15,7 @@ import {
   CalendarCheck,
   Banknote,
   CreditCard,
+  X,
 } from "lucide-react";
 
 const navItems = [
@@ -56,7 +57,7 @@ const superAdminItems = [
   { name: "Settings", href: "/admin/settings", icon: <Settings size={20} /> },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
   const router = useRouter();
   const [role, setRole] = useState(null);
@@ -76,16 +77,28 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-navy text-white min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
-      <div className="p-6 border-b border-white/10">
-        <Image
-          src="/Logo.png"
-          alt="Levora Admin"
-          width={150}
-          height={40}
-          className="h-8 w-auto filter brightness-0 invert"
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 z-30 lg:hidden backdrop-blur-sm" 
+          onClick={() => setIsOpen(false)}
         />
-      </div>
+      )}
+      
+      <aside className={`w-64 bg-navy text-white min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40 transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-6 border-b border-white/10 flex justify-between items-center">
+          <Image
+            src="/Logo.png"
+            alt="Levora Admin"
+            width={150}
+            height={40}
+            className="h-8 w-auto filter brightness-0 invert"
+          />
+          <button className="lg:hidden text-slate-400 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>
+            <X size={24} />
+          </button>
+        </div>
 
       <div className="flex-1 py-8 px-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4">
@@ -98,6 +111,7 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={() => setIsOpen?.(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 isActive
                   ? "bg-gold text-navy font-bold"
@@ -118,6 +132,7 @@ export default function Sidebar() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={() => setIsOpen?.(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                     isActive
                       ? "bg-gold text-navy font-bold"
@@ -143,5 +158,6 @@ export default function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

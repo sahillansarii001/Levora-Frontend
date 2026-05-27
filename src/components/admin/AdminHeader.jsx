@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Bell, Search, Menu } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
-export default function AdminHeader() {
+export default function AdminHeader({ onMenuClick }) {
   const pathname = usePathname();
   const [user, setUser] = useState({ role: '', email: '' });
 
@@ -22,7 +22,7 @@ export default function AdminHeader() {
     <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-30">
       
       <div className="flex items-center gap-4">
-        <button className="lg:hidden text-slate-500 hover:text-navy">
+        <button className="lg:hidden text-slate-500 hover:text-navy" onClick={onMenuClick}>
           <Menu size={24} />
         </button>
         

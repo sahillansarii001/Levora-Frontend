@@ -9,6 +9,7 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const isLoginPage = pathname === '/login';
 
   useEffect(() => {
@@ -38,11 +39,11 @@ export default function AdminLayout({ children }) {
     );
   }
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">
-      {!isLoginPage && <Sidebar />}
+    <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900 overflow-hidden">
+      {!isLoginPage && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
       
-      <div className={`flex-1 flex flex-col ${!isLoginPage ? 'lg:ml-64' : ''}`}>
-        {!isLoginPage && <AdminHeader />}
+      <div className={`flex-1 flex flex-col w-full ${!isLoginPage ? 'lg:ml-64' : ''}`}>
+        {!isLoginPage && <AdminHeader onMenuClick={() => setIsSidebarOpen(true)} />}
         
         <main className={`flex-1 ${!isLoginPage ? 'p-8' : ''}`}>
           {children}
