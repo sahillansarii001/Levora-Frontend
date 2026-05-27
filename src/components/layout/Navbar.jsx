@@ -56,7 +56,7 @@ export default function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center space-x-4">
-          <Link href="/student/login" className="text-sm font-medium text-slate-600 hover:text-navy">
+          <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-navy">
             Login
           </Link>
           <Link href="/admissions" className="btn-primary text-sm">
@@ -89,7 +89,7 @@ export default function Navbar() {
             ))}
             <div className="h-px bg-slate-100 my-2"></div>
             <Link 
-              href="/student/login" 
+              href="/login" 
               className="text-base font-medium text-slate-600 py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
