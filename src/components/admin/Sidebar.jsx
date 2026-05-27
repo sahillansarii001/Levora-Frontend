@@ -26,6 +26,14 @@ const navItems = [
   },
   { name: "Mega CMS", href: "/admin/cms", icon: <FileEdit size={20} /> },
   {
+    name: "Attendance",
+    href: "/admin/attendance",
+    icon: <CalendarCheck size={20} />,
+  },
+];
+
+const superAdminItems = [
+  {
     name: "Manage Students",
     href: "/admin/students",
     icon: <Users size={20} />,
@@ -40,20 +48,12 @@ const navItems = [
     href: "/admin/parents",
     icon: <UserCog size={20} />,
   },
-  {
-    name: "Attendance",
-    href: "/admin/attendance",
-    icon: <CalendarCheck size={20} />,
-  },
   { name: "Student Fees", href: "/admin/fees", icon: <Banknote size={20} /> },
   {
     name: "Faculty Salary",
     href: "/admin/salary",
     icon: <CreditCard size={20} />,
   },
-];
-
-const superAdminItems = [
   { name: "Settings", href: "/admin/settings", icon: <Settings size={20} /> },
 ];
 

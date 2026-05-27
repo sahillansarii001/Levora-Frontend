@@ -157,15 +157,17 @@ export default function AdminDashboard() {
             <h2 className="font-bold text-slate-900">Quick Actions</h2>
           </div>
           <div className="p-6 space-y-4 flex-1">
-            <button onClick={() => router.push('/admin/students')} className="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-navy hover:shadow-sm transition-all text-left group">
-              <div className="bg-blue-50 text-blue-600 p-2 rounded-lg mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <UserPlus size={20} />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm">Add New Student</h4>
-                <p className="text-xs text-slate-500">Manually register a user</p>
-              </div>
-            </button>
+            {role === 'superadmin' && (
+              <button onClick={() => router.push('/admin/students')} className="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-navy hover:shadow-sm transition-all text-left group">
+                <div className="bg-blue-50 text-blue-600 p-2 rounded-lg mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <UserPlus size={20} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">Add New Student</h4>
+                  <p className="text-xs text-slate-500">Manually register a user</p>
+                </div>
+              </button>
+            )}
             <button onClick={() => router.push('/admin/cms')} className="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-navy hover:shadow-sm transition-all text-left group">
               <div className="bg-purple-50 text-purple-600 p-2 rounded-lg mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                 <BookOpen size={20} />
