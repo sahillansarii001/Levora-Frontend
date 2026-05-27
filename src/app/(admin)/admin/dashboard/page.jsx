@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, GraduationCap, Banknote, TrendingUp, UserPlus, MoreVertical, BookOpen, Settings, ShieldAlert, Activity, Database } from 'lucide-react';
+import { Users, GraduationCap, Banknote, TrendingUp, UserPlus, MoreVertical, BookOpen, Settings, ShieldAlert, Activity, Server, Cloud, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminDashboard() {
@@ -16,6 +16,7 @@ export default function AdminDashboard() {
   });
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [adminLogsCount, setAdminLogsCount] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -54,6 +55,33 @@ export default function AdminDashboard() {
 
     fetchDashboardData();
   }, [router]);
+
+  useEffect(() => {
+    if (role !== 'superadmin') return;
+    
+    const fetchLogsCount = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/activity`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await res.json();
+        if (json.success) {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const todaysLogs = json.data.filter(log => new Date(log.createdAt) >= today);
+          setAdminLogsCount(todaysLogs.length);
+        }
+      } catch (err) {
+        console.error("Failed to fetch logs count", err);
+      }
+    };
+
+    fetchLogsCount();
+    const interval = setInterval(fetchLogsCount, 5000);
+    return () => clearInterval(interval);
+  }, [role]);
 
   const stats = [
     { label: 'Total Students', value: (data.studentCount || 0).toLocaleString(), change: 'Registered', icon: <Users className="text-blue-500" size={24} />, trend: 'up' },
@@ -206,13 +234,11 @@ export default function AdminDashboard() {
           <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-slate-800 p-5 rounded-lg border border-slate-700">
               <div className="flex justify-between items-center mb-2">
-                <h4 className="text-slate-400 font-medium text-sm">Database Size</h4>
-                <Database className="text-slate-500" size={16} />
+                <h4 className="text-slate-400 font-medium text-sm">Published Content</h4>
+                <BookOpen className="text-slate-500" size={16} />
               </div>
-              <p className="text-2xl font-bold text-white">2.4 GB</p>
-              <div className="w-full bg-slate-700 rounded-full h-1.5 mt-3">
-                <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '45%' }}></div>
-              </div>
+              <p className="text-2xl font-bold text-white">{data.cmsCount || 0}</p>
+              <p className="text-xs text-slate-400 mt-1">Courses, Notices & Materials</p>
             </div>
             
             <div className="bg-slate-800 p-5 rounded-lg border border-slate-700">
@@ -220,17 +246,17 @@ export default function AdminDashboard() {
                 <h4 className="text-slate-400 font-medium text-sm">Admin Logs</h4>
                 <Activity className="text-slate-500" size={16} />
               </div>
-              <p className="text-2xl font-bold text-white">142</p>
+              <p className="text-2xl font-bold text-white">{adminLogsCount}</p>
               <p className="text-xs text-green-400 mt-1">Actions recorded today</p>
             </div>
             
             <div className="bg-slate-800 p-5 rounded-lg border border-slate-700">
-               <div className="flex justify-between items-center mb-2">
-                <h4 className="text-slate-400 font-medium text-sm">Active Admins</h4>
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="text-slate-400 font-medium text-sm">Total Accounts</h4>
                 <Users className="text-slate-500" size={16} />
               </div>
-              <p className="text-2xl font-bold text-white">3 Online</p>
-              <p className="text-xs text-slate-400 mt-1">superadmin, admin_1, admin_2</p>
+              <p className="text-2xl font-bold text-white">{(data.studentCount + data.facultyCount + data.parentCount) || 0}</p>
+              <p className="text-xs text-slate-400 mt-1">Students, Faculty & Parents</p>
             </div>
           </div>
         </div>
