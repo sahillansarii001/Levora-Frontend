@@ -218,19 +218,19 @@ export default function MegaCMS() {
       <div className="flex-1 space-y-6">
         
         {/* Header bar */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex justify-between items-center">
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <h1 className="text-2xl font-bold text-slate-900 capitalize font-poppins">{activeMenu.replace('website', 'Website Editor')}</h1>
           {activeMenu === 'website' ? (
-             <div className="flex gap-3">
-               <button onClick={() => setIsAddSectionModalOpen(true)} className="btn-outline inline-flex items-center text-sm px-5 bg-white">
+             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+               <button onClick={() => setIsAddSectionModalOpen(true)} className="btn-outline inline-flex items-center justify-center text-sm px-5 bg-white whitespace-nowrap">
                  <Plus size={18} className="mr-2" /> Add New Section
                </button>
-               <button onClick={saveWebsiteContent} className="btn-primary inline-flex items-center text-sm px-5 bg-green-600 hover:bg-green-700">
+               <button onClick={saveWebsiteContent} className="btn-primary inline-flex items-center justify-center text-sm px-5 bg-green-600 hover:bg-green-700 whitespace-nowrap">
                  <Save size={18} className="mr-2" /> Save Changes
                </button>
              </div>
           ) : (
-             <button onClick={() => { setFormData({}); setEditId(null); setError(''); setIsModalOpen(true); }} className="btn-primary inline-flex items-center text-sm px-5">
+             <button onClick={() => { setFormData({}); setEditId(null); setError(''); setIsModalOpen(true); }} className="btn-primary inline-flex items-center justify-center text-sm px-5 w-full md:w-auto">
                <Plus size={18} className="mr-2" /> Add New
              </button>
           )}
