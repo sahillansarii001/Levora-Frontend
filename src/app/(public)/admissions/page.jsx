@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User, Lock, Mail, Phone, Book, School, Users, CheckCircle2, Key } from 'lucide-react';
 
@@ -12,10 +12,28 @@ export default function AdmissionsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [admissionsOpen, setAdmissionsOpen] = useState(true);
+  const [fetchingSettings, setFetchingSettings] = useState(true);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings/public`)
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) {
+          setAdmissionsOpen(json.data.admissionsOpen);
+        }
+      })
+      .catch(err => console.error(err))
+      .finally(() => setFetchingSettings(false));
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const isSchoolClass = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'].includes(formData.className);
+  const isCollegeClass = ['11th', '12th'].includes(formData.className);
+  const isOtherClass = formData.className === 'Other';
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -81,6 +99,33 @@ export default function AdmissionsPage() {
       setLoading(false);
     }
   };
+
+  if (fetchingSettings) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-24 pb-12 px-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy"></div>
+      </div>
+    );
+  }
+
+  if (!admissionsOpen) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-24 pb-12 px-4">
+        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 w-full max-w-xl text-center">
+          <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Lock size={32} />
+          </div>
+          <h2 className="text-2xl font-bold font-poppins text-slate-900 mb-2">Admissions Closed</h2>
+          <p className="text-slate-500 mb-6">
+            We are not accepting new applications at this time. Please check back later.
+          </p>
+          <Link href="/" className="inline-block bg-navy text-white font-bold py-3 px-8 rounded-xl hover:bg-gold hover:text-navy transition-all duration-300">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-24 pb-12 px-4">
@@ -149,20 +194,74 @@ export default function AdmissionsPage() {
             {/* Role Specific Fields */}
             {role === 'student' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2 border-t border-slate-100">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">School Name</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><School size={18} /></div>
-                    <input type="text" name="schoolName" onChange={handleChange} value={formData.schoolName || ''} className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all" placeholder="Current School" />
-                  </div>
-                </div>
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">Class/Grade</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><Users size={18} /></div>
-                    <input type="text" name="className" onChange={handleChange} value={formData.className || ''} className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all" placeholder="e.g. 11th Science" />
+                    <select name="className" onChange={handleChange} value={formData.className || ''} required className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all appearance-none">
+                      <option value="">Select Class</option>
+                      {['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Other'].map(cls => (
+                        <option key={cls} value={cls}>{cls}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
+
+                {formData.className && !isOtherClass && (
+                  <div className={isSchoolClass ? "md:col-span-2" : ""}>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Board</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><Book size={18} /></div>
+                      <select name="board" onChange={handleChange} value={formData.board || ''} required className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all appearance-none">
+                        <option value="">Select Board</option>
+                        <option value="CBSE">CBSE</option>
+                        <option value="ICSE">ICSE</option>
+                        <option value="State">State</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {formData.className && !isSchoolClass && (
+                  <div className={isOtherClass ? "md:col-span-2" : ""}>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Course / Stream</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><Book size={18} /></div>
+                      <input type="text" name="course" onChange={handleChange} value={formData.course || ''} className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all" placeholder="e.g. Science, JEE" />
+                    </div>
+                  </div>
+                )}
+
+                {isSchoolClass && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">School Name</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><School size={18} /></div>
+                      <input type="text" name="schoolName" onChange={handleChange} value={formData.schoolName || ''} required className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all" placeholder="Current School" />
+                    </div>
+                  </div>
+                )}
+
+                {isCollegeClass && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">College Name</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><School size={18} /></div>
+                      <input type="text" name="collegeName" onChange={handleChange} value={formData.collegeName || ''} required className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all" placeholder="Current College" />
+                    </div>
+                  </div>
+                )}
+
+                {isOtherClass && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Batch</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><Users size={18} /></div>
+                      <input type="text" name="batch" onChange={handleChange} value={formData.batch || ''} required className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-navy focus:ring-1 focus:ring-navy outline-none transition-all" placeholder="e.g. 2024-A" />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

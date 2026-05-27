@@ -1,19 +1,127 @@
-import { Search, Filter, Download, Plus, MoreHorizontal } from 'lucide-react';
+'use client';
 
-export const metadata = {
-  title: "Manage Students | Admin",
-};
-
-const students = [
-  { id: "STU-1001", name: 'Rahul Deshmukh', course: 'JEE Advanced Prep', batch: '2024-A', status: 'Active', joinDate: '12 Jan 2023' },
-  { id: "STU-1002", name: 'Priya Sharma', course: 'NEET UG Foundation', batch: '2024-B', status: 'Active', joinDate: '15 Feb 2023' },
-  { id: "STU-1003", name: 'Amit Patel', course: 'Python Programming', batch: '2023-C', status: 'Inactive', joinDate: '01 Mar 2023' },
-  { id: "STU-1004", name: 'Sneha Reddy', course: 'Web Development', batch: '2024-W', status: 'Active', joinDate: '10 Apr 2023' },
-  { id: "STU-1005", name: 'Kunal Singh', course: 'JEE Main Crash', batch: '2023-Crash', status: 'Completed', joinDate: '20 May 2023' },
-  { id: "STU-1006", name: 'Aditi Rao', course: 'Class 10th Board', batch: '2024-10A', status: 'Active', joinDate: '05 Jun 2023' },
-];
+import { useState, useEffect } from 'react';
+import { Search, Filter, Download, Plus, Edit, Trash2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function StudentsPage() {
+  const [studentList, setStudentList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '' });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+  
+  const router = useRouter();
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const fetchStudents = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStudentList(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenModal = (student = null) => {
+    if (student) {
+      setIsEditing(true);
+      setEditId(student._id);
+      setFormData({
+        name: student.name || '',
+        email: student.email || '',
+        phone: student.phone || '',
+        className: student.className || '',
+        board: student.board || '',
+        course: student.course || '',
+        batch: student.batch || '',
+        parentName: student.parentName || '',
+        schoolName: student.schoolName || '',
+        collegeName: student.collegeName || ''
+      });
+    } else {
+      setIsEditing(false);
+      setEditId(null);
+      setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '' });
+    }
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '' });
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      const url = isEditing 
+        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student/${editId}`
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student`;
+        
+      const method = isEditing ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        fetchStudents();
+        handleCloseModal();
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this student?')) return;
+    
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchStudents();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const isSchoolClass = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'].includes(formData.className);
+  const isCollegeClass = ['11th', '12th'].includes(formData.className);
+  const isOtherClass = formData.className === 'Other';
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       
@@ -22,7 +130,7 @@ export default function StudentsPage() {
           <h1 className="text-2xl font-bold font-poppins text-slate-900">Manage Students</h1>
           <p className="text-slate-500 text-sm mt-1">View, edit, and manage all enrolled students.</p>
         </div>
-        <button className="btn-primary inline-flex items-center text-sm px-4 py-2">
+        <button onClick={() => handleOpenModal()} className="btn-primary inline-flex items-center text-sm px-4 py-2">
           <Plus size={18} className="mr-2" /> Add Student
         </button>
       </div>
@@ -55,54 +163,152 @@ export default function StudentsPage() {
               <tr>
                 <th className="px-6 py-4">Student ID</th>
                 <th className="px-6 py-4">Student Name</th>
-                <th className="px-6 py-4">Course & Batch</th>
-                <th className="px-6 py-4">Join Date</th>
+                <th className="px-6 py-4">Class & Board</th>
+                <th className="px-6 py-4">Details</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {students.map((student, i) => (
-                <tr key={student.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-slate-500">{student.id}</td>
-                  <td className="px-6 py-4 font-bold text-slate-900">{student.name}</td>
-                  <td className="px-6 py-4">
-                    <p className="font-semibold text-slate-700">{student.course}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{student.batch}</p>
-                  </td>
-                  <td className="px-6 py-4 text-slate-500">{student.joinDate}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 text-xs font-bold rounded-md inline-block ${
-                      student.status === 'Active' ? 'bg-green-100 text-green-700' : 
-                      student.status === 'Completed' ? 'bg-blue-100 text-blue-700' : 
-                      'bg-slate-100 text-slate-700'
-                    }`}>
-                      {student.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-slate-400 hover:text-navy transition-colors">
-                      <MoreHorizontal size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {loading ? (
+                <tr><td colSpan="6" className="px-6 py-8 text-center text-slate-500">Loading...</td></tr>
+              ) : studentList.length === 0 ? (
+                <tr><td colSpan="6" className="px-6 py-8 text-center text-slate-500">No students found.</td></tr>
+              ) : (
+                studentList.map((student) => (
+                  <tr key={student._id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 font-medium text-slate-500">{student.studentId}</td>
+                    <td className="px-6 py-4">
+                      <p className="font-bold text-slate-900">{student.name}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{student.email}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <p className="font-semibold text-slate-700">{student.className || 'N/A'}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{student.board || 'N/A'}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      {student.schoolName && <p className="text-xs text-slate-500"><span className="font-semibold">School:</span> {student.schoolName}</p>}
+                      {student.collegeName && <p className="text-xs text-slate-500"><span className="font-semibold">College:</span> {student.collegeName}</p>}
+                      {student.batch && <p className="text-xs text-slate-500"><span className="font-semibold">Batch:</span> {student.batch}</p>}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2.5 py-1 text-xs font-bold rounded-md inline-block ${
+                        student.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-700'
+                      }`}>
+                        {student.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-2">
+                        <button onClick={() => handleOpenModal(student)} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors">
+                          <Edit size={16} />
+                        </button>
+                        <button onClick={() => handleDelete(student._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
-        
-        {/* Pagination */}
-        <div className="p-4 border-t border-slate-200 flex items-center justify-between text-sm text-slate-500 bg-slate-50/50">
-          <p>Showing 1 to 6 of 4,250 entries</p>
-          <div className="flex gap-1">
-            <button className="px-3 py-1 border border-slate-200 bg-white rounded-md hover:bg-slate-50" disabled>Prev</button>
-            <button className="px-3 py-1 border border-navy bg-navy text-white rounded-md">1</button>
-            <button className="px-3 py-1 border border-slate-200 bg-white rounded-md hover:bg-slate-50">2</button>
-            <button className="px-3 py-1 border border-slate-200 bg-white rounded-md hover:bg-slate-50">3</button>
-            <button className="px-3 py-1 border border-slate-200 bg-white rounded-md hover:bg-slate-50">Next</button>
+      </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col">
+            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
+              <h2 className="text-lg font-bold text-slate-900">{isEditing ? 'Edit Student' : 'Add New Student'}</h2>
+              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600 transition-colors p-1">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-slate-700">Full Name</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-slate-700">Email Address</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-slate-700">Phone Number</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-slate-700">Class Name</label>
+                  <select name="className" value={formData.className} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none">
+                    <option value="">Select Class</option>
+                    {['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Other'].map(cls => (
+                      <option key={cls} value={cls}>{cls}</option>
+                    ))}
+                  </select>
+                </div>
+                {!isOtherClass && (
+                  <div className={`space-y-1.5 ${isSchoolClass ? 'col-span-2' : ''}`}>
+                    <label className="text-sm font-semibold text-slate-700">Board</label>
+                    <select name="board" value={formData.board} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none">
+                      <option value="">Select Board</option>
+                      <option value="CBSE">CBSE</option>
+                      <option value="ICSE">ICSE</option>
+                      <option value="State">State</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                )}
+                {!isSchoolClass && (
+                  <div className={`space-y-1.5 ${isOtherClass ? 'col-span-2' : ''}`}>
+                    <label className="text-sm font-semibold text-slate-700">Course / Stream</label>
+                    <input type="text" name="course" value={formData.course} onChange={handleChange} placeholder="e.g. Science, JEE" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                  </div>
+                )}
+
+                {isSchoolClass && (
+                  <div className="space-y-1.5 col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">School Name</label>
+                    <input type="text" name="schoolName" value={formData.schoolName} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                  </div>
+                )}
+                
+                {isCollegeClass && (
+                  <div className="space-y-1.5 col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">College Name</label>
+                    <input type="text" name="collegeName" value={formData.collegeName} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                  </div>
+                )}
+                
+                {isOtherClass && (
+                  <div className="space-y-1.5 col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">Batch</label>
+                    <input type="text" name="batch" value={formData.batch} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                  </div>
+                )}
+
+                <div className="space-y-1.5 col-span-2">
+                  <label className="text-sm font-semibold text-slate-700">Parent Name</label>
+                  <input type="text" name="parentName" value={formData.parentName} onChange={handleChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+              </div>
+              
+              <div className="pt-4 border-t border-slate-100 flex justify-end gap-3 shrink-0">
+                <button type="button" onClick={handleCloseModal} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary text-sm px-6 py-2">
+                  {isEditing ? 'Save Changes' : 'Create Student'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
+      )}
 
     </div>
   );
