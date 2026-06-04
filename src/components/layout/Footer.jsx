@@ -6,7 +6,7 @@ import { Facebook, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ArrowRight
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[var(--color-navy)] overflow-hidden">
+    <footer className="relative bg-[var(--color-navy)] overflow-hidden h-screen">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[var(--color-gold)]/5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-sky)]/5 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3 pointer-events-none" />

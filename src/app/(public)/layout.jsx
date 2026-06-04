@@ -7,10 +7,19 @@ export const dynamic = 'force-dynamic';
 
 async function getSettings() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings/public`, { cache: 'no-store' });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings/public`, { 
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
     const json = await res.json();
     return json.data || {};
   } catch (err) {
+    console.error('Failed to fetch settings', err);
     return {};
   }
 }

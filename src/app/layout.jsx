@@ -13,8 +13,27 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://levoraacademy.vercel.app'),
   title: "Levora Academy | Premium Education",
-  description: "Empowering students through structured learning and expert guidance.",
+  description: "Empowering students through structured learning and expert guidance to achieve academic excellence.",
+  keywords: ["education", "academy", "learning", "courses", "student success", "online education"],
+  authors: [{ name: 'Levora Academy' }],
+  openGraph: {
+    title: 'Levora Academy | Premium Education',
+    description: 'Empowering students through structured learning and expert guidance.',
+    url: 'https://levoraacademy.vercel.app',
+    siteName: 'Levora Academy',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Levora Academy | Premium Education',
+    description: 'Empowering students through structured learning and expert guidance.',
+  },
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: '/favicon.ico',
   },
