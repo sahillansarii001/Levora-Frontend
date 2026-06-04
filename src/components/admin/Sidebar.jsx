@@ -60,7 +60,11 @@ const superAdminItems = [
     href: "/admin/salary",
     icon: <CreditCard size={20} />,
   },
-
+  {
+    name: "Lecture Logs",
+    href: "/admin/lecture-logs",
+    icon: <FileEdit size={20} />,
+  },
   { name: "Settings", href: "/admin/settings", icon: <Settings size={20} /> },
 ];
 

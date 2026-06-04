@@ -3,42 +3,141 @@
 @tailwind utilities;
 
 :root {
-  --color-navy: #0B1F3A;
-  --color-gold: #D4A017;
-  --color-sky: #4DA8FF;
-  --color-gray-light: #F8FAFC; /* slightly lighter for cleaner look */
-  --color-dark: #1E293B; /* softer dark */
+  --color-navy: #0B1D3A;
+  --color-navy-light: #1E3A5F;
+  --color-gold: #F59E0B;
+  --color-gold-dark: #D97706;
+  --color-sky: #0EA5E9;
+  --color-emerald: #10B981;
+  --color-gray-light: #F8FAFC;
+  --color-dark: #0F172A;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   color: var(--color-dark);
   background-color: var(--color-gray-light);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-moz-selection {
+  background: var(--color-gold);
+  color: var(--color-navy);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-navy);
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-[var(--color-gold)] text-[var(--color-navy)] px-6 py-2.5 rounded-md font-semibold hover:bg-[#e6af20] transition-colors duration-200 shadow-sm hover:shadow-md;
+    @apply bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)] text-[var(--color-navy)] px-7 py-3 rounded-lg font-bold transition-all duration-300 shadow-lg shadow-amber-200/50 hover:shadow-xl hover:shadow-amber-300/50 hover:scale-[1.02] active:scale-[0.98];
   }
   
   .btn-outline {
-    @apply border border-[var(--color-navy)] text-[var(--color-navy)] px-6 py-2.5 rounded-md font-semibold hover:bg-slate-50 transition-colors duration-200;
+    @apply border-2 border-[var(--color-navy)] text-[var(--color-navy)] px-7 py-3 rounded-lg font-bold hover:bg-[var(--color-navy)] hover:text-white transition-all duration-300 hover:shadow-lg active:scale-[0.98];
+  }
+
+  .btn-white {
+    @apply bg-white text-[var(--color-navy)] px-7 py-3 rounded-lg font-bold hover:bg-slate-50 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply px-5 py-2.5 rounded-lg font-semibold text-slate-600 hover:bg-slate-100 hover:text-[var(--color-navy)] transition-all duration-200;
   }
   
   .card-glass {
-    @apply bg-white border border-slate-200 shadow-sm hover:shadow-md rounded-xl transition-shadow duration-300;
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg hover:shadow-xl rounded-2xl transition-all duration-300;
+  }
+
+  .card-premium {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+  }
+
+  .card-dark {
+    @apply bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl hover:bg-slate-800/80 transition-all duration-300;
   }
   
   .section-heading {
-    @apply text-3xl md:text-4xl font-bold text-[var(--color-navy)] mb-4 font-poppins tracking-tight;
+    @apply text-3xl md:text-5xl font-bold text-[var(--color-navy)] mb-4 font-poppins tracking-tight leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-slate-500 max-w-2xl leading-relaxed;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)] bg-clip-text text-transparent;
+  }
+
+  .gradient-text-sky {
+    @apply bg-gradient-to-r from-[var(--color-sky)] to-[var(--color-emerald)] bg-clip-text text-transparent;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-br from-[var(--color-navy)] via-[#0F2847] to-[var(--color-navy-light)];
+  }
+
+  .gradient-bg-gold {
+    @apply bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)];
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+
+  .glass-dark {
+    @apply bg-slate-900/60 backdrop-blur-xl border border-slate-700/30 shadow-lg;
+  }
+
+  .decorative-line {
+    @apply w-20 h-1 rounded-full bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)];
+  }
+
+  .decorative-line-center {
+    @apply w-20 h-1 rounded-full bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)] mx-auto;
+  }
+
+  .badge-premium {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[var(--color-gold)]/10 to-[var(--color-gold-dark)]/10 text-[var(--color-gold)] border border-[var(--color-gold)]/20;
+  }
+
+  .badge-sky {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[var(--color-sky)]/10 text-[var(--color-sky)] border border-[var(--color-sky)]/20;
+  }
+
+  .badge-emerald {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[var(--color-emerald)]/10 text-[var(--color-emerald)] border border-[var(--color-emerald)]/20;
   }
 }
 
-/* Custom scrollbar for horizontal sections */
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
 }

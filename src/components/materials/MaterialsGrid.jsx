@@ -17,62 +17,83 @@ export default function MaterialsGrid({ title, subtitle }) {
       setLoading(false);
     };
     loadMaterials();
-    const interval = setInterval(loadMaterials, 3000); // Real-time polling
+    const interval = setInterval(loadMaterials, 3000);
     return () => clearInterval(interval);
   }, []);
 
   const filteredMaterials = subject === 'All' ? materials : materials.filter(m => m.subject === subject);
 
   return (
-    <section className="pt-20 pb-20 bg-white min-h-screen">
+    <section className="pt-28 pb-28 bg-white min-h-screen relative overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         <SectionHeading 
           title={title || "Study Materials & Downloads"} 
           subtitle={subtitle || "Access premium Levora notes, formula sheets, and past year question papers."}
-          centered={true}
+          centered
         />
 
-        <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 mt-12">
-          <div className="flex space-x-2 overflow-x-auto w-full md:w-auto pb-2">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4 mt-4">
+          <div className="flex flex-wrap gap-2 w-full md:w-auto">
             {['All', 'Physics', 'Chemistry', 'Mathematics', 'Biology', 'Computer'].map(sub => (
               <button 
                 key={sub}
                 onClick={() => setSubject(sub)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium ${subject === sub ? 'bg-gold text-navy' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
+                  subject === sub 
+                    ? 'bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)] text-[var(--color-navy)] shadow-lg shadow-amber-200/50' 
+                    : 'bg-white text-slate-600 border border-slate-200 hover:border-[var(--color-gold)]/30 hover:text-[var(--color-navy)]'
+                }`}
               >
                 {sub}
               </button>
             ))}
           </div>
           
-          <div className="relative w-full md:w-64">
-            <input type="text" placeholder="Search materials..." className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-navy" />
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
+          <div className="relative w-full md:w-72">
+            <input 
+              type="text" 
+              placeholder="Search materials..." 
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 focus:bg-white transition-all text-sm" 
+            />
+            <Search className="absolute left-3.5 top-3.5 text-slate-400" size={18} />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredMaterials.map(item => (
-            <div key={item.id} className="border border-gray-200 p-6 rounded-xl flex items-start justify-between hover:border-gold transition-colors hover:shadow-md">
-              <div className="flex items-start">
-                <div className="bg-red-50 text-red-500 p-3 rounded-lg mr-4">
-                  <FileText size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-navy mb-1">{item.title}</h4>
-                  <div className="flex space-x-3 text-sm text-gray-500">
-                    <span>{item.type}</span>
-                    <span>•</span>
-                    <span>{item.size}</span>
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="inline-block w-8 h-8 rounded-full border-2 border-[var(--color-gold)] border-t-transparent animate-spin mb-4" />
+            <p className="text-lg font-bold text-[var(--color-navy)]">Loading materials...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {filteredMaterials.map(item => (
+              <div key={item.id} className="group bg-white border border-slate-100 p-6 rounded-2xl flex items-start justify-between hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                    <FileText size={22} className="text-red-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[var(--color-navy)] mb-1.5">{item.title}</h4>
+                    <div className="flex gap-3 text-sm text-slate-400">
+                      <span className="font-medium">{item.type}</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="font-medium">{item.size}</span>
+                    </div>
                   </div>
                 </div>
+                <button className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-sky)]/10 to-[var(--color-emerald)]/10 flex items-center justify-center text-[var(--color-sky)] hover:from-[var(--color-sky)] hover:to-[var(--color-emerald)] hover:text-white transition-all duration-300 flex-shrink-0 ml-4">
+                  <Download size={18} />
+                </button>
               </div>
-              <button className="text-sky hover:text-navy bg-sky/10 hover:bg-sky/20 p-2 rounded-full transition-colors">
-                <Download size={20} />
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {!loading && filteredMaterials.length === 0 && (
+          <div className="text-center py-20 text-slate-400 font-medium">
+            No materials found for the selected subject.
+          </div>
+        )}
       </div>
     </section>
   );

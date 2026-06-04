@@ -1,9 +1,54 @@
 'use client';
 
-import { BookOpen, FileText, CheckCircle, BarChart3, Bell, LogOut, Download, Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { BookOpen, FileText, CheckCircle, BarChart3, Bell, LogOut, Download, Search, Calendar as CalendarIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default function StudentDashboard() {
+  const [student, setStudent] = useState(null);
+  
+  // Attendance
+  const [fromDate, setFromDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 7);
+    return d.toISOString().split('T')[0];
+  });
+  const [toDate, setToDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [attendanceRecords, setAttendanceRecords] = useState([]);
+  const [attLoading, setAttLoading] = useState(false);
+
+  useEffect(() => {
+    // Load student from local storage
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      setStudent(JSON.parse(userStr));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (student?._id) {
+      fetchAttendance();
+    }
+  }, [student, fromDate, toDate]);
+
+  const fetchAttendance = async () => {
+    setAttLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=student&studentId=${student._id}&fromDate=${fromDate}&toDate=${toDate}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAttendanceRecords(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAttLoading(false);
+    }
+  };
+
   return (
     <div className="pt-24 bg-slate-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -12,7 +57,7 @@ export default function StudentDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 font-poppins tracking-tight">Student Dashboard</h1>
-            <p className="text-sm text-slate-500">Welcome back, Rahul. Here's your overview.</p>
+            <p className="text-sm text-slate-500">Welcome back, {student?.name || 'Student'}. Here's your overview.</p>
           </div>
           
           <div className="flex items-center space-x-4 w-full md:w-auto">
@@ -25,7 +70,7 @@ export default function StudentDashboard() {
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
             <div className="w-9 h-9 bg-navy text-white rounded-md flex items-center justify-center font-bold text-sm">
-              RD
+              {student?.name?.substring(0, 2).toUpperCase() || 'ST'}
             </div>
           </div>
         </div>
@@ -53,6 +98,53 @@ export default function StudentDashboard() {
           {/* Main Area */}
           <div className="lg:col-span-2 space-y-8">
             
+            {/* Attendance Widget */}
+            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
+              <div className="p-5 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+                <h3 className="font-bold text-slate-900 flex items-center"><CalendarIcon size={18} className="mr-2 text-navy" /> My Attendance</h3>
+              </div>
+              <div className="p-4 bg-white border-b border-slate-100 flex gap-4 items-center">
+                <div className="flex flex-col">
+                  <label className="text-xs text-slate-500 font-semibold mb-1">From Date</label>
+                  <input type="date" value={fromDate} onChange={e=>setFromDate(e.target.value)} className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-navy" />
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-xs text-slate-500 font-semibold mb-1">To Date</label>
+                  <input type="date" value={toDate} onChange={e=>setToDate(e.target.value)} className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-navy" />
+                </div>
+              </div>
+              <div className="p-0 overflow-y-auto max-h-64">
+                {attLoading ? (
+                  <p className="p-6 text-center text-slate-500 text-sm">Loading attendance...</p>
+                ) : attendanceRecords.length === 0 ? (
+                  <p className="p-6 text-center text-slate-500 text-sm">No attendance records found for this period.</p>
+                ) : (
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                      <tr>
+                        <th className="py-3 px-6 font-semibold">Date</th>
+                        <th className="py-3 px-6 font-semibold text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {attendanceRecords.map(r => (
+                        <tr key={r._id} className="hover:bg-slate-50">
+                          <td className="py-3 px-6 font-medium text-slate-700">{new Date(r.date).toLocaleDateString()}</td>
+                          <td className="py-3 px-6 text-right">
+                            <span className={`inline-flex px-3 py-1 text-xs font-bold rounded-full border ${
+                              r.status === 'Present' ? 'bg-green-100 text-green-700 border-green-200' : 
+                              r.status === 'Absent' ? 'bg-red-100 text-red-700 border-red-200' : 
+                              'bg-yellow-100 text-yellow-700 border-yellow-200'
+                            }`}>{r.status}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
                 <h3 className="font-bold text-slate-900">Recent Test Performance</h3>

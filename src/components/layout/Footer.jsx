@@ -2,14 +2,18 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-200 pt-16 pb-8">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
-          
+    <footer className="relative bg-[var(--color-navy)] overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[var(--color-gold)]/5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-sky)]/5 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3 pointer-events-none" />
+
+      <div className="relative z-10 container mx-auto px-4 md:px-8 pt-20 pb-8">
+        {/* Top section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
           {/* Brand Column (Span 2) */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
@@ -18,71 +22,108 @@ export default function Footer() {
                 alt="Levora Academy Logo" 
                 width={180} 
                 height={54} 
-                className="h-12 w-auto object-contain"
+                className="h-12 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <p className="text-slate-600 mb-8 max-w-sm leading-relaxed">
+            <p className="text-slate-400 mb-8 max-w-sm leading-relaxed text-sm">
               Empowering students with world-class education, expert guidance, and state-of-the-art learning infrastructure to achieve academic and career excellence.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full border border-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-50 hover:text-navy hover:border-slate-300 transition-all">
-                <Facebook size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-50 hover:text-navy hover:border-slate-300 transition-all">
-                <Instagram size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-50 hover:text-navy hover:border-slate-300 transition-all">
-                <Youtube size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-50 hover:text-navy hover:border-slate-300 transition-all">
-                <Linkedin size={18} />
-              </a>
+            <div className="flex gap-3">
+              {[
+                { icon: <Facebook size={16} />, href: '#' },
+                { icon: <Instagram size={16} />, href: '#' },
+                { icon: <Youtube size={16} />, href: '#' },
+                { icon: <Linkedin size={16} />, href: '#' },
+              ].map((social, i) => (
+                <a 
+                  key={i}
+                  href={social.href} 
+                  className="w-9 h-9 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-[var(--color-navy)] hover:shadow-lg hover:shadow-amber-900/30 transition-all duration-300"
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-bold text-navy uppercase tracking-wider mb-6">Programs</h4>
-            <ul className="space-y-4 text-sm text-slate-600">
-              <li><Link href="/courses" className="hover:text-gold transition-colors">School Foundation</Link></li>
-              <li><Link href="/courses" className="hover:text-gold transition-colors">JEE / NEET Prep</Link></li>
-              <li><Link href="/courses" className="hover:text-gold transition-colors">Coding & Tech</Link></li>
-              <li><Link href="/courses" className="hover:text-gold transition-colors">Skill Development</Link></li>
-              <li><Link href="/study-materials" className="hover:text-gold transition-colors">Premium Materials</Link></li>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Programs</h4>
+            <ul className="space-y-3.5">
+              {['School Foundation', 'JEE / NEET Prep', 'Coding & Tech', 'Skill Development', 'Premium Materials'].map((item) => (
+                <li key={item}>
+                  <Link href="/courses" className="text-sm text-slate-400 hover:text-[var(--color-gold)] transition-colors duration-200 flex items-center gap-2 group">
+                    <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-[var(--color-gold)] transition-colors" />
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Academy Links */}
           <div>
-            <h4 className="text-sm font-bold text-navy uppercase tracking-wider mb-6">Academy</h4>
-            <ul className="space-y-4 text-sm text-slate-600">
-              <li><Link href="/about" className="hover:text-gold transition-colors">About Us</Link></li>
-              <li><Link href="/faculty" className="hover:text-gold transition-colors">Expert Faculty</Link></li>
-              <li><Link href="/results" className="hover:text-gold transition-colors">Success Stories</Link></li>
-              <li><Link href="/admissions" className="hover:text-gold transition-colors">Admissions 2024</Link></li>
-              <li><Link href="/contact" className="hover:text-gold transition-colors">Contact Support</Link></li>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Academy</h4>
+            <ul className="space-y-3.5">
+              {[
+                { name: 'About Us', href: '/about' },
+                { name: 'Expert Faculty', href: '/faculty' },
+                { name: 'Success Stories', href: '/results' },
+                { name: 'Admissions 2024', href: '/admissions' },
+                { name: 'Contact Support', href: '/contact' },
+              ].map((item) => (
+                <li key={item.name}>
+                  <Link href={item.href} className="text-sm text-slate-400 hover:text-[var(--color-gold)] transition-colors duration-200 flex items-center gap-2 group">
+                    <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-[var(--color-gold)] transition-colors" />
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Newsletter / Contact mini */}
+          {/* Newsletter */}
           <div>
-            <h4 className="text-sm font-bold text-navy uppercase tracking-wider mb-6">Stay Updated</h4>
-            <p className="text-sm text-slate-600 mb-4">Subscribe to our newsletter for the latest updates and study tips.</p>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Stay Updated</h4>
+            <p className="text-sm text-slate-400 mb-4 leading-relaxed">Subscribe for the latest updates, study tips, and exclusive resources.</p>
             <form className="relative" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Your email address" className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-md text-sm focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy transition-colors pr-10" />
-              <button type="submit" className="absolute right-2 top-2 text-navy hover:text-gold transition-colors">
-                <ArrowRight size={20} />
+              <input 
+                type="email" 
+                placeholder="Your email" 
+                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/30 transition-all duration-300 pr-12"
+              />
+              <button 
+                type="submit" 
+                className="absolute right-1.5 top-1.5 p-2 bg-[var(--color-gold)] text-[var(--color-navy)] rounded-lg hover:bg-[var(--color-gold-dark)] transition-colors"
+              >
+                <ArrowRight size={16} />
               </button>
             </form>
           </div>
-          
         </div>
 
-        <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+        {/* Contact bar */}
+        <div className="flex flex-wrap gap-6 justify-center lg:justify-between items-center py-8 border-t border-slate-800 mb-8">
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <MapPin size={14} className="text-[var(--color-gold)]" />
+            <span>123 Education Hub, New Delhi, India</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <Phone size={14} className="text-[var(--color-gold)]" />
+            <span>+91 98765 43210</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <Mail size={14} className="text-[var(--color-gold)]" />
+            <span>hello@levoraacademy.com</span>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
           <p>&copy; {new Date().getFullYear()} Levora Academy. All rights reserved.</p>
-          <div className="space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-navy transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-navy transition-colors">Terms of Service</Link>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-[var(--color-gold)] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[var(--color-gold)] transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

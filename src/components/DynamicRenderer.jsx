@@ -83,19 +83,19 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
           case 'gallery':
             return <GallerySection key={section.id} title={section.data.title} image1={section.data.image_url_1} image2={section.data.image_url_2} />;
           case 'programs':
-            return <ProgramsSection key={section.id} />;
+            return <ProgramsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'why':
-            return <WhyLevora key={section.id} />;
+            return <WhyLevora key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'notes':
-            return <NotesSystem key={section.id} />;
+            return <NotesSystem key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'faculty_showcase':
-            return <FacultyShowcase key={section.id} />;
+            return <FacultyShowcase key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'results_showcase':
-            return <ResultsSection key={section.id} />;
+            return <ResultsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'coding':
-            return <CodingCourses key={section.id} />;
+            return <CodingCourses key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'testimonials':
-            return <Testimonials key={section.id} />;
+            return <Testimonials key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'about_vision':
             return <AboutVision key={section.id} vision_title={section.data.vision_title} vision_content={section.data.vision_content} mission_title={section.data.mission_title} mission_content={section.data.mission_content} />;
           case 'about_founder':

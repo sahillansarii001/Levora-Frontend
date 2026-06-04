@@ -2,60 +2,72 @@
 
 import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
-import { Book, Code, GraduationCap, Laptop, Atom, Languages, BrainCircuit, ChevronRight } from 'lucide-react';
+import { Book, Code, GraduationCap, Laptop, Atom, Languages, BrainCircuit, ChevronRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 const programs = [
-  { id: 1, icon: <Atom size={24} />, title: 'Pre-Primary', desc: 'Playgroup to Nursery', color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
-  { id: 2, icon: <Book size={24} />, title: 'Primary School', desc: 'Class 1st to 5th', color: 'bg-green-50 text-green-600 border-green-100' },
-  { id: 3, icon: <GraduationCap size={24} />, title: 'Middle School', desc: 'Class 6th to 10th', color: 'bg-blue-50 text-blue-600 border-blue-100' },
-  { id: 4, icon: <Book size={24} />, title: 'Higher Secondary', desc: 'Class 11th & 12th', color: 'bg-purple-50 text-purple-600 border-purple-100' },
-  { id: 5, icon: <BrainCircuit size={24} />, title: 'JEE / NEET Prep', desc: 'Competitive Exams', color: 'bg-rose-50 text-rose-600 border-rose-100' },
-  { id: 6, icon: <Code size={24} />, title: 'Coding Courses', desc: 'Python, Java, Web', color: 'bg-sky-50 text-sky-600 border-sky-100' },
-  { id: 7, icon: <Languages size={24} />, title: 'Spoken English', desc: 'Fluency & Grammar', color: 'bg-amber-50 text-amber-600 border-amber-100' },
-  { id: 8, icon: <Laptop size={24} />, title: 'Computer Skills', desc: 'MS Office, Tally', color: 'bg-slate-100 text-slate-700 border-slate-200' },
+  { id: 1, icon: <Atom size={22} />, title: 'Pre-Primary', desc: 'Playgroup to Nursery', gradient: 'from-indigo-500 to-indigo-600' },
+  { id: 2, icon: <Book size={22} />, title: 'Primary School', desc: 'Class 1st to 5th', gradient: 'from-emerald-500 to-emerald-600' },
+  { id: 3, icon: <GraduationCap size={22} />, title: 'Middle School', desc: 'Class 6th to 10th', gradient: 'from-blue-500 to-blue-600' },
+  { id: 4, icon: <Book size={22} />, title: 'Higher Secondary', desc: 'Class 11th & 12th', gradient: 'from-purple-500 to-purple-600' },
+  { id: 5, icon: <BrainCircuit size={22} />, title: 'JEE / NEET Prep', desc: 'Competitive Exams', gradient: 'from-rose-500 to-rose-600' },
+  { id: 6, icon: <Code size={22} />, title: 'Coding Courses', desc: 'Python, Java, Web', gradient: 'from-sky-500 to-sky-600' },
+  { id: 7, icon: <Languages size={22} />, title: 'Spoken English', desc: 'Fluency & Grammar', gradient: 'from-amber-500 to-amber-600' },
+  { id: 8, icon: <Laptop size={22} />, title: 'Computer Skills', desc: 'MS Office, Tally', gradient: 'from-slate-500 to-slate-600' },
 ];
 
-export default function ProgramsSection() {
+export default function ProgramsSection({ title, subtitle }) {
   return (
-    <section className="py-24 bg-slate-50">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+    <section className="py-28 bg-white relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+      
+      <div className="container mx-auto px-4 md:px-8 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-14">
           <SectionHeading 
-            title="Premium Programs" 
-            subtitle="Expertly crafted curriculums designed to nurture potential at every stage of learning."
+            title={title || "Premium Programs"} 
+            subtitle={subtitle || "Expertly crafted curriculums designed to nurture potential at every stage of learning."}
           />
-          <Link href="/courses" className="hidden md:inline-flex items-center text-sm font-semibold text-navy hover:text-gold transition-colors pb-6">
-            Explore All Programs <ChevronRight size={16} className="ml-1" />
+          <Link href="/courses" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
+            Explore All Programs 
+            <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {programs.map((program, index) => (
             <motion.div
               key={program.id}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
             >
-              <Link href={`/courses?category=${program.title}`} className="block group bg-white rounded-2xl p-6 border border-slate-200 hover:border-navy/30 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center justify-between mb-6">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border ${program.color} transition-transform group-hover:scale-110`}>
-                    {program.icon}
-                  </div>
-                  <ChevronRight size={20} className="text-slate-300 group-hover:text-navy transition-colors" />
+              <Link href={`/courses?category=${program.title}`} className="group relative block bg-white rounded-2xl p-7 border border-slate-100 hover:border-transparent transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden">
+                {/* Hover gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* Icon */}
+                <div className={`relative z-10 w-12 h-12 rounded-2xl bg-gradient-to-br ${program.gradient} flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                  {program.icon}
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-navy transition-colors">{program.title}</h3>
+                
+                <div className="relative z-10">
+                  <h3 className="text-lg font-bold text-[var(--color-navy)] mb-1.5 group-hover:text-[var(--color-gold)] transition-colors duration-300">{program.title}</h3>
                   <p className="text-sm text-slate-500 font-medium">{program.desc}</p>
+                </div>
+
+                {/* Arrow on hover */}
+                <div className="relative z-10 mt-4 flex justify-end">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-[var(--color-gold)] group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                    <ChevronRight size={16} />
+                  </div>
                 </div>
               </Link>
             </motion.div>
           ))}
         </div>
         
-        <div className="mt-8 text-center md:hidden">
+        <div className="mt-10 text-center md:hidden">
           <Link href="/courses" className="btn-outline w-full inline-block">
             Explore All Programs
           </Link>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Megaphone, X, FileEdit, Globe, BookOpen, Users, GraduationCap, Target, Save, Menu, Award, MessageSquare } from 'lucide-react';
+import { Plus, Trash2, Megaphone, X, FileEdit, Globe, BookOpen, Users, GraduationCap, Target, Save, Menu, Award, MessageSquare, Layout, Phone, Mail } from 'lucide-react';
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
@@ -15,7 +15,7 @@ export default function MegaCMS() {
   const [isAddFieldModalOpen, setIsAddFieldModalOpen] = useState(false);
   const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
   const [selectedSectionForField, setSelectedSectionForField] = useState('');
-  const [newFieldData, setNewFieldData] = useState({ name: '', value: '', isRich: false });
+  const [newFieldData, setNewFieldData] = useState({ name: '', value: '', type: 'plain' });
   const [newSectionData, setNewSectionData] = useState({ name: '' });
   const [formData, setFormData] = useState({});
   const [editId, setEditId] = useState(null);
@@ -124,17 +124,19 @@ export default function MegaCMS() {
     const slugify = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '');
     const nameSlug = slugify(newFieldData.name);
     
-    const suffix = newFieldData.isRich ? '.content' : '';
+    const isRich = newFieldData.type === 'rich';
+    const isImage = newFieldData.type === 'image';
+    const suffix = isRich ? '.content' : (isImage ? '_image' : '');
     const fullKey = `${activePageEdit}.${selectedSectionForField}.${nameSlug}${suffix}`;
 
     let finalValue = newFieldData.value;
-    if (newFieldData.isRich && !finalValue.startsWith('<')) {
+    if (isRich && !finalValue.startsWith('<')) {
       finalValue = `<p>${finalValue}</p>`;
     }
 
     setSiteContent(prev => ({ ...prev, [fullKey]: finalValue }));
     setIsAddFieldModalOpen(false);
-    setNewFieldData({ name: '', value: '', isRich: false });
+    setNewFieldData({ name: '', value: '', type: 'plain' });
   };
 
   const handleAddTemplate = (template) => {
@@ -177,14 +179,20 @@ export default function MegaCMS() {
         <tbody className="divide-y divide-slate-100">
           {rows.map((row, i) => (
             <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-              {row.data.map((td, j) => <td key={j} className="px-6 py-4">{td}</td>)}
-              <td className="px-6 py-4 text-right">
-                <button onClick={() => onEdit(row.id)} className="text-slate-400 hover:text-blue-500 transition-colors p-2 hover:bg-blue-50 rounded-lg mr-2" title="Edit">
-                  <FileEdit size={16} />
-                </button>
-                <button onClick={() => onDel(row.id)} className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg" title="Delete">
-                  <Trash2 size={16} />
-                </button>
+              {row.data.map((td, j) => (
+                <td key={j} className={`px-6 py-4 ${j === 0 ? 'whitespace-nowrap font-medium text-slate-900' : ''}`}>
+                  {td}
+                </td>
+              ))}
+              <td className="px-6 py-4">
+                <div className="flex justify-end items-center gap-2">
+                  <button onClick={() => onEdit(row.id)} className="text-slate-400 hover:text-blue-500 transition-colors p-2 hover:bg-blue-50 rounded-lg" title="Edit">
+                    <FileEdit size={16} />
+                  </button>
+                  <button onClick={() => onDel(row.id)} className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg" title="Delete">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
@@ -197,7 +205,7 @@ export default function MegaCMS() {
   return (
     <div className="flex flex-col md:flex-row min-h-[calc(100vh-8rem)] gap-6">
       {/* Sidebar Split-Pane */}
-      <div className="w-full md:w-64 shrink-0 flex flex-col gap-2">
+      <div className="w-full md:w-64 shrink-0 flex flex-col gap-2 md:sticky md:top-28 h-fit">
         <div className="bg-navy p-6 rounded-2xl text-white shadow-sm">
           <h2 className="text-xl font-bold font-poppins mb-1">Mega CMS</h2>
           <p className="text-xs text-white/70">Centralized Data Hub</p>
@@ -418,22 +426,95 @@ export default function MegaCMS() {
                 <>
                   <input type="text" required placeholder="Title" value={formData.title||''} onChange={e=>setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold outline-none"/>
                   <textarea required rows="4" placeholder="Content" value={formData.content||''} onChange={e=>setFormData({...formData, content: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold outline-none"/>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Notice Type</label>
+                      <select value={formData.type||'general'} onChange={e=>setFormData({...formData, type: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold outline-none">
+                        <option value="general">General</option>
+                        <option value="exam">Exam</option>
+                        <option value="holiday">Holiday</option>
+                        <option value="result">Result</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Send to (Audience)</label>
+                      <select value={formData.targetAudience||'all'} onChange={e=>setFormData({...formData, targetAudience: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold outline-none">
+                        <option value="all">Everyone (All)</option>
+                        <option value="students">Students Only</option>
+                        <option value="faculties">Faculties Only</option>
+                        <option value="parents">Parents Only</option>
+                      </select>
+                    </div>
+                  </div>
                 </>
               )}
               {activeMenu === 'courses' && (
                 <>
-                  <input type="text" required placeholder="Course Code (e.g. JEE-01)" value={formData.courseCode||''} onChange={e=>setFormData({...formData, courseCode: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="text" required placeholder="Title" value={formData.title||''} onChange={e=>setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="number" required placeholder="Fee" value={formData.fee||''} onChange={e=>setFormData({...formData, fee: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input type="text" required placeholder="Course Code (e.g. JEE-01)" value={formData.courseCode||''} onChange={e=>setFormData({...formData, courseCode: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="text" required placeholder="Title" value={formData.title||''} onChange={e=>setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  </div>
+                  <textarea placeholder="Description" rows="3" value={formData.description||''} onChange={e=>setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-lg resize-y"/>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input type="number" required placeholder="Fee (₹)" value={formData.fee||''} onChange={e=>setFormData({...formData, fee: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="text" placeholder="Duration (e.g. 1 Year)" value={formData.duration||''} onChange={e=>setFormData({...formData, duration: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <select value={formData.category||'Foundation'} onChange={e=>setFormData({...formData, category: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="Foundation">Foundation</option>
+                      <option value="JEE">JEE</option>
+                      <option value="NEET">NEET</option>
+                      <option value="Crash Course">Crash Course</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <select value={formData.mode||'offline'} onChange={e=>setFormData({...formData, mode: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="offline">Offline</option>
+                      <option value="online">Online</option>
+                      <option value="hybrid">Hybrid</option>
+                    </select>
+                    <select value={formData.status||'active'} onChange={e=>setFormData({...formData, status: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
                 </>
               )}
               {activeMenu === 'faculty' && (
                 <>
                   <input type="text" required placeholder="Name" value={formData.name||''} onChange={e=>setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <input type="email" required placeholder="Email" value={formData.email||''} onChange={e=>setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="password" required placeholder="Password" value={formData.password||''} onChange={e=>setFormData({...formData, password: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <input type="password" required={!editId} placeholder="Password" value={formData.password||''} onChange={e=>setFormData({...formData, password: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <input type="text" required placeholder="Subject" value={formData.subject||''} onChange={e=>setFormData({...formData, subject: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <input type="text" required placeholder="Phone" value={formData.phone||''} onChange={e=>setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <div className="flex gap-2">
+                    <input type="text" placeholder="Profile Image URL" value={formData.profileImage||''} onChange={e=>setFormData({...formData, profileImage: e.target.value})} className="flex-1 px-4 py-2 border rounded-lg"/>
+                    <div className="relative">
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={async (e) => {
+                          if(!e.target.files[0]) return;
+                          const fd = new FormData();
+                          fd.append('image', e.target.files[0]);
+                          try {
+                            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/upload`, {
+                              method: 'POST',
+                              headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                              body: fd
+                            });
+                            const data = await res.json();
+                            if(data.success) {
+                              setFormData({...formData, profileImage: data.url});
+                            } else alert(data.message);
+                          } catch (err) { alert('Upload failed'); }
+                        }}
+                      />
+                      <button type="button" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium border border-slate-200 h-full whitespace-nowrap">
+                        Upload Image
+                      </button>
+                    </div>
+                  </div>
                 </>
               )}
               {activeMenu === 'materials' && (
@@ -483,17 +564,20 @@ export default function MegaCMS() {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Content Type</label>
                 <div className="flex gap-4">
                   <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
-                    <input type="radio" checked={!newFieldData.isRich} onChange={()=>setNewFieldData({...newFieldData, isRich: false})} className="text-gold focus:ring-gold"/> Plain Text
+                    <input type="radio" checked={newFieldData.type === 'plain'} onChange={()=>setNewFieldData({...newFieldData, type: 'plain'})} className="text-gold focus:ring-gold"/> Plain Text
                   </label>
                   <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
-                    <input type="radio" checked={newFieldData.isRich} onChange={()=>setNewFieldData({...newFieldData, isRich: true})} className="text-gold focus:ring-gold"/> Rich Text (Formatting)
+                    <input type="radio" checked={newFieldData.type === 'rich'} onChange={()=>setNewFieldData({...newFieldData, type: 'rich'})} className="text-gold focus:ring-gold"/> Rich Text
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+                    <input type="radio" checked={newFieldData.type === 'image'} onChange={()=>setNewFieldData({...newFieldData, type: 'image'})} className="text-gold focus:ring-gold"/> Image
                   </label>
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Initial Content</label>
-                <textarea required rows="4" placeholder="Enter your text here..." value={newFieldData.value} onChange={e=>setNewFieldData({...newFieldData, value: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold outline-none"/>
+                <textarea required={newFieldData.type !== 'image'} rows="4" placeholder={newFieldData.type === 'image' ? 'Enter a placeholder image URL, or leave blank to upload later...' : 'Enter your text here...'} value={newFieldData.value} onChange={e=>setNewFieldData({...newFieldData, value: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold outline-none"/>
               </div>
               
               <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100">
@@ -522,13 +606,13 @@ export default function MegaCMS() {
                 { id: 'text', name: 'Rich Article', icon: <BookOpen className="text-green-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'A full-width text editor for articles and paragraphs.', fields: ['title', 'content'] },
                 { id: 'stats', name: 'Statistics', icon: <Target className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Display key numbers or achievements visually.', fields: ['stat_1_title', 'stat_1_value', 'stat_2_title', 'stat_2_value'] },
                 { id: 'faq', name: 'FAQ Block', icon: <Users className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'A list of questions and detailed answers.', fields: ['question', 'answer'] },
-                { id: 'programs', name: 'Programs Widget', icon: <BookOpen className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays the school and JEE/NEET programs', fields: [] },
-                { id: 'why', name: 'Why Levora Widget', icon: <Target className="text-green-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the key features of the academy', fields: [] },
-                { id: 'notes', name: 'Notes System Widget', icon: <FileEdit className="text-blue-400 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the structured study materials', fields: [] },
-                { id: 'faculty_showcase', name: 'Faculty Widget', icon: <Users className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays top faculty members from database', fields: [] },
-                { id: 'results_showcase', name: 'Results Widget', icon: <Award className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays student results from database', fields: [] },
-                { id: 'coding', name: 'Coding Courses Widget', icon: <Globe className="text-cyan-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays the Levora Coder courses', fields: [] },
-                { id: 'testimonials', name: 'Testimonials Widget', icon: <MessageSquare className="text-pink-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Student testimonials carousel', fields: [] },
+                { id: 'programs', name: 'Programs Widget', icon: <BookOpen className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays the school and JEE/NEET programs', fields: ['title', 'subtitle'] },
+                { id: 'why', name: 'Why Levora Widget', icon: <Target className="text-green-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the key features of the academy', fields: ['title', 'subtitle'] },
+                { id: 'notes', name: 'Notes System Widget', icon: <FileEdit className="text-blue-400 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the structured study materials', fields: ['title', 'subtitle'] },
+                { id: 'faculty_showcase', name: 'Faculty Widget', icon: <Users className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays top faculty members from database', fields: ['title', 'subtitle'] },
+                { id: 'results_showcase', name: 'Results Widget', icon: <Award className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays student results from database', fields: ['title', 'subtitle'] },
+                { id: 'coding', name: 'Coding Courses Widget', icon: <Globe className="text-cyan-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays the Levora Coder courses', fields: ['title', 'subtitle'] },
+                { id: 'testimonials', name: 'Testimonials Widget', icon: <MessageSquare className="text-pink-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Student testimonials carousel', fields: ['title', 'subtitle'] },
                 
                 { id: 'about_vision', name: 'Vision & Mission', icon: <Target className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'About page Vision and Mission section.', fields: ['vision_title', 'vision_content', 'mission_title', 'mission_content'] },
                 { id: 'about_founder', name: 'Founder Message', icon: <Users className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'About page Founder message and photo.', fields: ['founder_title', 'founder_message', 'founder_name', 'founder_role', 'founder_image'] },
