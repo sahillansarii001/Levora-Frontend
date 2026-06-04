@@ -52,7 +52,7 @@ export default function CodingCourses() {
                   </span>
                 </div>
                 <div className="relative z-10">
-                  <h4 className="font-bold text-xl text-[var(--color-navy)] mb-2 group-hover:text-[var(--color-gold)] transition-colors duration-300 tracking-tight">{course.title}</h4>
+                  <h3 className="font-bold text-xl text-[var(--color-navy)] mb-2 group-hover:text-[var(--color-gold)] transition-colors duration-300 tracking-tight">{course.title}</h3>
                   <p className="text-sm text-slate-500 font-medium">{course.desc}</p>
                 </div>
               </Link>

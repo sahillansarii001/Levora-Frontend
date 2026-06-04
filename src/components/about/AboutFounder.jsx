@@ -28,7 +28,7 @@ export default function AboutFounder({ founder_title, founder_message, founder_n
               dangerouslySetInnerHTML={{ __html: founder_message || '<p>"Education is not just about scoring marks; it\'s about building a foundation for a successful life."</p>' }}
             />
             <div className="pt-8 border-t border-white/10">
-              <h4 className="font-bold text-xl tracking-tight">{founder_name || 'Dr. Vikram Singhania'}</h4>
+              <h3 className="font-bold text-xl tracking-tight">{founder_name || 'Dr. Vikram Singhania'}</h3>
               <p className="text-[var(--color-gold)] font-medium text-sm tracking-wider uppercase mt-1">
                 {founder_role || 'Founder & Director'}
               </p>

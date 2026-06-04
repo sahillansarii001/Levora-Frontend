@@ -45,7 +45,7 @@ export default function ResultsSection() {
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="text-2xl font-bold text-[var(--color-navy)] tracking-tight">{item.value}</h4>
+                    <h3 className="text-2xl font-bold text-[var(--color-navy)] tracking-tight">{item.value}</h3>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">{item.label}</p>
                   </div>
                 </motion.div>
@@ -78,7 +78,7 @@ export default function ResultsSection() {
                     </span>
                   </div>
                   
-                  <h4 className="text-xl font-bold text-[var(--color-navy)] mb-1">{topper.name}</h4>
+                  <h3 className="text-xl font-bold text-[var(--color-navy)] mb-1">{topper.name}</h3>
                   <p className="text-2xl font-bold gradient-text mb-4">{topper.rank}</p>
                   <span className="inline-block bg-slate-50 border border-slate-200 text-slate-600 font-bold text-xs px-4 py-2 rounded-lg uppercase tracking-wider group-hover:bg-[var(--color-navy)] group-hover:text-white group-hover:border-[var(--color-navy)] transition-all duration-300">
                     {topper.exam}

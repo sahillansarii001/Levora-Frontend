@@ -84,7 +84,7 @@ export default function ResultsGrid({ title, subtitle }) {
                     {topper.year}
                   </div>
                 </div>
-                <h4 className="font-bold text-[var(--color-navy)] mb-1 text-sm md:text-base">{topper.name}</h4>
+                <h3 className="font-bold text-[var(--color-navy)] mb-1 text-sm md:text-base">{topper.name}</h3>
                 <p className="gradient-text font-bold text-lg leading-tight mb-1">{topper.rank}</p>
                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{topper.exam}</p>
               </div>

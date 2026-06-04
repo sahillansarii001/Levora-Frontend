@@ -44,7 +44,7 @@ export default function ContactInfo({ title, subtitle, address, phone, email }) 
               >
                 <div className="text-white">{item.icon}</div>
               </div>
-              <h4 className="font-bold text-[var(--color-navy)] text-xl mb-3">{item.label}</h4>
+              <h3 className="font-bold text-[var(--color-navy)] text-xl mb-3">{item.label}</h3>
               <p className="text-slate-500 leading-relaxed">{item.value}</p>
             </div>
           ))}

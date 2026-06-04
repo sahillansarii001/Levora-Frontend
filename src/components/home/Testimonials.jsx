@@ -79,7 +79,7 @@ export default function Testimonials() {
                   {test.name.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-[var(--color-navy)] text-sm">{test.name}</h4>
+                  <h3 className="font-bold text-[var(--color-navy)] text-sm">{test.name}</h3>
                   <p className="text-xs text-slate-400 uppercase tracking-wider mt-0.5">{test.role}</p>
                 </div>
               </div>

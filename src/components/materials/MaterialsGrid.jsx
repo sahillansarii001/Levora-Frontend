@@ -73,7 +73,7 @@ export default function MaterialsGrid({ title, subtitle }) {
                     <FileText size={22} className="text-red-500" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-[var(--color-navy)] mb-1.5">{item.title}</h4>
+                    <h3 className="font-bold text-[var(--color-navy)] mb-1.5">{item.title}</h3>
                     <div className="flex gap-3 text-sm text-slate-400">
                       <span className="font-medium">{item.type}</span>
                       <span className="text-slate-300">•</span>
