@@ -108,10 +108,13 @@ export default function HeroSection({ title, subtitle, bg_image }) {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-xl p-6 rounded-2xl shadow-2xl border border-white/50 max-w-[240px]"
+                className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 max-w-[240px] z-20"
               >
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--color-emerald)] to-[var(--color-emerald)]/70 flex items-center justify-center shadow-lg shadow-emerald-200/50">
+                  <div 
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200/50"
+                    style={{ background: 'linear-gradient(to bottom right, #10B981, #34D399)' }}
+                  >
                     <span className="text-white font-bold text-xl">99%</span>
                   </div>
                   <div>
@@ -124,7 +127,8 @@ export default function HeroSection({ title, subtitle, bg_image }) {
                     initial={{ width: 0 }}
                     animate={{ width: '99%' }}
                     transition={{ duration: 1.5, delay: 1, ease: 'easeOut' }}
-                    className="h-full rounded-full bg-gradient-to-r from-[var(--color-emerald)] to-[var(--color-emerald)]/70"
+                    className="h-full rounded-full"
+                    style={{ background: 'linear-gradient(to right, #10B981, #34D399)' }}
                   />
                 </div>
               </motion.div>

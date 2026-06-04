@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const toppers = [
   { id: 1, name: "Rahul Deshmukh", exam: "JEE Advanced", rank: "AIR 45", color: "from-amber-500 to-orange-600" },
-  { id: 2, name: "Priya Sharma", exam: "NEET UG", rank: "AIR 112", color: "from-emerald-500 to-teal-600" },
+  { id: 2, name: "Priya Sharma", exam: "NEET UG", rank: "AIR 112", color: "from-green-500 to-teal-600" },
   { id: 3, name: "Amit Patel", exam: "CBSE 12th", rank: "99.2%", color: "from-blue-500 to-indigo-600" },
 ];
 

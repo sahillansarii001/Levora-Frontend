@@ -7,11 +7,11 @@ import Link from 'next/link';
 
 const programs = [
   { id: 1, icon: <Atom size={22} />, title: 'Pre-Primary', desc: 'Playgroup to Nursery', gradient: 'from-indigo-500 to-indigo-600' },
-  { id: 2, icon: <Book size={22} />, title: 'Primary School', desc: 'Class 1st to 5th', gradient: 'from-emerald-500 to-emerald-600' },
+  { id: 2, icon: <Book size={22} />, title: 'Primary School', desc: 'Class 1st to 5th', gradient: 'from-green-500 to-green-600' },
   { id: 3, icon: <GraduationCap size={22} />, title: 'Middle School', desc: 'Class 6th to 10th', gradient: 'from-blue-500 to-blue-600' },
   { id: 4, icon: <Book size={22} />, title: 'Higher Secondary', desc: 'Class 11th & 12th', gradient: 'from-purple-500 to-purple-600' },
   { id: 5, icon: <BrainCircuit size={22} />, title: 'JEE / NEET Prep', desc: 'Competitive Exams', gradient: 'from-rose-500 to-rose-600' },
-  { id: 6, icon: <Code size={22} />, title: 'Coding Courses', desc: 'Python, Java, Web', gradient: 'from-sky-500 to-sky-600' },
+  { id: 6, icon: <Code size={22} />, title: 'Coding Courses', desc: 'Python, Java, Web', gradient: 'from-cyan-500 to-cyan-600' },
   { id: 7, icon: <Languages size={22} />, title: 'Spoken English', desc: 'Fluency & Grammar', gradient: 'from-amber-500 to-amber-600' },
   { id: 8, icon: <Laptop size={22} />, title: 'Computer Skills', desc: 'MS Office, Tally', gradient: 'from-slate-500 to-slate-600' },
 ];
