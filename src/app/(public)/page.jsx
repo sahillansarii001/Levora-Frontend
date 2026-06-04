@@ -1,4 +1,5 @@
 import DynamicRenderer from '@/components/DynamicRenderer';
+import SeoContentBlock from '@/components/home/SeoContentBlock';
 
 export default async function Home() {
   let content = {};
@@ -22,6 +23,7 @@ export default async function Home() {
   return (
     <>
       <DynamicRenderer content={content} pageName="homepage" />
+      <SeoContentBlock />
     </>
   );
 }
