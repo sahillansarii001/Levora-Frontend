@@ -20,9 +20,9 @@ export default function FacultyLogin() {
           <Image 
             src="/Logo.png" 
             alt="Levora Academy Logo" 
-            width={160} 
-            height={48} 
-            className="h-10 w-auto mx-auto mb-6 object-contain"
+            width={240} 
+            height={72} 
+            className="h-14 w-auto mx-auto mb-6 object-contain"
           />
           <h2 className="text-2xl font-bold font-poppins text-slate-900 tracking-tight">Faculty Portal</h2>
         </div>

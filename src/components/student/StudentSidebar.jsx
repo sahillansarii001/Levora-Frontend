@@ -24,9 +24,9 @@ export default function StudentSidebar() {
         <Image 
           src="/Logo.png" 
           alt="Levora Student" 
-          width={150} 
-          height={40} 
-          className="h-8 w-auto"
+          width={220} 
+          height={60} 
+          className="h-16 w-auto"
         />
       </div>
       

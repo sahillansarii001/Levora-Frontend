@@ -23,9 +23,9 @@ export default function FacultySidebar() {
         <Image 
           src="/Logo.png" 
           alt="Levora Faculty" 
-          width={150} 
-          height={40} 
-          className="h-8 w-auto filter brightness-0 invert"
+          width={220} 
+          height={60} 
+          className="h-16 w-auto filter brightness-0 invert"
         />
       </div>
       

@@ -23,9 +23,9 @@ export default function ParentSidebar() {
         <Image 
           src="/Logo.png" 
           alt="Levora Parent" 
-          width={150} 
-          height={40} 
-          className="h-8 w-auto"
+          width={220} 
+          height={60} 
+          className="h-16 w-auto"
         />
       </div>
       

@@ -48,9 +48,9 @@ export default function Navbar() {
             <Image 
               src="/Logo.png" 
               alt="Levora Academy Logo" 
-              width={160} 
-              height={48} 
-              className="h-10 w-auto object-contain"
+              width={240} 
+              height={72} 
+              className="h-14 w-auto object-contain"
               priority
             />
           </Link>

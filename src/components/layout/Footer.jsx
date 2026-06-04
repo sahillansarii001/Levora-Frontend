@@ -20,9 +20,9 @@ export default function Footer() {
               <Image 
                 src="/Logo.png" 
                 alt="Levora Academy Logo" 
-                width={180} 
-                height={54} 
-                className="h-12 w-auto object-contain brightness-0 invert"
+                width={270} 
+                height={80} 
+                className="h-16 w-auto object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-slate-400 mb-8 max-w-sm leading-relaxed text-sm">

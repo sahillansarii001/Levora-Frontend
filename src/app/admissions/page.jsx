@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { User, Lock, Mail, Phone, Book, School, Users, CheckCircle2, Key, Sparkles, Loader2 } from 'lucide-react';
+import { User, Lock, Mail, Phone, Book, School, Users, CheckCircle2, Key, Sparkles, Loader2, ArrowLeft } from 'lucide-react';
 
 export default function AdmissionsPage() {
   const [step, setStep] = useState(1);
@@ -126,11 +126,19 @@ export default function AdmissionsPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50 pt-24 pb-12 px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50 pt-12 pb-12 px-4 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--color-gold)]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-sky)]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="bg-white p-8 md:p-10 rounded-3xl shadow-2xl border border-slate-100 w-full max-w-xl relative overflow-hidden">
+      {/* Back Button */}
+      <Link href="/" className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex items-center gap-2 text-slate-500 hover:text-[var(--color-navy)] transition-colors font-semibold group">
+        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:shadow-md transition-all">
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+        </div>
+        <span className="hidden md:inline">Back to Home</span>
+      </Link>
+
+      <div className="bg-white p-8 md:p-10 rounded-3xl shadow-2xl border border-slate-100 w-full max-w-xl relative overflow-hidden z-10">
         <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[var(--color-gold)]/10 to-transparent rounded-bl-[200px] pointer-events-none" />
         
         <div className="relative z-10 text-center mb-8">
