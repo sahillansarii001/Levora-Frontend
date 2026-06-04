@@ -44,7 +44,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="relative z-10">
+          <Link href="/" className="relative z-10" aria-label="Levora Academy Home">
             <Image 
               src="/Logo.png" 
               alt="Levora Academy Logo" 

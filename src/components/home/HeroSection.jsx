@@ -100,6 +100,7 @@ export default function HeroSection({ title, subtitle, bg_image }) {
                   src={bg_image || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"} 
                   alt="Students studying" 
                   className="w-full h-[300px] lg:h-[60vh] max-h-[500px] object-cover"
+                  fetchPriority="high"
                 />
               </div>
 

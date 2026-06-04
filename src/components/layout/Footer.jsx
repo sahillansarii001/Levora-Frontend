@@ -16,7 +16,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
           {/* Brand Column (Span 2) */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-block mb-6">
+            <Link href="/" className="inline-block mb-6" aria-label="Levora Academy Home">
               <Image 
                 src="/Logo.png" 
                 alt="Levora Academy Logo" 
@@ -30,14 +30,15 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               {[
-                { icon: <Facebook size={16} />, href: '#' },
-                { icon: <Instagram size={16} />, href: '#' },
-                { icon: <Youtube size={16} />, href: '#' },
-                { icon: <Linkedin size={16} />, href: '#' },
+                { icon: <Facebook size={16} />, href: '#', label: 'Facebook' },
+                { icon: <Instagram size={16} />, href: '#', label: 'Instagram' },
+                { icon: <Youtube size={16} />, href: '#', label: 'YouTube' },
+                { icon: <Linkedin size={16} />, href: '#', label: 'LinkedIn' },
               ].map((social, i) => (
                 <a 
                   key={i}
                   href={social.href} 
+                  aria-label={social.label}
                   className="w-9 h-9 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-[var(--color-navy)] hover:shadow-lg hover:shadow-amber-900/30 transition-all duration-300"
                 >
                   {social.icon}
@@ -48,7 +49,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Programs</h4>
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Programs</h3>
             <ul className="space-y-3.5">
               {['School Foundation', 'JEE / NEET Prep', 'Coding & Tech', 'Skill Development', 'Premium Materials'].map((item) => (
                 <li key={item}>
@@ -63,7 +64,7 @@ export default function Footer() {
 
           {/* Academy Links */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Academy</h4>
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Academy</h3>
             <ul className="space-y-3.5">
               {[
                 { name: 'About Us', href: '/about' },
@@ -84,7 +85,7 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Stay Updated</h4>
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Stay Updated</h3>
             <p className="text-sm text-slate-400 mb-4 leading-relaxed">Subscribe for the latest updates, study tips, and exclusive resources.</p>
             <form className="relative" onSubmit={(e) => e.preventDefault()}>
               <input 
