@@ -1,7 +1,18 @@
 import DynamicRenderer from '@/components/DynamicRenderer';
+import { generateBreadcrumbSchema } from '@/lib/structuredData';
 
 export const metadata = {
-  title: "Results & Achievements | Levora Academy",
+  title: "Results & Achievements | IIT, NEET & Board Toppers — Levora Academy",
+  description: "Levora Academy's legacy of excellence: 500+ IIT/NIT selections, 1000+ doctors produced, 95%+ board top scorers. View our 2024 results and success stories.",
+  alternates: {
+    canonical: 'https://levoraacademy.vercel.app/results',
+  },
+  openGraph: {
+    title: "Results & Achievements | IIT, NEET & Board Toppers — Levora Academy",
+    description: "Levora Academy's legacy of excellence: 500+ IIT/NIT selections, 1000+ doctors produced, 95%+ board top scorers. View our 2024 results and success stories.",
+    url: 'https://levoraacademy.vercel.app/results',
+    images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
+  }
 };
 
 export default async function ResultsPage() {
@@ -18,6 +29,10 @@ export default async function ResultsPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema('Results & Achievements', 'https://levoraacademy.vercel.app/results')) }}
+      />
       <DynamicRenderer content={content} pageName="results" />
     </div>
   );

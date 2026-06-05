@@ -1,7 +1,18 @@
 import DynamicRenderer from '@/components/DynamicRenderer';
+import { generateEducationalOrganizationSchema, generateBreadcrumbSchema } from '@/lib/structuredData';
 
 export const metadata = {
-  title: "About Us | Levora Academy",
+  title: "About Us | Levora Academy — Our Mission, Vision & Leadership",
+  description: "Learn about Levora Academy's mission to deliver world-class education in India. Meet our founder Dr. Vikram Singhania and discover what drives our 99% success rate.",
+  alternates: {
+    canonical: 'https://levoraacademy.vercel.app/about',
+  },
+  openGraph: {
+    title: "About Us | Levora Academy — Our Mission, Vision & Leadership",
+    description: "Learn about Levora Academy's mission to deliver world-class education in India. Meet our founder Dr. Vikram Singhania and discover what drives our 99% success rate.",
+    url: 'https://levoraacademy.vercel.app/about',
+    images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
+  }
 };
 
 export default async function AboutPage() {
@@ -18,6 +29,14 @@ export default async function AboutPage() {
 
   return (
     <div className="bg-white min-h-screen pt-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEducationalOrganizationSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema('About Us', 'https://levoraacademy.vercel.app/about')) }}
+      />
       <DynamicRenderer content={content} pageName="about" />
     </div>
   );

@@ -67,6 +67,15 @@ export default function HeroSection({ title, subtitle, bg_image }) {
                 View All Courses
               </Link>
             </motion.div>
+            
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="mt-4 text-xs font-medium text-slate-400 text-center lg:text-left"
+            >
+              Serving students across New Delhi, NCR & Pan-India online.
+            </motion.p>
 
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -98,7 +107,7 @@ export default function HeroSection({ title, subtitle, bg_image }) {
                 <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-navy)]/40 via-transparent to-transparent z-10" />
                 <img 
                   src={bg_image || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"} 
-                  alt="Students studying" 
+                  alt="Students studying at Levora Academy coaching center" 
                   className="w-full h-[300px] lg:h-[60vh] max-h-[500px] object-cover"
                   fetchPriority="high"
                 />

@@ -11,7 +11,7 @@ export default function AboutFounder({ founder_title, founder_message, founder_n
           <div className="md:w-2/5 relative min-h-[350px] overflow-hidden">
             <img 
               src={founder_image || "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
-              alt="Founder"
+              alt={`${founder_name || 'Dr. Vikram Singhania'}, Founder of Levora Academy`}
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-navy)]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-[var(--color-navy)]/40 md:via-transparent md:to-transparent" />

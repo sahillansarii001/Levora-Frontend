@@ -26,14 +26,14 @@ export default function Footer() {
               />
             </Link>
             <p className="text-slate-400 mb-8 max-w-sm leading-relaxed text-sm">
-              Empowering students with world-class education, expert guidance, and state-of-the-art learning infrastructure to achieve academic and career excellence.
+              Levora Academy is India's premium coaching destination for Class 1–12, JEE, NEET, and tech skill development. With expert faculty, proprietary study materials, and a 99% board success rate, we prepare students not just for exams — but for life.
             </p>
             <div className="flex gap-3">
               {[
-                { icon: <Facebook size={16} />, href: '#', label: 'Facebook' },
-                { icon: <Instagram size={16} />, href: '#', label: 'Instagram' },
-                { icon: <Youtube size={16} />, href: '#', label: 'YouTube' },
-                { icon: <Linkedin size={16} />, href: '#', label: 'LinkedIn' },
+                { icon: <Facebook size={16} />, href: 'https://facebook.com/levoraacademy', label: 'Facebook' },
+                { icon: <Instagram size={16} />, href: 'https://instagram.com/levoraacademy', label: 'Instagram' },
+                { icon: <Youtube size={16} />, href: 'https://youtube.com/@levoraacademy', label: 'YouTube' },
+                { icon: <Linkedin size={16} />, href: 'https://twitter.com/levoraacademy', label: 'Twitter/X' },
               ].map((social, i) => (
                 <a 
                   key={i}
@@ -70,7 +70,7 @@ export default function Footer() {
                 { name: 'About Us', href: '/about' },
                 { name: 'Expert Faculty', href: '/faculty' },
                 { name: 'Success Stories', href: '/results' },
-                { name: 'Admissions 2024', href: '/admissions' },
+                { name: 'Admissions 2025–26', href: '/admissions' },
                 { name: 'Contact Support', href: '/contact' },
               ].map((item) => (
                 <li key={item.name}>

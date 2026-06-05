@@ -1,5 +1,21 @@
 import DynamicRenderer from '@/components/DynamicRenderer';
 import SeoContentBlock from '@/components/home/SeoContentBlock';
+import { generateEducationalOrganizationSchema } from '@/lib/structuredData';
+
+export const metadata = {
+  title: "Levora Academy | Best Coaching Institute in India for JEE, NEET & School",
+  description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. 5000+ students, 99% board success rate. Admissions open for 2025–26.",
+  keywords: ["JEE coaching India", "NEET preparation academy", "Class 10 tuition", "best coaching institute India", "online education India"],
+  alternates: {
+    canonical: 'https://levoraacademy.vercel.app',
+  },
+  openGraph: {
+    title: "Levora Academy | Best Coaching Institute in India for JEE, NEET & School",
+    description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. 5000+ students, 99% board success rate. Admissions open for 2025–26.",
+    url: 'https://levoraacademy.vercel.app',
+    images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
+  }
+};
 
 export default async function Home() {
   let content = {};
@@ -22,6 +38,10 @@ export default async function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEducationalOrganizationSchema()) }}
+      />
       <DynamicRenderer content={content} pageName="homepage" />
       <SeoContentBlock />
     </>

@@ -6,7 +6,7 @@ export default function FacultyCard({ faculty }) {
       <div className="h-64 bg-gradient-to-br from-[var(--color-navy)] to-[var(--color-navy-light)] overflow-hidden relative">
         <img 
           src={`https://ui-avatars.com/api/?name=${encodeURIComponent(faculty.name)}&size=300&background=0B1D3A&color=F59E0B`}
-          alt={faculty.name}
+          alt={`${faculty.name}, ${faculty.subject} Expert at Levora Academy`}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-navy)]/80 via-transparent to-transparent" />

@@ -11,10 +11,18 @@ import ResultsSection from '@/components/home/ResultsSection';
 import Testimonials from '@/components/home/Testimonials';
 import NotesSystem from '@/components/home/NotesSystem';
 import CodingCourses from '@/components/home/CodingCourses';
+import WhyChooseLevora from '@/components/home/WhyChooseLevora';
 
 // New Page Widgets
 import AboutVision from './about/AboutVision';
 import AboutFounder from './about/AboutFounder';
+
+// Admissions Page Widgets
+import AdmissionsHero from './admissions/AdmissionsHero';
+import AdmissionsEligibility from './admissions/AdmissionsEligibility';
+import AdmissionsProcess from './admissions/AdmissionsProcess';
+import AdmissionsFaq from './admissions/AdmissionsFaq';
+import AdmissionsForm from './admissions/AdmissionsForm';
 import ContactInfo from './contact/ContactInfo';
 import ContactForm from './contact/ContactForm';
 import CoursesGrid from './courses/CoursesGrid';
@@ -86,10 +94,24 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
             return <ProgramsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'why':
             return <WhyLevora key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
+          case 'why_choose':
+            return <WhyChooseLevora key={section.id} title={section.data.title} featuresList={section.data.features} />;
           case 'notes':
             return <NotesSystem key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'faculty_showcase':
             return <FacultyShowcase key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
+          
+          // Admissions Components
+          case 'admissions_hero':
+            return <AdmissionsHero key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
+          case 'admissions_eligibility':
+            return <AdmissionsEligibility key={section.id} title={section.data.title} />;
+          case 'admissions_process':
+            return <AdmissionsProcess key={section.id} title={section.data.title} />;
+          case 'admissions_faq':
+            return <AdmissionsFaq key={section.id} title={section.data.title} questions={section.data.questions} />;
+          case 'admissions_form':
+            return <AdmissionsForm key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'results_showcase':
             return <ResultsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'coding':
