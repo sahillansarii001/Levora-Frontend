@@ -5,7 +5,7 @@ export const generateEducationalOrganizationSchema = () => {
     "name": "Levora Academy",
     "url": "https://levoraacademy.vercel.app",
     "logo": "https://levoraacademy.vercel.app/Logo.png",
-    "description": "Levora Academy provides structured learning, expert guidance, and premium resources for JEE, NEET, school students, and tech skill learners across India.",
+    "description": "Levora Academy provides expert coaching for JEE, NEET, Class 1–12, Coding, and Spoken English across India.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "123 Education Hub",
@@ -15,10 +15,9 @@ export const generateEducationalOrganizationSchema = () => {
     "telephone": "+91-98765-43210",
     "email": "hello@levoraacademy.com",
     "sameAs": [
-      "https://facebook.com/levoraacademy",
       "https://instagram.com/levoraacademy",
       "https://youtube.com/@levoraacademy",
-      "https://twitter.com/levoraacademy"
+      "https://facebook.com/levoraacademy"
     ]
   };
 };

@@ -3,17 +3,41 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BookOpen, FileText, Calendar, LogOut } from 'lucide-react';
-
-const navItems = [
-  { name: 'My Dashboard', href: '/student/dashboard', icon: <LayoutDashboard size={20} /> },
-  { name: 'My Courses', href: '#', icon: <BookOpen size={20} /> },
-  { name: 'Study Materials', href: '#', icon: <FileText size={20} /> },
-  { name: 'Class Schedule', href: '#', icon: <Calendar size={20} /> },
-];
+import { LayoutDashboard, BookOpen, FileText, Calendar, LogOut, ClipboardList, CheckSquare, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function StudentSidebar() {
   const pathname = usePathname();
+  const [studentClass, setStudentClass] = useState('');
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setStudentClass(user.className || '');
+      } catch (e) {
+        console.error('Error parsing user data', e);
+      }
+    }
+  }, []);
+
+  // Determine if the student is in 1st to 12th grade
+  const isSchoolStudent = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'].includes(studentClass);
+
+  const navItems = [
+    { name: 'My Dashboard', href: '/student/dashboard', icon: <LayoutDashboard size={20} /> },
+    { 
+      name: isSchoolStudent ? 'My Subjects' : 'My Courses', 
+      href: isSchoolStudent ? '/student/subjects' : '/student/courses', 
+      icon: <BookOpen size={20} /> 
+    },
+    { name: 'Assignments', href: '/student/assignments', icon: <ClipboardList size={20} /> },
+    { name: 'Study Materials', href: '/student/materials', icon: <FileText size={20} /> },
+    { name: 'Class Schedule', href: '/student/schedule', icon: <Calendar size={20} /> },
+    { name: 'My Attendance', href: '/student/attendance', icon: <CheckSquare size={20} /> },
+    { name: 'My Profile', href: '/student/profile', icon: <User size={20} /> },
+  ];
 
   // Don't render sidebar on login page
   if (pathname === '/login') return null;
@@ -30,7 +54,7 @@ export default function StudentSidebar() {
         />
       </div>
       
-      <div className="flex-1 py-8 px-4 flex flex-col gap-2">
+      <div className="flex-1 py-4 px-4 flex flex-col gap-2 overflow-y-auto">
         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4">Student Portal</p>
         
         {navItems.map((item) => {
@@ -59,6 +83,7 @@ export default function StudentSidebar() {
             localStorage.removeItem('token');
             localStorage.removeItem('role');
             localStorage.removeItem('email');
+            localStorage.removeItem('user');
           }}
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors font-medium"
         >

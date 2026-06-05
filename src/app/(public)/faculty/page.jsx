@@ -12,6 +12,11 @@ export const metadata = {
     description: "Meet Levora Academy's faculty — IIT JEE experts, NEET ranker-makers, Olympiad mentors, and industry-certified tech educators with 8–15+ years of experience.",
     url: 'https://levoraacademy.vercel.app/faculty',
     images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
+  },
+  twitter: {
+    title: "Expert Faculty | Levora Academy — IIT & NEET Specialist Teachers",
+    description: "Meet Levora Academy's faculty — IIT JEE experts, NEET ranker-makers, Olympiad mentors, and industry-certified tech educators with 8–15+ years of experience.",
+    images: ['https://levoraacademy.vercel.app/api/og'],
   }
 };
 
@@ -31,7 +36,14 @@ export default async function FacultyPage() {
     <div className="bg-white min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema('Expert Faculty', 'https://levoraacademy.vercel.app/faculty')) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org", 
+          "@type": "BreadcrumbList", 
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://levoraacademy.vercel.app" },
+            { "@type": "ListItem", "position": 2, "name": "Faculty", "item": "https://levoraacademy.vercel.app/faculty" }
+          ]
+        }) }}
       />
       <DynamicRenderer content={content} pageName="faculty" />
     </div>

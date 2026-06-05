@@ -1,0 +1,15 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /login
+Disallow: /dashboard
+Disallow: /admin
+
+# Host
+Host: https://levoraacademy.vercel.app
+
+# Sitemaps
+Sitemap: https://levoraacademy.vercel.app/sitemap.xml

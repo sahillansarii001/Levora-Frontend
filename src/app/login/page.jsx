@@ -14,6 +14,7 @@ export default function UnifiedLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -34,10 +35,12 @@ export default function UnifiedLogin() {
 
       const role = data.data?.role || data.role;
       const token = data.data?.token || data.token || data.data?.accessToken;
+      const userObj = data.data?.student || data.data?.user || {};
       
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
       localStorage.setItem('email', identifier);
+      localStorage.setItem('user', JSON.stringify(userObj));
 
       if (role === 'admin' || role === 'superadmin') {
         router.push('/admin/dashboard');
@@ -90,6 +93,7 @@ export default function UnifiedLogin() {
           <h2 className="text-2xl font-bold font-poppins text-[var(--color-navy)] mb-1">Welcome Back</h2>
           <p className="text-sm text-slate-500">Sign in to your account</p>
         </div>
+
 
         <form className="relative z-10 space-y-4" onSubmit={handleLogin}>
           <div>
@@ -146,8 +150,8 @@ export default function UnifiedLogin() {
 
         <div className="relative z-10 text-center mt-6 text-sm text-slate-500">
           Not registered yet?{' '}
-          <Link href="/admissions" className="text-[var(--color-gold)] font-bold hover:underline">
-            Apply Now
+          <Link href="/signup" className="text-[var(--color-gold)] font-bold hover:underline">
+            Create Account
           </Link>
         </div>
       </div>

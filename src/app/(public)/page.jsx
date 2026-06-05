@@ -3,17 +3,22 @@ import SeoContentBlock from '@/components/home/SeoContentBlock';
 import { generateEducationalOrganizationSchema } from '@/lib/structuredData';
 
 export const metadata = {
-  title: "Levora Academy | Best Coaching Institute in India for JEE, NEET & School",
+  title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
   description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. 5000+ students, 99% board success rate. Admissions open for 2025–26.",
-  keywords: ["JEE coaching India", "NEET preparation academy", "Class 10 tuition", "best coaching institute India", "online education India"],
+  keywords: ["JEE coaching India", "NEET preparation academy", "Class 10 tuition", "best coaching institute India", "online education India", "school tuition New Delhi"],
   alternates: {
     canonical: 'https://levoraacademy.vercel.app',
   },
   openGraph: {
-    title: "Levora Academy | Best Coaching Institute in India for JEE, NEET & School",
+    title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
     description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. 5000+ students, 99% board success rate. Admissions open for 2025–26.",
     url: 'https://levoraacademy.vercel.app',
     images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
+  },
+  twitter: {
+    title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
+    description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. 5000+ students, 99% board success rate. Admissions open for 2025–26.",
+    images: ['https://levoraacademy.vercel.app/api/og'],
   }
 };
 

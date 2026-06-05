@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BookOpen, FileText, CheckCircle, BarChart3, Bell, LogOut, Download, Search, Calendar as CalendarIcon } from 'lucide-react';
+import { BookOpen, FileText, CheckCircle, BarChart3, Bell, Search, Calendar as CalendarIcon, Download } from 'lucide-react';
 import Link from 'next/link';
 
 export default function StudentDashboard() {
@@ -17,6 +17,12 @@ export default function StudentDashboard() {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [attLoading, setAttLoading] = useState(false);
 
+  // New Dashboard Data States
+  const [notices, setNotices] = useState([]);
+  const [testResults, setTestResults] = useState([]);
+  const [assignments, setAssignments] = useState([]);
+  const [schedule, setSchedule] = useState([]);
+
   useEffect(() => {
     // Load student from local storage
     const userStr = localStorage.getItem('user');
@@ -30,6 +36,12 @@ export default function StudentDashboard() {
       fetchAttendance();
     }
   }, [student, fromDate, toDate]);
+
+  useEffect(() => {
+    if (student?._id) {
+      fetchDashboardData();
+    }
+  }, [student]);
 
   const fetchAttendance = async () => {
     setAttLoading(true);
@@ -49,8 +61,56 @@ export default function StudentDashboard() {
     }
   };
 
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { 'Authorization': `Bearer ${token}` };
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+      // Fetch Notices
+      const className = student.className || 'All';
+      fetch(`${baseUrl}/notices?className=${className}`, { headers })
+        .then(res => res.json())
+        .then(data => data.success && setNotices(data.data))
+        .catch(console.error);
+
+      // Fetch Tests
+      fetch(`${baseUrl}/tests/student/recent`, { headers })
+        .then(res => res.json())
+        .then(data => data.success && setTestResults(data.data))
+        .catch(console.error);
+
+      // Fetch Assignments
+      fetch(`${baseUrl}/materials?category=assignment`, { headers })
+        .then(res => res.json())
+        .then(data => data.success && setAssignments(data.data))
+        .catch(console.error);
+
+      // Fetch Schedule
+      fetch(`${baseUrl}/schedule`, { headers })
+        .then(res => res.json())
+        .then(data => data.success && setSchedule(data.data))
+        .catch(console.error);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const totalDays = attendanceRecords.length;
+  const presentDays = attendanceRecords.filter(r => r.status === 'Present').length;
+  const percentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+
+  // Calculate Avg Score
+  const totalScore = testResults.reduce((acc, test) => acc + (test.score / test.total) * 100, 0);
+  const avgScore = testResults.length > 0 ? Math.round(totalScore / testResults.length) : 0;
+
+  // Filter today's schedule
+  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const todaysClasses = schedule.filter(s => s.day === todayName);
+
   return (
-    <div className="pt-24 bg-slate-50 min-h-screen">
+    <div className="pt-8 bg-slate-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* Top Header Row */}
@@ -67,7 +127,7 @@ export default function StudentDashboard() {
             </div>
             <button className="p-2 border border-slate-200 rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors relative">
               <Bell size={18} />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              {notices.length > 0 && <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>}
             </button>
             <div className="w-9 h-9 bg-navy text-white rounded-md flex items-center justify-center font-bold text-sm">
               {student?.name?.substring(0, 2).toUpperCase() || 'ST'}
@@ -78,10 +138,10 @@ export default function StudentDashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
-            { label: 'Overall Attendance', value: '92%', change: '+2% this week', icon: <CheckCircle className="text-slate-400" size={20}/> },
-            { label: 'Average Score', value: '78%', change: '+5% this month', icon: <BarChart3 className="text-slate-400" size={20}/> },
-            { label: 'Assignments Due', value: '2', change: '3 completed', icon: <FileText className="text-slate-400" size={20}/> },
-            { label: 'Upcoming Classes', value: '3', change: 'Starts in 1hr', icon: <BookOpen className="text-slate-400" size={20}/> },
+            { label: 'Attendance (Period)', value: attLoading ? '...' : `${percentage}%`, change: 'Based on filters', icon: <CheckCircle className="text-slate-400" size={20}/> },
+            { label: 'Average Score', value: `${avgScore}%`, change: 'Across recent tests', icon: <BarChart3 className="text-slate-400" size={20}/> },
+            { label: 'Assignments Due', value: assignments.length, change: 'Pending submissions', icon: <FileText className="text-slate-400" size={20}/> },
+            { label: 'Upcoming Classes', value: todaysClasses.length, change: `Scheduled for ${todayName}`, icon: <BookOpen className="text-slate-400" size={20}/> },
           ].map((stat, i) => (
             <div key={i} className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-4">
@@ -120,7 +180,7 @@ export default function StudentDashboard() {
                   <p className="p-6 text-center text-slate-500 text-sm">No attendance records found for this period.</p>
                 ) : (
                   <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                    <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider sticky top-0 z-10">
                       <tr>
                         <th className="py-3 px-6 font-semibold">Date</th>
                         <th className="py-3 px-6 font-semibold text-right">Status</th>
@@ -145,54 +205,53 @@ export default function StudentDashboard() {
               </div>
             </div>
 
+            {/* Recent Test Performance */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
                 <h3 className="font-bold text-slate-900">Recent Test Performance</h3>
-                <button className="text-sm font-semibold text-navy hover:text-gold transition-colors">View Report</button>
               </div>
               <div className="divide-y divide-slate-100">
-                {[
-                  { name: 'Physics Mechanics Mock', date: '12 May, 2024', score: '85', total: '100', status: 'Excellent' },
-                  { name: 'Chemistry Organic Test', date: '05 May, 2024', score: '72', total: '100', status: 'Good' },
-                  { name: 'Math Full Syllabus', date: '28 Apr, 2024', score: '92', total: '100', status: 'Outstanding' },
-                ].map((test, i) => (
-                  <div key={i} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
-                    <div>
-                      <p className="font-semibold text-slate-900 text-sm mb-1">{test.name}</p>
-                      <p className="text-xs text-slate-500">{test.date}</p>
+                {testResults.length === 0 ? (
+                   <p className="p-6 text-center text-slate-500 text-sm">No recent tests found.</p>
+                ) : (
+                  testResults.map((test, i) => (
+                    <div key={i} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                      <div>
+                        <p className="font-semibold text-slate-900 text-sm mb-1">{test.name}</p>
+                        <p className="text-xs text-slate-500">{test.date}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-slate-900">{test.score} <span className="text-slate-400 text-xs font-normal">/ {test.total}</span></p>
+                        <p className={`text-xs font-medium mt-1 ${test.status === 'Pass' ? 'text-green-600' : test.status === 'Fail' ? 'text-red-600' : 'text-blue-600'}`}>{test.status || 'Graded'}</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-slate-900">{test.score} <span className="text-slate-400 text-xs font-normal">/ {test.total}</span></p>
-                      <p className="text-xs font-medium text-green-600 mt-1">{test.status}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
+            {/* Today's Schedule */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-200 bg-slate-50/50">
                 <h3 className="font-bold text-slate-900">Today's Schedule</h3>
               </div>
               <div className="divide-y divide-slate-100">
-                <div className="px-6 py-4 flex items-start">
-                  <div className="w-20 pt-0.5">
-                    <p className="text-xs font-bold text-slate-500">09:00 AM</p>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-slate-900 text-sm mb-1">Physics - Thermodynamics</p>
-                    <p className="text-xs text-slate-500">Room 204 • Dr. Sharma</p>
-                  </div>
-                </div>
-                <div className="px-6 py-4 flex items-start">
-                  <div className="w-20 pt-0.5">
-                    <p className="text-xs font-bold text-slate-500">11:30 AM</p>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-slate-900 text-sm mb-1">Mathematics - Calculus</p>
-                    <p className="text-xs text-slate-500">Room 102 • Prof. Verma</p>
-                  </div>
-                </div>
+                {todaysClasses.length === 0 ? (
+                  <p className="p-6 text-center text-slate-500 text-sm">No classes scheduled for today.</p>
+                ) : (
+                  todaysClasses.map((cls, i) => (
+                    <div key={i} className="px-6 py-4 flex items-start hover:bg-slate-50">
+                      <div className="w-24 pt-0.5">
+                        <p className="text-xs font-bold text-slate-500">{cls.startTime}</p>
+                        <p className="text-xs text-slate-400">{cls.endTime}</p>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-slate-900 text-sm mb-1">{cls.subject}</p>
+                        <p className="text-xs text-slate-500">Room {cls.room} • {cls.faculty}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
@@ -209,31 +268,34 @@ export default function StudentDashboard() {
                 <button className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-slate-200 hover:border-navy hover:text-navy hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
                   Download ID Card <Download size={16} className="text-slate-400" />
                 </button>
-                <button className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-slate-200 hover:border-navy hover:text-navy hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
+                <Link href="/student/materials" className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-slate-200 hover:border-navy hover:text-navy hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
                   Premium Notes <FileText size={16} className="text-slate-400" />
-                </button>
+                </Link>
               </div>
             </div>
 
+            {/* Notice Board */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-              <div className="px-6 py-5 border-b border-slate-200 bg-slate-50/50">
+              <div className="px-6 py-5 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
                 <h3 className="font-bold text-slate-900">Notice Board</h3>
               </div>
-              <div className="p-6 space-y-6">
-                <div>
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">Just Now</span>
-                  </div>
-                  <p className="text-sm font-medium text-slate-800">Extra class for Chemistry on Sunday at 10 AM.</p>
-                </div>
-                <div>
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">2 Days Ago</span>
-                  </div>
-                  <p className="text-sm font-medium text-slate-800">Admit cards for upcoming test series are available for download.</p>
-                </div>
+              <div className="p-6 space-y-6 max-h-96 overflow-y-auto">
+                {notices.length === 0 ? (
+                  <p className="text-center text-slate-500 text-sm">No new notices.</p>
+                ) : (
+                  notices.map((notice, i) => (
+                    <div key={i}>
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className={`w-2 h-2 rounded-full ${i === 0 ? 'bg-red-500' : 'bg-slate-300'}`}></span>
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">
+                          {new Date(notice.date).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-sm font-bold text-slate-800 mb-1">{notice.title}</p>
+                      <p className="text-xs font-medium text-slate-500">{notice.content}</p>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 

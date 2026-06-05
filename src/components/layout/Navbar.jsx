@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { name: 'Faculty', href: '/faculty' },
   { name: 'Materials', href: '/study-materials' },
   { name: 'Results', href: '/results' },
+  { name: 'Admissions', href: '/admissions' },
 ];
 
 export default function Navbar() {
@@ -73,7 +74,10 @@ export default function Navbar() {
             <Link href="/login" className="btn-ghost text-sm">
               Login
             </Link>
-            <Link href="/admissions" className="btn-primary text-sm">
+            <Link href="/signup" className="btn-primary text-sm">
+              Sign Up
+            </Link>
+            <Link href="/admissions" className="btn-primary text-sm bg-slate-800 hover:bg-slate-700 text-white">
               Apply Now
             </Link>
           </div>
@@ -120,8 +124,15 @@ export default function Navbar() {
               Sign In
             </Link>
             <Link 
-              href="/admissions" 
+              href="/signup" 
               className="block w-full text-center btn-primary"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Sign Up
+            </Link>
+            <Link 
+              href="/admissions" 
+              className="block w-full text-center py-3.5 rounded-xl font-bold bg-slate-800 text-white hover:bg-slate-700 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Apply Now

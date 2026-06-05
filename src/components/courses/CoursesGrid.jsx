@@ -15,6 +15,29 @@ export default function CoursesGrid({ title, subtitle }) {
       const data = await fetchCourses();
       setCourses(data);
       setLoading(false);
+
+      if (data && data.length > 0) {
+        const courseSchema = data.map(course => ({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": course.name || course.title,
+          "description": course.description,
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Levora Academy",
+            "url": "https://levoraacademy.vercel.app"
+          }
+        }));
+
+        let script = document.getElementById('course-schema');
+        if (!script) {
+          script = document.createElement('script');
+          script.id = 'course-schema';
+          script.type = 'application/ld+json';
+          document.head.appendChild(script);
+        }
+        script.innerHTML = JSON.stringify(courseSchema);
+      }
     };
     loadCourses();
     const interval = setInterval(loadCourses, 3000);
