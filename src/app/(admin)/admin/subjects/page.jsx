@@ -13,10 +13,10 @@ export default function AdminSubjectsPage() {
   const [formData, setFormData] = useState({
     title: '',
     courseCode: '',
-    category: 'Foundation',
     fee: 0,
     batches: []
   });
+  const [customBatch, setCustomBatch] = useState('');
 
   const availableBatches = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Other'];
 
@@ -63,18 +63,27 @@ export default function AdminSubjectsPage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      
+      const finalBatches = formData.batches.filter(b => b !== 'Other');
+      if (formData.batches.includes('Other') && customBatch.trim()) {
+        finalBatches.push(customBatch.trim());
+      }
+      
+      const payload = { ...formData, batches: finalBatches };
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (data.success) {
         setIsModalOpen(false);
-        setFormData({ title: '', courseCode: '', category: 'Foundation', fee: 0, batches: [] });
+        setFormData({ title: '', courseCode: '', fee: 0, batches: [] });
+        setCustomBatch('');
         fetchSubjects();
       } else {
         alert(data.message);
@@ -125,7 +134,6 @@ export default function AdminSubjectsPage() {
               <tr>
                 <th className="px-6 py-4">Subject Name</th>
                 <th className="px-6 py-4">Code</th>
-                <th className="px-6 py-4">Category</th>
                 <th className="px-6 py-4">Assigned Batches</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
@@ -145,11 +153,6 @@ export default function AdminSubjectsPage() {
                       {sub.title}
                     </td>
                     <td className="px-6 py-4 text-slate-600 font-mono text-xs">{sub.courseCode}</td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold">
-                        <Tag size={12} /> {sub.category}
-                      </span>
-                    </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {sub.batches && sub.batches.length > 0 ? (
@@ -196,20 +199,9 @@ export default function AdminSubjectsPage() {
                 <input required type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm" placeholder="e.g. Advanced Physics" />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Course Code</label>
-                  <input required type="text" name="courseCode" value={formData.courseCode} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm font-mono uppercase" placeholder="e.g. PHY-101" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Category</label>
-                  <select name="category" value={formData.category} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm">
-                    <option value="Foundation">Foundation</option>
-                    <option value="JEE">JEE</option>
-                    <option value="NEET">NEET</option>
-                    <option value="Crash Course">Crash Course</option>
-                  </select>
-                </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">Course Code</label>
+                <input required type="text" name="courseCode" value={formData.courseCode} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm font-mono uppercase" placeholder="e.g. PHY-101" />
               </div>
 
               <div>
@@ -233,6 +225,18 @@ export default function AdminSubjectsPage() {
                     );
                   })}
                 </div>
+                {formData.batches.includes('Other') && (
+                  <div className="mt-3">
+                    <input 
+                      type="text" 
+                      value={customBatch}
+                      onChange={(e) => setCustomBatch(e.target.value)}
+                      placeholder="Enter custom batch name (e.g. Target-2025)"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy"
+                      required
+                    />
+                  </div>
+                )}
                 <p className="text-xs text-slate-500 mt-2">Only students in these assigned batches will see this subject on their dashboard.</p>
               </div>
 
