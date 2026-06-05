@@ -18,7 +18,7 @@ export default function AdminSubjectsPage() {
     batches: []
   });
 
-  const availableBatches = ['11th', '12th', 'Foundation', 'Crash Course', 'Other'];
+  const availableBatches = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Other'];
 
   useEffect(() => {
     fetchSubjects();
