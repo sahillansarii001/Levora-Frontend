@@ -16,7 +16,20 @@ export default function MySubjectsPage() {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses`, {
+        
+        // 1. Fetch student profile to get their class/batch
+        const profileRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student/dashboard`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const profileData = await profileRes.json();
+        const studentBatch = profileData.success ? profileData.data.student.className : null;
+
+        // 2. Fetch courses assigned to that batch
+        const courseUrl = studentBatch 
+          ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses?batch=${encodeURIComponent(studentBatch)}`
+          : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses`;
+          
+        const res = await fetch(courseUrl, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -25,9 +38,9 @@ export default function MySubjectsPage() {
             id: c._id,
             title: c.title,
             instructor: c.facultyId?.name || 'TBA',
-            progress: Math.floor(Math.random() * 100),
-            totalLessons: Math.floor(Math.random() * 20) + 10,
-            completedLessons: Math.floor(Math.random() * 10),
+            progress: c.totalLessons > 0 ? Math.round((c.completedLessons / c.totalLessons) * 100) : 0,
+            totalLessons: c.totalLessons || 30,
+            completedLessons: c.completedLessons || 0,
             thumbnail: ['bg-gradient-to-br from-blue-500 to-indigo-600', 'bg-gradient-to-br from-emerald-400 to-teal-500', 'bg-gradient-to-br from-rose-400 to-red-500'][i % 3],
             tag: c.category,
           }));

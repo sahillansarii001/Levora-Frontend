@@ -17,6 +17,7 @@ import {
   CreditCard,
   X,
   Activity,
+  BookOpen,
 } from "lucide-react";
 
 const navItems = [
@@ -35,6 +36,11 @@ const navItems = [
     name: "Attendance",
     href: "/admin/attendance",
     icon: <CalendarCheck size={20} />,
+  },
+  {
+    name: "Manage Subjects",
+    href: "/admin/subjects",
+    icon: <BookOpen size={20} />,
   },
 ];
 
