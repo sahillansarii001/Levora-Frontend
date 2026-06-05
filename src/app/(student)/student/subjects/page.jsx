@@ -37,12 +37,16 @@ export default function MySubjectsPage() {
           const formattedCourses = data.data.map((c, i) => ({
             id: c._id,
             title: c.title,
-            instructor: c.facultyId?.name || 'TBA',
+            instructor: c.facultyName || c.facultyId?.name || 'TBA',
             progress: c.totalLessons > 0 ? Math.round((c.completedLessons / c.totalLessons) * 100) : 0,
             totalLessons: c.totalLessons || 30,
             completedLessons: c.completedLessons || 0,
-            thumbnail: ['bg-gradient-to-br from-blue-500 to-indigo-600', 'bg-gradient-to-br from-emerald-400 to-teal-500', 'bg-gradient-to-br from-rose-400 to-red-500'][i % 3],
-            tag: c.category,
+            thumbnail: [
+              'bg-gradient-to-br from-blue-500 to-indigo-600', 
+              'bg-gradient-to-br from-[var(--color-emerald)] to-teal-600', 
+              'bg-gradient-to-br from-[var(--color-navy)] to-slate-800'
+            ][i % 3],
+            tag: c.courseCode || 'SUBJECT',
           }));
           setCourses(formattedCourses);
         }
@@ -60,14 +64,41 @@ export default function MySubjectsPage() {
     setLogsLoading(true);
     setLectureLogs([]);
     try {
-      const token = localStorage.getItem('token');
-      // Fetch logs for this subject
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/lecture-logs?subject=${encodeURIComponent(course.title)}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
+      let token = localStorage.getItem('token');
+      const fetchLogs = async (currentToken) => {
+        return await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/lecture-logs?subject=${encodeURIComponent(course.title)}`, {
+          headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+      };
+      
+      let res = await fetchLogs(token);
+      let data = await res.json();
+      
       if (data.success) {
         setLectureLogs(data.data.results || data.data);
+      } else if (data.message === 'Invalid token' || data.message === 'No token provided') {
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (refreshToken) {
+          // Attempt to refresh the token
+          const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: refreshToken })
+          });
+          const refreshData = await refreshRes.json();
+          if (refreshData.success) {
+            token = refreshData.data.accessToken || refreshData.data.token;
+            localStorage.setItem('token', token);
+            // Retry fetch
+            res = await fetchLogs(token);
+            data = await res.json();
+            if (data.success) {
+              setLectureLogs(data.data.results || data.data);
+              return;
+            }
+          }
+        }
+        alert('Your session has expired. Please log out and log back in.');
       }
     } catch (err) {
       console.error('Failed to fetch lecture logs', err);
@@ -150,10 +181,12 @@ export default function MySubjectsPage() {
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer"
                 onClick={() => openCourseLogs(course)}
               >
-                <div className={`h-32 ${course.thumbnail} relative p-6 flex items-end`}>
-                  <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-white border border-white/30">
-                    {course.tag}
-                  </div>
+                <div className={`h-32 bg-slate-800 ${course.thumbnail} relative p-6 flex items-end`}>
+                  {course.tag && (
+                    <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-white border border-white/30">
+                      {course.tag}
+                    </div>
+                  )}
                   <h3 className="text-white font-bold text-lg leading-tight font-poppins">{course.title}</h3>
                 </div>
                 

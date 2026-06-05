@@ -35,9 +35,11 @@ export default function UnifiedLogin() {
 
       const role = data.data?.role || data.role;
       const token = data.data?.token || data.token || data.data?.accessToken;
+      const refreshToken = data.data?.refreshToken || data.refreshToken;
       const userObj = data.data?.student || data.data?.user || {};
       
       localStorage.setItem('token', token);
+      if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('role', role);
       localStorage.setItem('email', identifier);
       localStorage.setItem('user', JSON.stringify(userObj));
