@@ -18,6 +18,7 @@ export default function AdminSubjectsPage() {
   });
   const [customBatch, setCustomBatch] = useState('');
   const [editingId, setEditingId] = useState(null);
+  const [subjectToDelete, setSubjectToDelete] = useState(null);
 
   const availableBatches = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Other'];
 
@@ -123,16 +124,17 @@ export default function AdminSubjectsPage() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this subject?')) return;
+  const handleDelete = async () => {
+    if (!subjectToDelete) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses/${subjectToDelete._id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
       if (data.success) {
+        setSubjectToDelete(null);
         fetchSubjects();
       } else {
         alert(data.message);
@@ -224,7 +226,7 @@ export default function AdminSubjectsPage() {
                       <button onClick={() => openEditModal(sub)} className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors" title="Edit">
                         <Edit size={16} />
                       </button>
-                      <button onClick={() => handleDelete(sub._id)} className="p-1.5 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
+                      <button onClick={() => setSubjectToDelete(sub)} className="p-1.5 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
                         <Trash2 size={16} />
                       </button>
                     </td>
@@ -299,6 +301,31 @@ export default function AdminSubjectsPage() {
                 <button type="submit" className="px-6 py-2 font-bold text-sm bg-navy text-white rounded-lg hover:bg-navy/90 shadow-sm transition-colors">{editingId ? 'Save Changes' : 'Create Subject'}</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {subjectToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 size={24} className="text-red-500" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Delete Subject?</h3>
+              <p className="text-sm text-slate-500 mb-6">
+                Are you sure you want to delete <span className="font-bold text-slate-700">{subjectToDelete.title}</span>? This action cannot be undone.
+              </p>
+              <div className="flex gap-3">
+                <button onClick={() => setSubjectToDelete(null)} className="flex-1 py-2.5 font-semibold text-sm text-slate-600 hover:bg-slate-100 rounded-xl transition-colors border border-slate-200">
+                  Cancel
+                </button>
+                <button onClick={handleDelete} className="flex-1 py-2.5 font-bold text-sm bg-red-600 text-white rounded-xl hover:bg-red-700 shadow-sm transition-colors">
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
