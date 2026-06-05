@@ -17,8 +17,33 @@ export default function AdminSubjectsPage() {
     batches: []
   });
   const [customBatch, setCustomBatch] = useState('');
+  const [editingId, setEditingId] = useState(null);
 
   const availableBatches = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Other'];
+
+  const openEditModal = (sub) => {
+    const isStandardBatch = (b) => availableBatches.includes(b) && b !== 'Other';
+    const standardBatches = sub.batches.filter(isStandardBatch);
+    const customBatches = sub.batches.filter(b => !isStandardBatch(b));
+    
+    let nextBatches = [...standardBatches];
+    let nextCustomBatch = '';
+    
+    if (customBatches.length > 0) {
+      nextBatches.push('Other');
+      nextCustomBatch = customBatches[0];
+    }
+
+    setFormData({
+      title: sub.title,
+      courseCode: sub.courseCode,
+      fee: sub.fee || 0,
+      batches: nextBatches
+    });
+    setCustomBatch(nextCustomBatch);
+    setEditingId(sub._id);
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     fetchSubjects();
@@ -71,8 +96,12 @@ export default function AdminSubjectsPage() {
       
       const payload = { ...formData, batches: finalBatches };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses`, {
-        method: 'POST',
+      const url = editingId 
+        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses/${editingId}`
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses`;
+
+      const res = await fetch(url, {
+        method: editingId ? 'PUT' : 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
@@ -84,6 +113,7 @@ export default function AdminSubjectsPage() {
         setIsModalOpen(false);
         setFormData({ title: '', courseCode: '', fee: 0, batches: [] });
         setCustomBatch('');
+        setEditingId(null);
         fetchSubjects();
       } else {
         alert(data.message);
@@ -106,7 +136,12 @@ export default function AdminSubjectsPage() {
           <p className="text-sm text-slate-500 mt-1">Create subjects and assign them to specific student batches.</p>
         </div>
         <button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            setFormData({ title: '', courseCode: '', fee: 0, batches: [] });
+            setCustomBatch('');
+            setEditingId(null);
+            setIsModalOpen(true);
+          }}
           className="bg-navy text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:bg-navy/90 transition-colors flex items-center gap-2"
         >
           <Plus size={18} /> Add New Subject
@@ -167,7 +202,7 @@ export default function AdminSubjectsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors" title="Edit">
+                      <button onClick={() => openEditModal(sub)} className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors" title="Edit">
                         <Edit size={16} />
                       </button>
                       <button className="p-1.5 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
@@ -187,7 +222,7 @@ export default function AdminSubjectsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-              <h3 className="font-bold text-lg text-slate-900">Add New Subject</h3>
+              <h3 className="font-bold text-lg text-slate-900">{editingId ? 'Edit Subject' : 'Add New Subject'}</h3>
               <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <X size={20} />
               </button>
@@ -242,7 +277,7 @@ export default function AdminSubjectsPage() {
 
               <div className="pt-4 flex justify-end gap-3">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 font-semibold text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Cancel</button>
-                <button type="submit" className="px-6 py-2 font-bold text-sm bg-navy text-white rounded-lg hover:bg-navy/90 shadow-sm transition-colors">Create Subject</button>
+                <button type="submit" className="px-6 py-2 font-bold text-sm bg-navy text-white rounded-lg hover:bg-navy/90 shadow-sm transition-colors">{editingId ? 'Save Changes' : 'Create Subject'}</button>
               </div>
             </form>
           </div>
