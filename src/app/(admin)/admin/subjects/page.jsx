@@ -123,6 +123,25 @@ export default function AdminSubjectsPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this subject?')) return;
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchSubjects();
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.error('Failed to delete subject', err);
+    }
+  };
+
   const filteredSubjects = subjects.filter(sub => 
     sub.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
     sub.courseCode.toLowerCase().includes(searchQuery.toLowerCase())
@@ -205,7 +224,7 @@ export default function AdminSubjectsPage() {
                       <button onClick={() => openEditModal(sub)} className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors" title="Edit">
                         <Edit size={16} />
                       </button>
-                      <button className="p-1.5 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
+                      <button onClick={() => handleDelete(sub._id)} className="p-1.5 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
                         <Trash2 size={16} />
                       </button>
                     </td>
