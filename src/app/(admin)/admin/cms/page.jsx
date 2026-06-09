@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Plus, Trash2, Megaphone, X, FileEdit, Globe, BookOpen, Users, GraduationCap, Target, Save, Menu, Award, MessageSquare, Layout, Phone, Mail } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Plus, Trash2, Megaphone, X, FileEdit, Globe, BookOpen, Users, GraduationCap, Target, Save, Menu, Award, MessageSquare, Layout, Phone, Mail, GripVertical } from 'lucide-react';
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
@@ -21,6 +21,42 @@ export default function MegaCMS() {
   const [editId, setEditId] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const dragItem = useRef();
+  const dragOverItem = useRef();
+
+  const handleSort = (sectionsArr) => {
+    if (dragItem.current === null || dragOverItem.current === null) return;
+    const _sectionsArr = [...sectionsArr];
+    const draggedItemContent = _sectionsArr.splice(dragItem.current, 1)[0];
+    _sectionsArr.splice(dragOverItem.current, 0, draggedItemContent);
+    
+    dragItem.current = null;
+    dragOverItem.current = null;
+    
+    setSiteContent(prev => {
+       const next = { ...prev };
+       const pageKeys = Object.keys(next).filter(k => k.startsWith(activePageEdit));
+       
+       const savedValues = {};
+       pageKeys.forEach(k => {
+          savedValues[k] = next[k];
+          delete next[k];
+       });
+       
+       _sectionsArr.forEach(section => {
+          pageKeys.filter(k => {
+             const parts = k.split('.');
+             const s = parts.length > 2 ? parts[1] : 'General';
+             return s === section;
+          }).forEach(k => {
+             next[k] = savedValues[k];
+          });
+       });
+       
+       return next;
+    });
+  };
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
 
@@ -145,9 +181,25 @@ export default function MegaCMS() {
     
     const newFields = {};
     template.fields.forEach(field => {
+      let value = '';
       const isRich = field === 'content' || field.startsWith('answer');
       const suffix = isRich ? '.content' : '';
-      newFields[`${activePageEdit}.${sectionSlug}.${field}${suffix}`] = isRich ? '<p>Start typing here...</p>' : 'Edit this text...';
+
+      if (template.id === 'seo_content' && isRich) {
+        value = `<p>Levora Academy is a great place for students to learn and grow. We help you build a bright future with our easy classes. Our teachers are very kind and care about your success. We want every student to do their very best in school.</p><p>You can study many fun subjects here. We have courses for math, science, and computer coding. We make learning easy to understand. When you join our school, you get all the help you need to get good grades. We give you great books and simple notes to study at home.</p><p>Our school has helped many students achieve their dreams. We focus on clear teaching and lots of practice. We believe that hard work pays off. We are here to guide you every step of the way. Choosing Levora Academy is a smart choice for your education and your life.</p>`;
+      } else if (field === 'title') {
+        value = `Premium ${template.name}`;
+      } else if (field === 'subtitle') {
+        value = `Experience the best ${template.name.toLowerCase()} with our world-class facilities and expert guidance.`;
+      } else if (field === 'bg_image' || field.includes('image')) {
+        value = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80';
+      } else if (isRich) {
+        value = `<p>Write your detailed ${template.name.toLowerCase()} content here...</p>`;
+      } else {
+        value = `New ${field}`;
+      }
+      
+      newFields[`${activePageEdit}.${sectionSlug}.${field}${suffix}`] = value;
     });
 
     setSiteContent(prev => ({ ...prev, ...newFields }));
@@ -314,14 +366,27 @@ export default function MegaCMS() {
                        return acc;
                      }, {});
 
-                     return Object.entries(grouped).map(([section, sectionKeys]) => {
+                     const sectionsArr = Object.keys(grouped);
+
+                     return sectionsArr.map((section, index) => {
+                       const sectionKeys = grouped[section];
                        const displaySection = section.replace(/_\d+$/, '').replace(/_/g, ' ');
                        return (
-                         <div key={section} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm relative group">
-                           <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                             <h3 className="text-lg font-bold text-navy capitalize font-poppins">
-                               {displaySection} Section
-                             </h3>
+                         <div 
+                            key={section} 
+                            draggable
+                            onDragStart={(e) => dragItem.current = index}
+                            onDragEnter={(e) => dragOverItem.current = index}
+                            onDragEnd={() => handleSort(sectionsArr)}
+                            className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm relative group"
+                         >
+                           <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center cursor-move">
+                             <div className="flex items-center gap-3">
+                               <GripVertical className="text-slate-400 hover:text-gold transition-colors" size={20} />
+                               <h3 className="text-lg font-bold text-navy capitalize font-poppins">
+                                 {displaySection} Section
+                               </h3>
+                             </div>
                              <button onClick={() => handleDeleteSection(section)} className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100" title="Delete Section">
                                <Trash2 size={18} />
                              </button>
@@ -622,6 +687,7 @@ export default function MegaCMS() {
                 { id: 'faculty_grid', name: 'Faculty Grid', icon: <Users className="text-navy mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Dynamic faculty grid.', fields: ['title', 'subtitle'] },
                 { id: 'results_grid', name: 'Results Grid', icon: <Target className="text-gold mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Dynamic student results grid.', fields: ['title', 'subtitle'] },
                 { id: 'materials_grid', name: 'Materials Grid', icon: <FileEdit className="text-green-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Dynamic study materials downloads grid.', fields: ['title', 'subtitle'] },
+                { id: 'seo_content', name: 'SEO Content Block', icon: <BookOpen className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'SEO text block with paragraph content.', fields: ['content'] },
                 
                 { id: 'custom', name: 'Blank Section', icon: <Plus className="text-slate-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Start completely from scratch and add fields manually.', fields: ['title'] },
               ].map(tpl => (

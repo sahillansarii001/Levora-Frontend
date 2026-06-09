@@ -12,6 +12,7 @@ import Testimonials from '@/components/home/Testimonials';
 import NotesSystem from '@/components/home/NotesSystem';
 import CodingCourses from '@/components/home/CodingCourses';
 import WhyChooseLevora from '@/components/home/WhyChooseLevora';
+import SeoContentBlock from '@/components/home/SeoContentBlock';
 
 // New Page Widgets
 import AboutVision from './about/AboutVision';
@@ -62,6 +63,7 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
           else if (sectionId.startsWith('faculty_grid')) type = 'faculty_grid';
           else if (sectionId.startsWith('results_grid')) type = 'results_grid';
           else if (sectionId.startsWith('materials_grid')) type = 'materials_grid';
+          else if (sectionId.startsWith('seo_content')) type = 'seo_content';
           
           sectionsMap[sectionId] = { id: sectionId, type, data: {} };
         }
@@ -134,6 +136,8 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
             return <ResultsGrid key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'materials_grid':
             return <MaterialsGrid key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
+          case 'seo_content':
+            return <SeoContentBlock key={section.id} content={section.data.content} />;
           default:
             return null;
         }

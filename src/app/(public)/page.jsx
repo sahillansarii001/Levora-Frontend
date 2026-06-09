@@ -48,7 +48,6 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEducationalOrganizationSchema()) }}
       />
       <DynamicRenderer content={content} pageName="homepage" />
-      <SeoContentBlock />
     </>
   );
 }
