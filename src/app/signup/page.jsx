@@ -195,7 +195,7 @@ export default function SignupPage() {
                 <label className="block text-sm font-bold text-slate-700 mb-1.5">Phone Number</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400"><Phone size={16} /></div>
-                  <input type="tel" name="phone" required onChange={handleChange} value={formData.phone || ''} className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-sm" placeholder="+91 9876543210" />
+                  <input type="tel" name="phone" required onChange={handleChange} value={formData.phone || ''} className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-sm" placeholder="+91 816 997 6265" />
                 </div>
               </div>
             </div>

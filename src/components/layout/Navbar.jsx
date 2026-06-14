@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 const NAV_LINKS = [
@@ -18,6 +19,12 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +69,11 @@ export default function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.href}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-[var(--color-navy)] rounded-lg hover:bg-slate-100/50 transition-all duration-200"
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive(link.href)
+                    ? 'text-[var(--color-gold)] font-bold'
+                    : 'text-slate-600 hover:text-[var(--color-navy)] hover:bg-slate-100/50'
+                }`}
               >
                 {link.name}
               </Link>
@@ -107,7 +118,11 @@ export default function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.href}
-                className="block px-4 py-3.5 text-base font-medium text-slate-700 hover:text-[var(--color-navy)] hover:bg-slate-50 rounded-xl transition-all duration-200"
+                className={`block px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-200 ${
+                  isActive(link.href)
+                    ? 'text-[var(--color-gold)] font-bold bg-amber-50'
+                    : 'text-slate-700 hover:text-[var(--color-navy)] hover:bg-slate-50'
+                }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}

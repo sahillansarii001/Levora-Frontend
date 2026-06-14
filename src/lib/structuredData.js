@@ -8,11 +8,12 @@ export const generateEducationalOrganizationSchema = () => {
     "description": "Levora Academy provides expert coaching for JEE, NEET, Class 1–12, Coding, and Spoken English across India.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "123 Education Hub",
-      "addressLocality": "New Delhi",
+      "streetAddress": "Shop no-74, Mohite Patil Nagar, Mankhurd West",
+      "addressLocality": "Mumbai",
+      "postalCode": "400043",
       "addressCountry": "IN"
     },
-    "telephone": "+91-98765-43210",
+    "telephone": "+91-816-997-6265",
     "email": "hello@levoraacademy.com",
     "sameAs": [
       "https://instagram.com/levoraacademy",

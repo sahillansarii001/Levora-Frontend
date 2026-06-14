@@ -19,7 +19,7 @@ export default function AdmissionsPage() {
   const [activeFaq, setActiveFaq] = useState(null);
   
   // Form state
-  const [formData, setFormData] = useState({ name: '', phone: '', email: '', program: '', grade: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', email: '', program: '', grade: '', inquiryType: 'Take Admission', message: '' });
   const [formStatus, setFormStatus] = useState('');
   const [formErrors, setFormErrors] = useState({});
 
@@ -89,7 +89,7 @@ export default function AdmissionsPage() {
     fetchFaqs();
   }, []);
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     const errors = {};
     if (!formData.name) errors.name = 'Full Name is required';
     if (!formData.phone) errors.phone = 'Phone Number is required';
@@ -100,7 +100,27 @@ export default function AdmissionsPage() {
     }
     
     setFormErrors({});
-    setFormStatus('success');
+    
+    try {
+      setFormStatus('submitting');
+      const res = await fetch(`${API_BASE}/admissions/public`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      if (res.ok) {
+        setFormStatus('success');
+      } else {
+        const errorData = await res.json();
+        alert(`Error: ${errorData.message}`);
+        setFormStatus('');
+      }
+    } catch (err) {
+      console.error('Submission error', err);
+      alert('An error occurred. Please try again later.');
+      setFormStatus('');
+    }
   };
 
   const scrollToForm = () => {
@@ -256,7 +276,7 @@ export default function AdmissionsPage() {
                         value={formData.phone}
                         onChange={e => setFormData({...formData, phone: e.target.value})}
                         className={`w-full px-4 py-3 rounded-xl border ${formErrors.phone ? 'border-red-400' : 'border-slate-200'} focus:border-[#F59E0B] outline-none transition-all bg-slate-50 focus:bg-white text-sm`} 
-                        placeholder="+91 98765 43210" 
+                        placeholder="+91 816 997 6265" 
                       />
                       {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
                     </div>
@@ -298,6 +318,18 @@ export default function AdmissionsPage() {
                     </div>
 
                     <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">What are you looking for?</label>
+                      <select 
+                        value={formData.inquiryType}
+                        onChange={e => setFormData({...formData, inquiryType: e.target.value})}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#F59E0B] outline-none transition-all bg-slate-50 focus:bg-white text-sm"
+                      >
+                        <option value="Take Admission">Take Admission</option>
+                        <option value="Need Counselling">Need Counselling</option>
+                      </select>
+                    </div>
+
+                    <div>
                       <label className="block text-sm font-bold text-slate-700 mb-1.5">Message (Optional)</label>
                       <textarea 
                         rows="3" 
@@ -310,9 +342,14 @@ export default function AdmissionsPage() {
 
                     <button 
                       onClick={handleFormSubmit}
-                      className="w-full bg-[#0B1D3A] text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 transition-colors"
+                      disabled={formStatus === 'submitting'}
+                      className={`w-full font-bold py-3.5 rounded-xl transition-colors ${
+                        formStatus === 'submitting' 
+                          ? 'bg-slate-400 text-white cursor-not-allowed' 
+                          : 'bg-[#0B1D3A] text-white hover:bg-slate-800'
+                      }`}
                     >
-                      Submit Inquiry
+                      {formStatus === 'submitting' ? 'Submitting...' : 'Submit Inquiry'}
                     </button>
                   </div>
                 </>
@@ -329,7 +366,7 @@ export default function AdmissionsPage() {
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12 text-slate-300">
             <div>
               <p className="text-sm uppercase tracking-wider text-slate-500 mb-1">Call Us</p>
-              <a href="tel:+919876543210" className="font-medium hover:text-white transition-colors">+91 98765 43210</a>
+              <a href="tel:+918169976265" className="font-medium hover:text-white transition-colors">+91 816 997 6265</a>
             </div>
             <div className="hidden md:block w-px h-10 bg-slate-700"></div>
             <div>
@@ -339,7 +376,7 @@ export default function AdmissionsPage() {
             <div className="hidden md:block w-px h-10 bg-slate-700"></div>
             <div>
               <p className="text-sm uppercase tracking-wider text-slate-500 mb-1">Visit Us</p>
-              <p className="font-medium">123 Education Hub, New Delhi, India</p>
+              <a href="https://maps.app.goo.gl/jcSsZwDrkeG2WaJEA" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-white transition-colors block">Mohite Patil Nagar, Shop no-74, Mankhurd West, Mumbai - 400043</a>
             </div>
           </div>
         </div>

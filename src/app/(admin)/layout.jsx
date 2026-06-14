@@ -42,7 +42,7 @@ export default function AdminLayout({ children }) {
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900 overflow-clip">
       {!isLoginPage && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
       
-      <div className={`flex-1 flex flex-col w-full ${!isLoginPage ? 'lg:ml-64' : ''}`}>
+      <div className={`flex-1 flex flex-col min-w-0 w-full ${!isLoginPage ? 'lg:pl-64' : ''}`}>
         {!isLoginPage && <AdminHeader onMenuClick={() => setIsSidebarOpen(true)} />}
         
         <main className={`flex-1 ${!isLoginPage ? 'p-8' : ''}`}>

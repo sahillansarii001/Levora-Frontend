@@ -5,7 +5,7 @@ import { generateEducationalOrganizationSchema } from '@/lib/structuredData';
 export const metadata = {
   title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
   description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. 5000+ students, 99% board success rate. Admissions open for 2025–26.",
-  keywords: ["JEE coaching India", "NEET preparation academy", "Class 10 tuition", "best coaching institute India", "online education India", "school tuition New Delhi"],
+  keywords: ["JEE coaching India", "NEET preparation academy", "Class 10 tuition", "best coaching institute India", "online education India", "school tuition Mumbai"],
   alternates: {
     canonical: 'https://levoraacademy.vercel.app',
   },

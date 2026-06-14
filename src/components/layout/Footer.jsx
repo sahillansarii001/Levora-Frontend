@@ -107,15 +107,15 @@ export default function Footer() {
         <div className="flex flex-wrap gap-6 justify-center lg:justify-between items-center py-8 border-t border-slate-800 mb-8">
           <div className="flex items-center gap-2 text-sm text-slate-400">
             <MapPin size={14} className="text-[var(--color-gold)]" />
-            <span>123 Education Hub, New Delhi, India</span>
+            <a href="https://maps.app.goo.gl/jcSsZwDrkeG2WaJEA" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-gold)] transition-colors">Mohite Patil Nagar, Shop no-74, Mankhurd West, Mumbai - 400043</a>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-400">
             <Phone size={14} className="text-[var(--color-gold)]" />
-            <span>+91 98765 43210</span>
+            <a href="tel:+918169976265" className="hover:text-[var(--color-gold)] transition-colors">+91 816 997 6265</a>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-400">
             <Mail size={14} className="text-[var(--color-gold)]" />
-            <span>hello@levoraacademy.com</span>
+            <a href="mailto:hello@levoraacademy.com" className="hover:text-[var(--color-gold)] transition-colors">hello@levoraacademy.com</a>
           </div>
         </div>
 

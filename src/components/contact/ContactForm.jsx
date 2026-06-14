@@ -20,7 +20,7 @@ export default function ContactForm({ form_title }) {
               </div>
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">Phone Number</label>
-                <input type="tel" className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="+91 98765 43210" />
+                <input type="tel" className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="+91 816 997 6265" />
               </div>
             </div>
             

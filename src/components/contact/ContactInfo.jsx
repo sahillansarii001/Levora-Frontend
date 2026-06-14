@@ -6,17 +6,20 @@ import SectionHeading from '../shared/SectionHeading';
 const items = [
   { 
     icon: <MapPin size={24} />, label: 'Head Office', 
-    value: '123 Education Hub, Knowledge Park, New Delhi, India',
+    value: 'Mohite Patil Nagar, Shop no-74, Mankhurd West, Mumbai - 400043',
+    href: 'https://maps.app.goo.gl/jcSsZwDrkeG2WaJEA',
     gradientFrom: '#0B1D3A', gradientTo: '#1E3A5F'
   },
   { 
     icon: <Phone size={24} />, label: 'Call Us', 
-    value: '+91 98765 43210',
+    value: '+91 816 997 6265',
+    href: 'tel:+918169976265',
     gradientFrom: '#F59E0B', gradientTo: '#D97706'
   },
   { 
     icon: <Mail size={24} />, label: 'Email', 
     value: 'hello@levoraacademy.com',
+    href: 'mailto:hello@levoraacademy.com',
     gradientFrom: '#0EA5E9', gradientTo: '#10B981'
   },
 ];
@@ -45,7 +48,13 @@ export default function ContactInfo({ title, subtitle, address, phone, email }) 
                 <div className="text-white">{item.icon}</div>
               </div>
               <h3 className="font-bold text-[var(--color-navy)] text-xl mb-3">{item.label}</h3>
-              <p className="text-slate-500 leading-relaxed">{item.value}</p>
+              {item.href ? (
+                <a href={item.href} target={item.href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" className="text-slate-500 leading-relaxed hover:text-[var(--color-navy)] transition-colors inline-block">
+                  {item.value}
+                </a>
+              ) : (
+                <p className="text-slate-500 leading-relaxed">{item.value}</p>
+              )}
             </div>
           ))}
         </div>

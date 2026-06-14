@@ -3,13 +3,13 @@ import { generateBreadcrumbSchema } from '@/lib/structuredData';
 
 export const metadata = {
   title: "Contact Us | Levora Academy — Get in Touch",
-  description: "Reach out to Levora Academy for admissions queries, course information, or support. Call us, email us, or visit our center at 123 Education Hub, New Delhi.",
+  description: "Reach out to Levora Academy for admissions queries, course information, or support. Call us, email us, or visit our center at Mohite Patil Nagar, Mankhurd West, Mumbai.",
   alternates: {
     canonical: 'https://levoraacademy.vercel.app/contact',
   },
   openGraph: {
     title: "Contact Us | Levora Academy — Get in Touch",
-    description: "Reach out to Levora Academy for admissions queries, course information, or support. Call us, email us, or visit our center at 123 Education Hub, New Delhi.",
+    description: "Reach out to Levora Academy for admissions queries, course information, or support. Call us, email us, or visit our center at Mohite Patil Nagar, Mankhurd West, Mumbai.",
     url: 'https://levoraacademy.vercel.app/contact',
     images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
   }

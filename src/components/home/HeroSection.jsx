@@ -20,15 +20,17 @@ export default function HeroSection({ title, subtitle, bg_image }) {
           
           {/* Text Content */}
           <div className="lg:w-1/2 text-center lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--color-gold)]/10 to-[var(--color-gold-dark)]/10 px-4 py-1.5 rounded-full text-sm font-bold text-[var(--color-gold)] border border-[var(--color-gold)]/20 mb-6"
-            >
-              <Sparkles size={14} />
-              <span>Admissions Open for 2025-26 Batch</span>
-            </motion.div>
+            <Link href="/admissions">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--color-gold)]/10 to-[var(--color-gold-dark)]/10 px-4 py-1.5 rounded-full text-sm font-bold text-[var(--color-gold)] border border-[var(--color-gold)]/20 mb-6 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-transform"
+              >
+                <Sparkles size={14} />
+                <span>Admissions Open for 2025-26 Batch</span>
+              </motion.div>
+            </Link>
 
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -74,7 +76,7 @@ export default function HeroSection({ title, subtitle, bg_image }) {
               transition={{ duration: 0.5, delay: 0.35 }}
               className="mt-4 text-xs font-medium text-slate-400 text-center lg:text-left"
             >
-              Serving students across New Delhi, NCR & Pan-India online.
+              Serving students across Mumbai & Pan-India online.
             </motion.p>
 
             <motion.div 

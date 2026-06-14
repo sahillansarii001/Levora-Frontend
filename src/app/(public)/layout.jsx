@@ -2,7 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import LiveReloader from "@/components/shared/LiveReloader";
 import { AlertTriangle } from "lucide-react";
-import Breadcrumb from "@/components/Breadcrumb";
+
 
 export const dynamic = 'force-dynamic';
 
@@ -56,7 +56,6 @@ export default async function PublicLayout({ children }) {
     <>
       <LiveReloader />
       <Navbar />
-      <Breadcrumb />
       <main className="flex-grow">
         {children}
       </main>

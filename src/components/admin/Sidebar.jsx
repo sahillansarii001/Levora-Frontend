@@ -38,6 +38,11 @@ const navItems = [
     icon: <CalendarCheck size={20} />,
   },
   {
+    name: "Admissions",
+    href: "/admin/admissions",
+    icon: <Users size={20} />,
+  },
+  {
     name: "Manage Subjects",
     href: "/admin/subjects",
     icon: <BookOpen size={20} />,
