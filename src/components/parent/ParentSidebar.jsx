@@ -3,23 +3,34 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, TrendingUp, Calendar, CreditCard, LogOut } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Calendar, CreditCard, LogOut, ClipboardList, X } from 'lucide-react';
 
 const navItems = [
   { name: 'Dashboard', href: '/parent/dashboard', icon: <LayoutDashboard size={20} /> },
-  { name: 'Academic Progress', href: '#', icon: <TrendingUp size={20} /> },
-  { name: 'Attendance', href: '#', icon: <Calendar size={20} /> },
-  { name: 'Fee Payments', href: '#', icon: <CreditCard size={20} /> },
+  { name: 'Results', href: '/parent/results', icon: <TrendingUp size={20} /> },
+  { name: 'Attendance', href: '/parent/attendance', icon: <Calendar size={20} /> },
+  { name: 'Class Schedule', href: '/parent/schedule', icon: <Calendar size={20} /> },
+  { name: 'Assignments', href: '/parent/assignments', icon: <ClipboardList size={20} /> },
+  { name: 'Fee Payments', href: '/parent/fees', icon: <CreditCard size={20} /> },
 ];
 
-export default function ParentSidebar() {
+export default function ParentSidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
 
   if (pathname === '/parent/login') return null;
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
-      <div className="p-6 border-b border-slate-200">
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        />
+      )}
+      
+      <aside className={`w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <div className="p-6 border-b border-slate-200 flex justify-between items-center">
         <Image 
           src="/Logo.png" 
           alt="Levora Parent" 
@@ -27,6 +38,9 @@ export default function ParentSidebar() {
           height={60} 
           className="h-16 w-auto"
         />
+        <button className="lg:hidden text-slate-400 hover:text-slate-600" onClick={() => setIsOpen && setIsOpen(false)}>
+          <X size={24} />
+        </button>
       </div>
       
       <div className="flex-1 py-8 px-4 flex flex-col gap-2">
@@ -61,5 +75,6 @@ export default function ParentSidebar() {
         </Link>
       </div>
     </aside>
+    </>
   );
 }

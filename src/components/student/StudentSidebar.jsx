@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BookOpen, FileText, Calendar, LogOut, ClipboardList, CheckSquare, User } from 'lucide-react';
+import { LayoutDashboard, BookOpen, FileText, Calendar, LogOut, ClipboardList, CheckSquare, User, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-export default function StudentSidebar() {
+export default function StudentSidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
   const [studentClass, setStudentClass] = useState('');
 
@@ -34,6 +34,7 @@ export default function StudentSidebar() {
     },
     { name: 'Assignments', href: '/student/assignments', icon: <ClipboardList size={20} /> },
     { name: 'Study Materials', href: '/student/materials', icon: <FileText size={20} /> },
+    { name: 'Results', href: '/student/results', icon: <FileText size={20} /> },
     { name: 'Class Schedule', href: '/student/schedule', icon: <Calendar size={20} /> },
     { name: 'My Attendance', href: '/student/attendance', icon: <CheckSquare size={20} /> },
     { name: 'My Profile', href: '/student/profile', icon: <User size={20} /> },
@@ -43,8 +44,17 @@ export default function StudentSidebar() {
   if (pathname === '/login') return null;
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
-      <div className="p-6 border-b border-slate-200">
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        />
+      )}
+      
+      <aside className={`w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <div className="p-6 border-b border-slate-200 flex justify-between items-center">
         <Image 
           src="/Logo.png" 
           alt="Levora Student" 
@@ -52,6 +62,9 @@ export default function StudentSidebar() {
           height={60} 
           className="h-16 w-auto"
         />
+        <button className="lg:hidden text-slate-400 hover:text-slate-600" onClick={() => setIsOpen && setIsOpen(false)}>
+          <X size={24} />
+        </button>
       </div>
       
       <div className="flex-1 py-4 px-4 flex flex-col gap-2 overflow-y-auto">
@@ -92,5 +105,6 @@ export default function StudentSidebar() {
         </Link>
       </div>
     </aside>
+    </>
   );
 }

@@ -21,7 +21,7 @@ export default function FeesPage() {
   const fetchRecords = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/fees'}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/fees`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -36,11 +36,13 @@ export default function FeesPage() {
   const fetchStudents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/student'}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student?limit=1000`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      if (data.success) setStudents(data.data);
+      if (data.success) {
+        setStudents(data.data || []);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -75,8 +77,8 @@ export default function FeesPage() {
     try {
       const token = localStorage.getItem('token');
       const url = isEditing 
-        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/fees'}/${editId}`
-        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/fees'}`;
+        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/fees/${editId}`
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/fees`;
         
       const res = await fetch(url, {
         method: isEditing ? 'PUT' : 'POST',
@@ -97,7 +99,7 @@ export default function FeesPage() {
     if (!confirm('Delete this record?')) return;
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/fees'}/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/fees/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -106,6 +108,10 @@ export default function FeesPage() {
       console.error(err);
     }
   };
+
+  const totalCollected = records.filter(f => f.status === 'Paid').reduce((acc, curr) => acc + curr.amount, 0);
+  const totalExpectedFees = students.reduce((acc, curr) => acc + (curr.totalFees || 0), 0);
+  const totalPending = Math.max(0, totalExpectedFees - totalCollected);
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -117,6 +123,28 @@ export default function FeesPage() {
         <button onClick={() => handleOpenModal()} className="btn-primary inline-flex items-center text-sm px-4 py-2">
           <Plus size={18} className="mr-2" /> Log Payment
         </button>
+      </div>
+
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex items-center shadow-sm">
+          <div className="bg-green-50 p-3 rounded-lg mr-4">
+            <span className="text-xl font-bold text-green-600">₹</span>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-slate-500">Total Collected</p>
+            <h4 className="text-2xl font-bold text-slate-900">{loading ? '...' : `₹${totalCollected.toLocaleString()}`}</h4>
+          </div>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex items-center shadow-sm">
+          <div className="bg-orange-50 p-3 rounded-lg mr-4">
+            <span className="text-xl font-bold text-orange-600">₹</span>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-slate-500">Remaining / Pending Fees</p>
+            <h4 className="text-2xl font-bold text-slate-900">{loading ? '...' : `₹${totalPending.toLocaleString()}`}</h4>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
@@ -180,9 +208,49 @@ export default function FeesPage() {
                   <option value="">Select Student...</option>
                   {students.map(s => <option key={s._id} value={s._id}>{s.name} ({s.studentId})</option>)}
                 </select>
+                {formData.studentId && (() => {
+                  const selectedStudent = students.find(s => s._id === formData.studentId);
+                  const totalCourseFee = selectedStudent?.totalFees || 0;
+                  const studentRecords = records.filter(r => r.studentId?._id === formData.studentId);
+                  const studentPaid = studentRecords.filter(r => r.status === 'Paid').reduce((sum, r) => sum + r.amount, 0);
+                  const studentPending = Math.max(0, totalCourseFee - studentPaid);
+                  const isFeeMissing = totalCourseFee === 0;
+
+                  return (
+                    <div className="mt-3">
+                      {isFeeMissing ? (
+                        <div className="bg-red-50 border border-red-200 p-3 rounded-lg flex items-start gap-2">
+                          <span className="text-red-500 text-lg leading-none">⚠️</span>
+                          <div>
+                            <p className="text-sm font-bold text-red-700">Action Required</p>
+                            <p className="text-xs text-red-600 mt-0.5">This student's Total Course Fee has not been configured yet. Please go to the <strong className="font-bold">Students</strong> menu to set their total fees before logging payments.</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-xs text-slate-500 bg-slate-50 p-2.5 rounded border border-slate-200 flex flex-col gap-1.5 shadow-sm">
+                          <div className="flex justify-between">
+                            <span>Total Course Fee:</span>
+                            <strong className="text-slate-900 font-bold">₹{totalCourseFee.toLocaleString()}</strong>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Total Paid:</span>
+                            <strong className="text-green-600 font-bold">₹{studentPaid.toLocaleString()}</strong>
+                          </div>
+                          <div className="flex justify-between border-t border-slate-200 pt-1.5 mt-0.5">
+                            <span className="font-semibold text-slate-700">Remaining Dues:</span>
+                            <strong className="text-orange-600 font-bold text-sm">₹{studentPending.toLocaleString()}</strong>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              {/* Only show rest of form if fees are configured */}
+              {(!formData.studentId || (students.find(s => s._id === formData.studentId)?.totalFees > 0)) && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-slate-700">Amount (₹)</label>
                   <input type="number" name="amount" value={formData.amount} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
@@ -218,10 +286,14 @@ export default function FeesPage() {
                 <label className="text-sm font-semibold text-slate-700">Remarks</label>
                 <input type="text" name="remarks" value={formData.remarks} onChange={handleChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
               </div>
+                </>
+              )}
 
               <div className="pt-4 flex justify-end gap-3">
                 <button type="button" onClick={handleCloseModal} className="px-4 py-2 text-sm text-slate-600 border border-slate-200 rounded-lg">Cancel</button>
-                <button type="submit" className="btn-primary text-sm px-6 py-2">Save Payment</button>
+                {(!formData.studentId || (students.find(s => s._id === formData.studentId)?.totalFees > 0)) && (
+                  <button type="submit" className="btn-primary text-sm px-6 py-2">Save Payment</button>
+                )}
               </div>
             </form>
           </div>

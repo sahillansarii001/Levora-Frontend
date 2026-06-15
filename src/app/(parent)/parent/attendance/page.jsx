@@ -9,35 +9,15 @@ export default function AttendancePage() {
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      const parsedUser = JSON.parse(userStr);
-      setStudent(parsedUser);
-      if (!parsedUser._id && !parsedUser.id) {
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
+    fetchAttendance();
   }, []);
-
-  useEffect(() => {
-    if (student) {
-      if (student._id || student.id) {
-        fetchAttendance();
-      } else {
-        setLoading(false);
-      }
-    }
-  }, [student]);
 
   const fetchAttendance = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const studentId = student._id || student.id;
-      // Fetch all attendance for the student to calculate overall percentage
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=student&studentId=${studentId}`, {
+      // Fetch child attendance
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/parent/child/attendance`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -65,8 +45,8 @@ export default function AttendancePage() {
         
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-900 font-poppins tracking-tight">My Attendance</h1>
-          <p className="text-sm text-slate-500 mt-1">Track your daily class attendance and overall percentage.</p>
+          <h1 className="text-2xl font-bold text-slate-900 font-poppins tracking-tight">Child's Attendance</h1>
+          <p className="text-sm text-slate-500 mt-1">Track your child's daily class attendance and overall percentage.</p>
         </div>
 
         {/* Content */}

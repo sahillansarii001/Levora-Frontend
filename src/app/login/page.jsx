@@ -90,7 +90,7 @@ export default function UnifiedLogin() {
           />
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--color-gold)]/10 to-[var(--color-gold-dark)]/10 px-4 py-1.5 rounded-full text-xs font-bold text-[var(--color-gold)] border border-[var(--color-gold)]/20 mb-3">
             <Sparkles size={12} />
-            <span>Student Portal</span>
+            <span>Unified Portal</span>
           </div>
           <h2 className="text-2xl font-bold font-poppins text-[var(--color-navy)] mb-1">Welcome Back</h2>
           <p className="text-sm text-slate-500">Sign in to your account</p>
@@ -99,7 +99,7 @@ export default function UnifiedLogin() {
 
         <form className="relative z-10 space-y-4" onSubmit={handleLogin}>
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">Email / Student ID</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">Email / ID / Phone</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                 <User size={16} />
@@ -110,7 +110,7 @@ export default function UnifiedLogin() {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-sm" 
-                placeholder="Enter your Email or ID" 
+                placeholder="Enter your Email, ID, or Phone" 
               />
             </div>
           </div>

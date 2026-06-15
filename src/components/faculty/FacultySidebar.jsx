@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, BookOpen, Upload, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, BookOpen, Upload, LogOut, Calendar } from 'lucide-react';
 
 const navItems = [
   { name: 'Dashboard', href: '/faculty-portal/dashboard', icon: <LayoutDashboard size={20} /> },
   { name: 'My Classes', href: '#', icon: <Users size={20} /> },
+  { name: 'Class Schedule', href: '/faculty-portal/schedule', icon: <Calendar size={20} /> },
   { name: 'Assignments', href: '#', icon: <BookOpen size={20} /> },
   { name: 'Upload Notes', href: '#', icon: <Upload size={20} /> },
 ];

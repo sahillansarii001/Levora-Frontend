@@ -18,6 +18,10 @@ import {
   X,
   Activity,
   BookOpen,
+  ClipboardList,
+  ChevronDown,
+  ChevronUp,
+  TrendingUp,
 } from "lucide-react";
 
 const navItems = [
@@ -38,6 +42,11 @@ const navItems = [
     icon: <CalendarCheck size={20} />,
   },
   {
+    name: "Class Schedule",
+    href: "/admin/schedule",
+    icon: <CalendarCheck size={20} />,
+  },
+  {
     name: "Admissions",
     href: "/admin/admissions",
     icon: <Users size={20} />,
@@ -47,23 +56,27 @@ const navItems = [
     href: "/admin/subjects",
     icon: <BookOpen size={20} />,
   },
+  {
+    name: "Assignments",
+    href: "/admin/assignments",
+    icon: <ClipboardList size={20} />,
+  },
+  {
+    name: "Exam Results",
+    href: "/admin/results",
+    icon: <TrendingUp size={20} />,
+  },
 ];
 
 const superAdminItems = [
   {
-    name: "Manage Students",
-    href: "/admin/students",
+    name: "User Management",
     icon: <Users size={20} />,
-  },
-  {
-    name: "Manage Faculty",
-    href: "/admin/faculty",
-    icon: <GraduationCap size={20} />,
-  },
-  {
-    name: "Manage Parents",
-    href: "/admin/parents",
-    icon: <UserCog size={20} />,
+    subItems: [
+      { name: "Students", href: "/admin/students" },
+      { name: "Faculty", href: "/admin/faculty" },
+      { name: "Parents", href: "/admin/parents" },
+    ]
   },
   { name: "Student Fees", href: "/admin/fees", icon: <Banknote size={20} /> },
   {
@@ -83,6 +96,17 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
   const router = useRouter();
   const [role, setRole] = useState(null);
+  const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
+
+  // Open the menu initially if a sub-item is active
+  useEffect(() => {
+    const isAnySubActive = superAdminItems.some(item => 
+      item.subItems && item.subItems.some(sub => pathname === sub.href)
+    );
+    if (isAnySubActive) {
+      setIsUsersMenuOpen(true);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     setRole(localStorage.getItem("role"));
@@ -154,6 +178,47 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           {role === "superadmin" && (
             <>
               {superAdminItems.map((item) => {
+                if (item.subItems) {
+                  const isAnySubActive = item.subItems.some(sub => pathname === sub.href);
+
+                  return (
+                    <div key={item.name} className="flex flex-col mb-1">
+                      <button
+                        onClick={() => setIsUsersMenuOpen(!isUsersMenuOpen)}
+                        className={`flex items-center justify-between px-4 py-3 rounded-xl transition-colors font-medium w-full ${isAnySubActive ? 'text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          {item.icon}
+                          {item.name}
+                        </div>
+                        {isUsersMenuOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      </button>
+                      
+                      {isUsersMenuOpen && (
+                        <div className="flex flex-col gap-1 pl-11 pr-2 py-1 mt-1 border-l border-white/10 ml-6">
+                          {item.subItems.map(subItem => {
+                            const isSubActive = pathname === subItem.href;
+                            return (
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href}
+                                onClick={() => setIsOpen?.(false)}
+                                className={`block px-4 py-2 rounded-lg text-sm transition-colors ${
+                                  isSubActive
+                                    ? "bg-gold text-navy font-bold shadow-sm"
+                                    : "text-slate-400 hover:text-white hover:bg-white/5"
+                                }`}
+                              >
+                                {subItem.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
                 const isActive = pathname === item.href;
                 return (
                   <Link

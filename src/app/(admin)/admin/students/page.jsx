@@ -8,7 +8,7 @@ export default function StudentsPage() {
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   
@@ -49,19 +49,20 @@ export default function StudentsPage() {
         batch: student.batch || '',
         parentName: student.parentName || '',
         schoolName: student.schoolName || '',
-        collegeName: student.collegeName || ''
+        collegeName: student.collegeName || '',
+        totalFees: student.totalFees || ''
       });
     } else {
       setIsEditing(false);
       setEditId(null);
-      setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '' });
+      setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '' });
     }
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '' });
+    setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '' });
   };
 
   const handleChange = (e) => {
@@ -179,7 +180,14 @@ export default function StudentsPage() {
                   <tr key={student._id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 font-medium text-slate-500">{student.studentId}</td>
                     <td className="px-6 py-4">
-                      <p className="font-bold text-slate-900">{student.name}</p>
+                      <p className="font-bold text-slate-900 flex items-center gap-2">
+                        {student.name}
+                        {(!student.totalFees || student.totalFees === 0) && (
+                          <span className="bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded border border-red-200 font-bold tracking-wider" title="Total Course Fee needs to be configured">
+                            ⚠️ SET FEE
+                          </span>
+                        )}
+                      </p>
                       <p className="text-xs text-slate-500 mt-0.5">{student.email}</p>
                     </td>
                     <td className="px-6 py-4">
@@ -294,6 +302,10 @@ export default function StudentsPage() {
                 <div className="space-y-1.5 col-span-2">
                   <label className="text-sm font-semibold text-slate-700">Parent Name</label>
                   <input type="text" name="parentName" value={formData.parentName} onChange={handleChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                <div className="space-y-1.5 col-span-2">
+                  <label className="text-sm font-semibold text-slate-700">Total Course Fee (₹) <span className="text-red-500">*</span></label>
+                  <input type="number" name="totalFees" value={formData.totalFees} onChange={handleChange} required placeholder="e.g. 50000" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
                 </div>
               </div>
               

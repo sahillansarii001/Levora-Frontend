@@ -18,13 +18,22 @@ export default function StudyMaterialsPage() {
         const data = await res.json();
         if (data.success) {
           // Map DB schema to UI schema
+          const categoryMap = {
+            'notes': 'Notes',
+            'handwritten': 'Notes',
+            'formula': 'Notes',
+            'pyqs': 'Past Papers',
+            'worksheet': 'Assignments',
+            'assignment': 'Assignments'
+          };
+
           const formattedMaterials = data.data.map(m => ({
             id: m._id,
             title: m.title,
             type: m.type || 'PDF', // Assuming you might add this later
             size: m.size || '2.4 MB', // Placeholder for file size
             date: new Date(m.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-            category: m.category.charAt(0).toUpperCase() + m.category.slice(1),
+            category: categoryMap[m.category] || 'Other',
           }));
           setMaterials(formattedMaterials);
         }

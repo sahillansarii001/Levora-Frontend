@@ -8,7 +8,7 @@ export default function ParentsPage() {
   const [parentList, setParentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', parentOf: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', parentOf: '', password: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   
@@ -43,19 +43,20 @@ export default function ParentsPage() {
         name: parent.name || '',
         email: parent.email || '',
         phone: parent.phone || '',
-        parentOf: parent.parentOf || ''
+        parentOf: parent.parentOf || '',
+        password: ''
       });
     } else {
       setIsEditing(false);
       setEditId(null);
-      setFormData({ name: '', email: '', phone: '', parentOf: '' });
+      setFormData({ name: '', email: '', phone: '', parentOf: '', password: '' });
     }
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ name: '', email: '', phone: '', parentOf: '' });
+    setFormData({ name: '', email: '', phone: '', parentOf: '', password: '' });
   };
 
   const handleChange = (e) => {
@@ -213,9 +214,15 @@ export default function ParentsPage() {
                 </div>
               </div>
               
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700">Student ID (Parent Of)</label>
-                <input type="text" name="parentOf" value={formData.parentOf} onChange={handleChange} placeholder="e.g. STU-1001" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-slate-700">Student ID (Parent Of)</label>
+                  <input type="text" name="parentOf" value={formData.parentOf} onChange={handleChange} placeholder="e.g. STU-1001" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-slate-700">Password {isEditing && <span className="text-slate-400 font-normal">(Leave blank to keep)</span>}</label>
+                  <input type="text" name="password" value={formData.password} onChange={handleChange} required={!isEditing} placeholder={isEditing ? 'Enter new password' : 'Initial Password'} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
               </div>
               
               <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">

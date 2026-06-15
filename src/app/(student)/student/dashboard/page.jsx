@@ -16,6 +16,7 @@ export default function StudentDashboard() {
   const [toDate, setToDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [attLoading, setAttLoading] = useState(false);
+  const [attError, setAttError] = useState(null);
 
   // New Dashboard Data States
   const [notices, setNotices] = useState([]);
@@ -32,13 +33,13 @@ export default function StudentDashboard() {
   }, []);
 
   useEffect(() => {
-    if (student?._id) {
+    if (student?._id || student?.id) {
       fetchAttendance();
     }
   }, [student, fromDate, toDate]);
 
   useEffect(() => {
-    if (student?._id) {
+    if (student?._id || student?.id) {
       fetchDashboardData();
     }
   }, [student]);
@@ -47,15 +48,19 @@ export default function StudentDashboard() {
     setAttLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=student&studentId=${student._id}&fromDate=${fromDate}&toDate=${toDate}`, {
+      const studentId = student?._id || student?.id;
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=student&studentId=${studentId}&fromDate=${fromDate}&toDate=${toDate}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
       if (data.success) {
         setAttendanceRecords(data.data);
+      } else {
+        setAttError(data.message || 'Failed to fetch attendance');
       }
     } catch (err) {
       console.error(err);
+      setAttError(err.message || 'Network error');
     } finally {
       setAttLoading(false);
     }
@@ -74,14 +79,14 @@ export default function StudentDashboard() {
         .then(data => data.success && setNotices(data.data))
         .catch(console.error);
 
-      // Fetch Tests
-      fetch(`${baseUrl}/tests/student/recent`, { headers })
+      // Fetch Exam Results
+      fetch(`${baseUrl}/exam-results/student`, { headers })
         .then(res => res.json())
         .then(data => data.success && setTestResults(data.data))
         .catch(console.error);
 
       // Fetch Assignments
-      fetch(`${baseUrl}/materials?category=assignment`, { headers })
+      fetch(`${baseUrl}/assignments/student`, { headers })
         .then(res => res.json())
         .then(data => data.success && setAssignments(data.data))
         .catch(console.error);
@@ -102,8 +107,9 @@ export default function StudentDashboard() {
   const percentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
 
   // Calculate Avg Score
-  const totalScore = testResults.reduce((acc, test) => acc + (test.score / test.total) * 100, 0);
-  const avgScore = testResults.length > 0 ? Math.round(totalScore / testResults.length) : 0;
+  const totalMarks = testResults.reduce((acc, test) => acc + test.totalMarks, 0);
+  const obtainedMarks = testResults.reduce((acc, test) => acc + test.marksObtained, 0);
+  const avgScore = totalMarks > 0 ? Math.round((obtainedMarks / totalMarks) * 100) : 0;
 
   // Filter today's schedule
   const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
@@ -176,6 +182,8 @@ export default function StudentDashboard() {
               <div className="p-0 overflow-y-auto max-h-64">
                 {attLoading ? (
                   <p className="p-6 text-center text-slate-500 text-sm">Loading attendance...</p>
+                ) : attError ? (
+                  <p className="p-6 text-center text-red-500 text-sm">Error: {attError}</p>
                 ) : attendanceRecords.length === 0 ? (
                   <p className="p-6 text-center text-slate-500 text-sm">No attendance records found for this period.</p>
                 ) : (
@@ -214,18 +222,22 @@ export default function StudentDashboard() {
                 {testResults.length === 0 ? (
                    <p className="p-6 text-center text-slate-500 text-sm">No recent tests found.</p>
                 ) : (
-                  testResults.map((test, i) => (
-                    <div key={i} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
-                      <div>
-                        <p className="font-semibold text-slate-900 text-sm mb-1">{test.name}</p>
-                        <p className="text-xs text-slate-500">{test.date}</p>
+                  testResults.map((test, i) => {
+                    const percentage = ((test.marksObtained / test.totalMarks) * 100).toFixed(1);
+                    const isPass = percentage >= 40;
+                    return (
+                      <div key={i} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                        <div>
+                          <p className="font-semibold text-slate-900 text-sm mb-1">{test.examName}</p>
+                          <p className="text-xs text-slate-500">{new Date(test.examDate).toLocaleDateString()} • {test.subject}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-slate-900">{test.marksObtained} <span className="text-slate-400 text-xs font-normal">/ {test.totalMarks}</span></p>
+                          <p className={`text-xs font-medium mt-1 ${isPass ? 'text-green-600' : 'text-red-600'}`}>{isPass ? 'Pass' : 'Fail'}</p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-bold text-slate-900">{test.score} <span className="text-slate-400 text-xs font-normal">/ {test.total}</span></p>
-                        <p className={`text-xs font-medium mt-1 ${test.status === 'Pass' ? 'text-green-600' : test.status === 'Fail' ? 'text-red-600' : 'text-blue-600'}`}>{test.status || 'Graded'}</p>
-                      </div>
-                    </div>
-                  ))
+                    )
+                  })
                 )}
               </div>
             </div>
