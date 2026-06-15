@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Filter, Download, Plus, MoreHorizontal, Edit, Trash2, X } from 'lucide-react';
+import { Search, Filter, Download, Plus, MoreHorizontal, Edit, Trash2, X, Key } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function FacultyPage() {
@@ -11,6 +11,9 @@ export default function FacultyPage() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordFormData, setPasswordFormData] = useState({ password: '' });
+  const [passwordUserId, setPasswordUserId] = useState(null);
   
   const router = useRouter();
 
@@ -87,6 +90,45 @@ export default function FacultyPage() {
       if (data.success) {
         fetchFaculty();
         handleCloseModal();
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred');
+    }
+  };
+
+  const handleOpenPasswordModal = (id) => {
+    setPasswordUserId(id);
+    setPasswordFormData({ password: '' });
+    setShowPasswordModal(true);
+  };
+
+  const handleClosePasswordModal = () => {
+    setShowPasswordModal(false);
+    setPasswordUserId(null);
+    setPasswordFormData({ password: '' });
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (!passwordFormData.password) return alert('Password is required');
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/faculty/${passwordUserId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ password: passwordFormData.password })
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        alert('Password updated successfully');
+        handleClosePasswordModal();
       } else {
         alert(data.message);
       }
@@ -175,10 +217,13 @@ export default function FacultyPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenModal(faculty)} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors">
+                        <button onClick={() => handleOpenPasswordModal(faculty._id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
+                          <Key size={16} />
+                        </button>
+                        <button onClick={() => handleOpenModal(faculty)} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors" title="Edit">
                           <Edit size={16} />
                         </button>
-                        <button onClick={() => handleDelete(faculty._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors">
+                        <button onClick={() => handleDelete(faculty._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -236,6 +281,43 @@ export default function FacultyPage() {
                 </button>
                 <button type="submit" className="btn-primary text-sm px-6 py-2">
                   {isEditing ? 'Save Changes' : 'Create Faculty'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+              <h2 className="text-lg font-bold text-slate-900">Change Password</h2>
+              <button onClick={handleClosePasswordModal} className="text-slate-400 hover:text-slate-600 transition-colors p-1">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <form onSubmit={handlePasswordSubmit} className="p-6 space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-sm font-semibold text-slate-700">New Password</label>
+                <input 
+                  type="text" 
+                  value={passwordFormData.password} 
+                  onChange={(e) => setPasswordFormData({ password: e.target.value })} 
+                  required 
+                  placeholder="Enter new password"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" 
+                />
+              </div>
+              
+              <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                <button type="button" onClick={handleClosePasswordModal} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary text-sm px-6 py-2">
+                  Update Password
                 </button>
               </div>
             </form>
