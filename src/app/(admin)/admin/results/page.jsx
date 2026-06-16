@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Plus, X, Search, Award } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function AdminResultsPage() {
   const [results, setResults] = useState([]);
@@ -111,11 +112,11 @@ export default function AdminResultsPage() {
         setFormData({ studentId: '', examName: '', subject: '', marksObtained: '', totalMarks: '', remarks: '', examDate: new Date().toISOString().split('T')[0] });
         fetchResults();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
       console.error(err);
-      alert('An error occurred');
+      toast.error('An error occurred');
     }
   };
 

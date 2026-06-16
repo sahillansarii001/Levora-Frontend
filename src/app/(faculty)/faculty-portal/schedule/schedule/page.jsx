@@ -60,7 +60,7 @@ export default function ClassSchedulePage() {
             </button>
             <div className="flex items-center gap-2 font-bold text-slate-700 min-w-[140px] justify-center">
               <CalendarIcon size={18} className="text-[var(--color-gold)]" />
-              <span>Today, 5 Jun</span>
+              <span>Today, {currentDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
             </div>
             <button className="text-slate-400 hover:text-[var(--color-navy)] transition-colors">
               <ChevronRight size={20} />

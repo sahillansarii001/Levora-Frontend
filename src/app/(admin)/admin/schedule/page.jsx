@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit, Calendar as CalendarIcon, Clock, MapPin, Video, User, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import toast from 'react-hot-toast';
 
 export default function AdminSchedule() {
   const [schedule, setSchedule] = useState([]);
@@ -86,7 +87,7 @@ export default function AdminSchedule() {
         setFormData({ className: '', date: '', startTime: '', endTime: '', subject: '', instructor: '', color: 'blue' });
         fetchSchedule();
       } else {
-        alert(data.message || 'Error saving schedule');
+        toast.error(data.message || 'Error saving schedule');
       }
     } catch (err) {
       console.error(err);

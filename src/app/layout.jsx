@@ -1,4 +1,5 @@
 import { Poppins, Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const poppins = Poppins({ 
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <body className="font-sans min-h-screen flex flex-col bg-slate-50 text-slate-800 overflow-x-clip">
+        <Toaster position="top-right" />
         {children}
       </body>
     </html>

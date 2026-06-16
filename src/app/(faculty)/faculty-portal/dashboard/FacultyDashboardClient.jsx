@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { CheckCircle, Clock, Calendar as CalendarIcon, FileText, Send, Lock } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function FacultyDashboardClient() {
   const [faculty, setFaculty] = useState(null);
@@ -74,7 +75,7 @@ export default function FacultyDashboardClient() {
 
   const handleLogSubmit = async (e) => {
     e.preventDefault();
-    if (!logForm.subject || !logForm.topics || !logForm.lesson) return alert("Please fill all fields");
+    if (!logForm.subject || !logForm.topics || !logForm.lesson) return toast.error('Please fill all fields');
     
     setIsSubmitting(true);
     try {
@@ -94,7 +95,7 @@ export default function FacultyDashboardClient() {
       if (data.success) {
         setLogForm(prev => ({ ...prev, topics: '', lesson: '' }));
         fetchLogs();
-        alert("Daily log submitted successfully!");
+        toast.success('Daily log submitted successfully!');
       }
     } catch (err) {
       console.error(err);

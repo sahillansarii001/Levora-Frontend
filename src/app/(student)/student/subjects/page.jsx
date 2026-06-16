@@ -1,6 +1,7 @@
 'use client';
 import { BookOpen, Search, PlayCircle, Award, Clock, X, Calendar as CalendarIcon, User as UserIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export default function MySubjectsPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,7 +99,7 @@ export default function MySubjectsPage() {
             }
           }
         }
-        alert('Your session has expired. Please log out and log back in.');
+        toast('Your session has expired. Please log out and log back in.', { icon: '⚠️' });
       }
     } catch (err) {
       console.error('Failed to fetch lecture logs', err);

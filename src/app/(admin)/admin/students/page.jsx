@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Filter, Download, Plus, Edit, Trash2, X, Key } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function StudentsPage() {
   const [studentList, setStudentList] = useState([]);
@@ -96,11 +97,11 @@ export default function StudentsPage() {
         fetchStudents();
         handleCloseModal();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
       console.error(err);
-      alert('An error occurred');
+      toast.error('An error occurred');
     }
   };
 
@@ -118,7 +119,7 @@ export default function StudentsPage() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    if (!passwordFormData.password) return alert('Password is required');
+    if (!passwordFormData.password) return toast.error('Password is required');
     try {
       const token = localStorage.getItem('token');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/student/${passwordUserId}`, {
@@ -132,14 +133,14 @@ export default function StudentsPage() {
       const data = await res.json();
       
       if (data.success) {
-        alert('Password updated successfully');
+        toast.success('Password updated successfully');
         handleClosePasswordModal();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
       console.error(err);
-      alert('An error occurred');
+      toast.error('An error occurred');
     }
   };
 

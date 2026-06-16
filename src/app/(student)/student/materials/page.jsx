@@ -34,6 +34,7 @@ export default function StudyMaterialsPage() {
             size: m.size || '2.4 MB', // Placeholder for file size
             date: new Date(m.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
             category: categoryMap[m.category] || 'Other',
+            uploadedBy: m.uploadedBy || 'Admin'
           }));
           setMaterials(formattedMaterials);
         }
@@ -152,6 +153,9 @@ export default function StudyMaterialsPage() {
                     <span>{material.size}</span>
                     <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                     <span>{material.date}</span>
+                  </div>
+                  <div className="mt-1 text-[10px] font-semibold text-slate-400 bg-slate-50 px-2 py-0.5 rounded inline-block">
+                    By: {material.uploadedBy}
                   </div>
                 </div>
 

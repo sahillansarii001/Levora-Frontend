@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -113,12 +114,12 @@ export default function AdmissionsPage() {
         setFormStatus('success');
       } else {
         const errorData = await res.json();
-        alert(`Error: ${errorData.message}`);
+        toast.error(`Error: ${errorData.message}`);
         setFormStatus('');
       }
     } catch (err) {
       console.error('Submission error', err);
-      alert('An error occurred. Please try again later.');
+      toast.error('An error occurred. Please try again later.');
       setFormStatus('');
     }
   };

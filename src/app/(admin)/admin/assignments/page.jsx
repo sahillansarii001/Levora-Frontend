@@ -148,6 +148,18 @@ export default function AdminAssignments() {
                       <div className="font-medium text-emerald-600 bg-emerald-50 inline-block px-2.5 py-1 rounded-md text-xs">
                         {assignment.submissions?.filter(s => s.status === 'completed').length || 0} students
                       </div>
+                      {(() => {
+                        const completed = assignment.submissions?.filter(s => s.status === 'completed');
+                        if (completed && completed.length > 0) {
+                          const names = completed.map(s => s.studentId ? s.studentId.name : 'Unknown').join(', ');
+                          return (
+                            <div className="mt-2 text-xs text-emerald-700 bg-emerald-50/50 p-1.5 rounded border border-emerald-100 max-w-[200px] truncate" title={names}>
+                              <span className="font-bold">By:</span> {names}
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex justify-end">

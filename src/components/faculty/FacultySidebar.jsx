@@ -3,20 +3,19 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, BookOpen, Upload, LogOut, Calendar } from 'lucide-react';
+import { LayoutDashboard, Users, BookOpen, Upload, LogOut, Calendar, IndianRupee } from 'lucide-react';
 
 const navItems = [
   { name: 'Dashboard', href: '/faculty-portal/dashboard', icon: <LayoutDashboard size={20} /> },
-  { name: 'My Classes', href: '#', icon: <Users size={20} /> },
+  { name: 'My Classes', href: '/faculty-portal/classes', icon: <Users size={20} /> },
   { name: 'Class Schedule', href: '/faculty-portal/schedule', icon: <Calendar size={20} /> },
-  { name: 'Assignments', href: '#', icon: <BookOpen size={20} /> },
-  { name: 'Upload Notes', href: '#', icon: <Upload size={20} /> },
+  { name: 'Assignments', href: '/faculty-portal/assignments', icon: <BookOpen size={20} /> },
+  { name: 'Upload Notes', href: '/faculty-portal/notes', icon: <Upload size={20} /> },
+  { name: 'My Salary', href: '/faculty-portal/salary', icon: <IndianRupee size={20} /> },
 ];
 
 export default function FacultySidebar() {
   const pathname = usePathname();
-
-  if (pathname === '/faculty-portal/login') return null;
 
   return (
     <aside className="w-64 bg-slate-900 text-white border-r border-slate-800 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
@@ -54,7 +53,8 @@ export default function FacultySidebar() {
 
       <div className="p-4 border-t border-white/10">
         <Link 
-          href="/faculty-portal/login" 
+          href="/login" 
+          onClick={() => localStorage.clear()}
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors font-medium"
         >
           <LogOut size={20} />

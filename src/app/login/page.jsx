@@ -49,7 +49,7 @@ export default function UnifiedLogin() {
       } else if (role === 'student') {
         router.push('/student/dashboard');
       } else if (role === 'faculty') {
-        router.push('/faculty/dashboard');
+        router.push('/faculty-portal/dashboard');
       } else if (role === 'parent') {
         router.push('/parent/dashboard');
       } else {

@@ -21,7 +21,7 @@ export default function SalaryPage() {
   const fetchRecords = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/salary'}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/salary`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -36,7 +36,7 @@ export default function SalaryPage() {
   const fetchFaculties = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/faculty'}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/faculty?limit=100`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -76,8 +76,8 @@ export default function SalaryPage() {
     try {
       const token = localStorage.getItem('token');
       const url = isEditing 
-        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/salary'}/${editId}`
-        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/salary'}`;
+        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/salary/${editId}`
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/salary`;
         
       const res = await fetch(url, {
         method: isEditing ? 'PUT' : 'POST',
@@ -98,7 +98,7 @@ export default function SalaryPage() {
     if (!confirm('Delete this record?')) return;
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/salary'}/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/salary/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

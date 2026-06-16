@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { BookOpen, Search, Plus, Edit, Trash2, Tag, Layers, Check, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function AdminSubjectsPage() {
   const [subjects, setSubjects] = useState([]);
+  const [faculties, setFaculties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -14,7 +16,9 @@ export default function AdminSubjectsPage() {
     title: '',
     courseCode: '',
     fee: 0,
-    batches: []
+    batches: [],
+    facultyId: '',
+    totalStudents: 0
   });
   const [customBatch, setCustomBatch] = useState('');
   const [editingId, setEditingId] = useState(null);
@@ -24,8 +28,9 @@ export default function AdminSubjectsPage() {
 
   const openEditModal = (sub) => {
     const isStandardBatch = (b) => availableBatches.includes(b) && b !== 'Other';
-    const standardBatches = sub.batches.filter(isStandardBatch);
-    const customBatches = sub.batches.filter(b => !isStandardBatch(b));
+    const safeBatches = sub.batches || [];
+    const standardBatches = safeBatches.filter(isStandardBatch);
+    const customBatches = safeBatches.filter(b => !isStandardBatch(b));
     
     let nextBatches = [...standardBatches];
     let nextCustomBatch = '';
@@ -39,7 +44,9 @@ export default function AdminSubjectsPage() {
       title: sub.title,
       courseCode: sub.courseCode,
       fee: sub.fee || 0,
-      batches: nextBatches
+      batches: nextBatches,
+      facultyId: sub.facultyId?._id || sub.facultyId || '',
+      totalStudents: sub.totalStudents || 0
     });
     setCustomBatch(nextCustomBatch);
     setEditingId(sub._id);
@@ -49,6 +56,12 @@ export default function AdminSubjectsPage() {
   useEffect(() => {
     fetchSubjects();
   }, []);
+
+  useEffect(() => {
+    if (isModalOpen && faculties.length === 0) {
+      fetchFaculties();
+    }
+  }, [isModalOpen]);
 
   const fetchSubjects = async () => {
     setLoading(true);
@@ -65,6 +78,22 @@ export default function AdminSubjectsPage() {
       console.error('Failed to fetch subjects', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchFaculties = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/faculty?limit=100`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      console.log('Fetched faculties:', data);
+      if (data.success) {
+        setFaculties(data.data || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch faculties', err);
     }
   };
 
@@ -112,12 +141,12 @@ export default function AdminSubjectsPage() {
       const data = await res.json();
       if (data.success) {
         setIsModalOpen(false);
-        setFormData({ title: '', courseCode: '', fee: 0, batches: [] });
+        setFormData({ title: '', courseCode: '', fee: 0, batches: [], facultyId: '' });
         setCustomBatch('');
         setEditingId(null);
         fetchSubjects();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
       console.error('Failed to create subject', err);
@@ -137,7 +166,7 @@ export default function AdminSubjectsPage() {
         setSubjectToDelete(null);
         fetchSubjects();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
       console.error('Failed to delete subject', err);
@@ -158,7 +187,7 @@ export default function AdminSubjectsPage() {
         </div>
         <button 
           onClick={() => {
-            setFormData({ title: '', courseCode: '', fee: 0, batches: [] });
+            setFormData({ title: '', courseCode: '', fee: 0, batches: [], facultyId: '' });
             setCustomBatch('');
             setEditingId(null);
             setIsModalOpen(true);
@@ -190,6 +219,8 @@ export default function AdminSubjectsPage() {
               <tr>
                 <th className="px-6 py-4">Subject Name</th>
                 <th className="px-6 py-4">Code</th>
+                <th className="px-6 py-4">Assigned Faculty</th>
+                <th className="px-6 py-4">Total Students</th>
                 <th className="px-6 py-4">Assigned Batches</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
@@ -209,6 +240,12 @@ export default function AdminSubjectsPage() {
                       {sub.title}
                     </td>
                     <td className="px-6 py-4 text-slate-600 font-mono text-xs">{sub.courseCode}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-slate-700">
+                      {sub.facultyName || sub.facultyId?.name || <span className="text-xs italic text-slate-400">Unassigned</span>}
+                    </td>
+                    <td className="px-6 py-4 text-sm font-bold text-slate-700">
+                      {sub.totalStudents || 0}
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {sub.batches && sub.batches.length > 0 ? (
@@ -241,15 +278,15 @@ export default function AdminSubjectsPage() {
       {/* Add Subject Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
+            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
               <h3 className="font-bold text-lg text-slate-900">{editingId ? 'Edit Subject' : 'Add New Subject'}</h3>
               <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <X size={20} />
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="p-6 space-y-5">
+            <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Subject Title</label>
                 <input required type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm" placeholder="e.g. Advanced Physics" />
@@ -258,6 +295,23 @@ export default function AdminSubjectsPage() {
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Course Code</label>
                 <input required type="text" name="courseCode" value={formData.courseCode} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm font-mono uppercase" placeholder="e.g. PHY-101" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">Total Students</label>
+                <input required type="number" min="0" name="totalStudents" value={formData.totalStudents} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm" placeholder="e.g. 50" />
+                <p className="text-xs text-slate-500 mt-1">This will be visible to the faculty in their portal.</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">Assigned Faculty</label>
+                <select name="facultyId" value={formData.facultyId} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm bg-white">
+                  <option value="">-- Unassigned --</option>
+                  {faculties.map(faculty => (
+                    <option key={faculty._id} value={faculty._id}>{faculty.name} ({faculty.subject})</option>
+                  ))}
+                </select>
+                <p className="text-xs text-slate-500 mt-1">This subject will appear in the selected faculty member's "My Classes" view.</p>
               </div>
 
               <div>

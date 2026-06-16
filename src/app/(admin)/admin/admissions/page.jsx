@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FileText, CheckCircle, XCircle, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function AdminAdmissionsPage() {
   const [admissions, setAdmissions] = useState([]);
@@ -49,11 +50,11 @@ export default function AdminAdmissionsPage() {
         setAdmissions(prev => prev.map(adm => adm._id === id ? { ...adm, status } : adm));
       } else {
         const errorData = await res.json();
-        alert(`Error: ${errorData.message}`);
+        toast.error(`Error: ${errorData.message}`);
       }
     } catch (err) {
       console.error('Failed to update status', err);
-      alert('An error occurred while updating the status.');
+      toast.error('An error occurred while updating the status.');
     }
   };
 
@@ -70,11 +71,11 @@ export default function AdminAdmissionsPage() {
         setAdmissions(prev => prev.filter(adm => adm._id !== id));
       } else {
         const errorData = await res.json();
-        alert(`Error: ${errorData.message}`);
+        toast.error(`Error: ${errorData.message}`);
       }
     } catch (err) {
       console.error('Failed to delete', err);
-      alert('An error occurred while deleting.');
+      toast.error('An error occurred while deleting.');
     }
   };
 

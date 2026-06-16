@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { ClipboardList, Clock, CheckCircle2, Calendar, BookOpen, ExternalLink } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function AssignmentsPage() {
   const [assignments, setAssignments] = useState([]);
@@ -41,10 +42,10 @@ export default function AssignmentsPage() {
       if (data.success) {
         fetchAssignments();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
-      alert('Network error marking as complete');
+      toast.error('Network error marking as complete');
     }
   };
 

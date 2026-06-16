@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Save, Building2, Phone, Mail, Calendar, Settings as SettingsIcon, AlertTriangle, ShieldCheck } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
@@ -56,13 +57,13 @@ export default function SettingsPage() {
       });
       const data = await res.json();
       if (data.success) {
-        alert('Settings saved successfully!');
+        toast.success('Settings saved successfully!');
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
       console.error(err);
-      alert('An error occurred');
+      toast.error('An error occurred');
     } finally {
       setSaving(false);
     }

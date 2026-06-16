@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Plus, Trash2, Megaphone, X, FileEdit, Globe, BookOpen, Users, GraduationCap, Target, Save, Menu, Award, MessageSquare, Layout, Phone, Mail, GripVertical } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import toast from 'react-hot-toast';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 
@@ -144,12 +145,12 @@ export default function MegaCMS() {
       
       const json = await res.json();
       if (res.ok && json.success) {
-        alert('Content saved successfully!');
+        toast.success('Content saved successfully!');
       } else {
-        alert('Server Error: ' + (json.message || 'Unknown error'));
+        toast.error('Server Error: ' + (json.message || 'Unknown error'));
       }
     } catch (err) { 
-      alert('Save failed: ' + err.message); 
+      toast.error('Save failed: ' + err.message); 
     }
   };
 
@@ -438,8 +439,8 @@ export default function MegaCMS() {
                                                 const data = await res.json();
                                                 if(data.success) {
                                                   setSiteContent(p=>({...p, [key]: data.url}));
-                                                } else alert(data.message);
-                                              } catch (err) { alert('Upload failed'); }
+                                                } else toast.error(data.message);
+                                              } catch (err) { toast.error('Upload failed'); }
                                             }}
                                           />
                                           <button type="button" className="text-sm px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors border border-slate-200">
@@ -571,8 +572,8 @@ export default function MegaCMS() {
                             const data = await res.json();
                             if(data.success) {
                               setFormData({...formData, profileImage: data.url});
-                            } else alert(data.message);
-                          } catch (err) { alert('Upload failed'); }
+                            } else toast.error(data.message);
+                          } catch (err) { toast.error('Upload failed'); }
                         }}
                       />
                       <button type="button" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium border border-slate-200 h-full whitespace-nowrap">
