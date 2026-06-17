@@ -10,6 +10,7 @@ const defaultToppers = [
   { _id: '1', studentName: "Rahul Deshmukh", course: "JEE Advanced", rank: "AIR 45", percentage: 99.8, color: "from-amber-500 to-orange-600" },
   { _id: '2', studentName: "Priya Sharma", course: "NEET UG", rank: "AIR 112", percentage: 99.5, color: "from-green-500 to-teal-600" },
   { _id: '3', studentName: "Amit Patel", course: "CBSE 12th", percentage: 99.2, color: "from-blue-500 to-indigo-600" },
+  { _id: '4', studentName: "Neha Gupta", course: "MHT CET", percentage: 99.9, color: "from-purple-500 to-pink-600" },
 ];
 
 const achievements = [
@@ -30,7 +31,7 @@ export default function ResultsSection({ title, subtitle }) {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/results`);
         const json = await res.json();
-        if (json.success) setResultsList(json.data.slice(0, 6)); // limit to 6 toppers
+        if (json.success) setResultsList(json.data.slice(0, 6)); // limit to 4 toppers
       } catch (err) {
         console.error('Failed to fetch results', err);
       } finally {
@@ -83,8 +84,8 @@ export default function ResultsSection({ title, subtitle }) {
             </Link>
           </div>
 
-          <div className="lg:w-2/3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="lg:w-2/3 lg:pl-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-5">
               {displayToppers.map((topper, index) => {
                 const color = topper.color || colors[index % colors.length];
                 const displayRank = topper.rank ? `AIR ${topper.rank}` : (topper.percentage ? `${topper.percentage}%` : 'Top Ranker');
@@ -96,21 +97,21 @@ export default function ResultsSection({ title, subtitle }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group relative bg-white rounded-2xl p-8 text-center border border-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
+                    className="group relative bg-white rounded-xl lg:rounded-2xl p-2 sm:p-4 lg:p-6 text-center border border-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden flex flex-col items-center justify-center"
                   >
                     {/* Gradient top border */}
                     <div className={`absolute top-0 left-0 right-0 h-1 bg-navy opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                     
                     {/* Avatar */}
-                    <div className={`w-24 h-24 rounded-2xl bg-navy mx-auto mb-5 flex items-center justify-center shadow-sm`}>
-                      <span className="text-3xl font-bold text-white">
+                    <div className={`w-20 h-20 sm:w-16 sm:h-16 lg:w-24 lg:h-24 rounded-full sm:rounded-xl lg:rounded-2xl bg-navy mb-2 lg:mb-5 flex items-center justify-center shadow-sm shrink-0`}>
+                      <span className="text-sm sm:text-xl lg:text-3xl font-bold text-white">
                         {topper.studentName ? topper.studentName.split(' ').map(n => n[0]).join('') : '?'}
                       </span>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-[var(--color-navy)] mb-1">{topper.studentName}</h3>
-                    <p className="text-2xl font-bold gradient-text mb-4">{displayRank}</p>
-                    <span className="inline-block bg-slate-50 border border-slate-200 text-slate-600 font-bold text-xs px-4 py-2 rounded-lg uppercase tracking-wider group-hover:bg-[var(--color-navy)] group-hover:text-white group-hover:border-[var(--color-navy)] transition-all duration-300">
+                    <h3 className="text-[10px] sm:text-sm lg:text-xl font-bold text-[var(--color-navy)] mb-0.5 lg:mb-1 truncate w-full">{topper.studentName}</h3>
+                    <p className="text-xs sm:text-lg lg:text-2xl font-bold gradient-text mb-1.5 lg:mb-4">{displayRank}</p>
+                    <span className="inline-block bg-slate-50 border border-slate-200 text-slate-600 font-bold text-[8px] sm:text-[10px] lg:text-xs px-1 py-0.5 lg:px-4 lg:py-2 rounded lg:rounded-lg uppercase tracking-wider group-hover:bg-[var(--color-navy)] group-hover:text-white group-hover:border-[var(--color-navy)] transition-all duration-300 w-full truncate">
                       {topper.course}
                     </span>
                   </motion.div>

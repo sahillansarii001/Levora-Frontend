@@ -17,7 +17,7 @@ const navItems = [
 export default function ParentSidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
 
-  if (pathname === '/parent/login') return null;
+  if (pathname === '/login') return null;
 
   return (
     <>
@@ -43,8 +43,8 @@ export default function ParentSidebar({ isOpen, setIsOpen }) {
         </button>
       </div>
       
-      <div className="flex-1 py-8 px-4 flex flex-col gap-2">
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4">Parent Portal</p>
+      <div className="flex-1 py-8 px-4 flex flex-col gap-2 overflow-y-auto">
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4 shrink-0">Parent Portal</p>
         
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -52,6 +52,7 @@ export default function ParentSidebar({ isOpen, setIsOpen }) {
             <Link 
               key={item.name} 
               href={item.href}
+              onClick={() => setIsOpen && setIsOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 isActive 
                   ? 'bg-gold/10 text-gold font-bold' 
@@ -67,7 +68,13 @@ export default function ParentSidebar({ isOpen, setIsOpen }) {
 
       <div className="p-4 border-t border-slate-200">
         <Link 
-          href="/parent/login" 
+          href="/login" 
+          onClick={() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('email');
+            localStorage.removeItem('user');
+          }}
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors font-medium"
         >
           <LogOut size={20} />

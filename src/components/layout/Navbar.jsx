@@ -72,9 +72,11 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${
-      isScrolled 
-        ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-sm' 
-        : 'bg-transparent'
+      isMobileMenuOpen 
+        ? 'bg-white border-b border-slate-200/50 shadow-sm'
+        : isScrolled 
+          ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-sm' 
+          : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center h-20">
@@ -160,10 +162,10 @@ export default function Navbar() {
       )}
 
       {/* Mobile Nav Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl lg:hidden transition-transform duration-500 ease-out ${
+      <div className={`fixed top-20 right-0 h-[calc(100vh-5rem)] w-full max-w-sm bg-white shadow-2xl lg:hidden transition-transform duration-500 ease-out ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        <div className="flex flex-col pt-24 pb-8 px-6 h-full overflow-y-auto">
+        <div className="flex flex-col pt-4 pb-32 px-6 h-full overflow-y-auto">
           <div className="space-y-1">
             {NAV_LINKS.map((link) => (
               <Link 

@@ -8,7 +8,7 @@ import { Menu } from 'lucide-react';
 export default function ParentLayout({ children }) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const isLoginPage = pathname === '/parent/login';
+  const isLoginPage = pathname === '/login';
 
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900 overflow-clip">

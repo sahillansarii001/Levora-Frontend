@@ -68,7 +68,7 @@ export default function StudentSidebar({ isOpen, setIsOpen }) {
       </div>
       
       <div className="flex-1 py-4 px-4 flex flex-col gap-2 overflow-y-auto">
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4">Student Portal</p>
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4 shrink-0">Student Portal</p>
         
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -76,6 +76,7 @@ export default function StudentSidebar({ isOpen, setIsOpen }) {
             <Link 
               key={item.name} 
               href={item.href}
+              onClick={() => setIsOpen && setIsOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 isActive 
                   ? 'bg-sky/10 text-sky font-bold' 
