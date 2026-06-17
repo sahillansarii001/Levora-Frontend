@@ -84,12 +84,12 @@ export default function AdminDashboard() {
   }, [role]);
 
   const stats = [
-    { label: 'Total Students', value: (data.studentCount || 0).toLocaleString(), change: 'Registered', icon: <Users className="text-blue-500" size={24} />, trend: 'up' },
-    { label: 'Total Faculty', value: (data.facultyCount || 0).toLocaleString(), change: 'Staff members', icon: <GraduationCap className="text-orange-500" size={24} />, trend: 'up' },
-    { label: 'Total Parents', value: (data.parentCount || 0).toLocaleString(), change: 'Registered', icon: <Users className="text-purple-500" size={24} />, trend: 'up' },
-    { label: 'Active Courses', value: (data.courseCount || 0).toLocaleString(), change: 'Curriculums', icon: <BookOpen className="text-indigo-500" size={24} />, trend: 'up' },
-    { label: 'Total Revenue', value: data.revenue, change: 'All time', icon: <Banknote className="text-green-500" size={24} />, trend: 'up' },
-    { label: 'Avg. Attendance', value: data.attendance, change: 'Present Rate', icon: <TrendingUp className="text-slate-500" size={24} />, trend: 'up' }
+    { label: 'Total Students', value: (data.studentCount || 0).toLocaleString(), change: 'Registered', icon: <Users className="text-navy" size={24} />, trend: 'up' },
+    { label: 'Total Faculty', value: (data.facultyCount || 0).toLocaleString(), change: 'Staff members', icon: <GraduationCap className="text-navy" size={24} />, trend: 'up' },
+    { label: 'Total Parents', value: (data.parentCount || 0).toLocaleString(), change: 'Registered', icon: <Users className="text-navy" size={24} />, trend: 'up' },
+    { label: 'Active Courses', value: (data.courseCount || 0).toLocaleString(), change: 'Curriculums', icon: <BookOpen className="text-navy" size={24} />, trend: 'up' },
+    { label: 'Total Revenue', value: data.revenue, change: 'All time', icon: <Banknote className="text-navy" size={24} />, trend: 'up' },
+    { label: 'Avg. Attendance', value: data.attendance, change: 'Present Rate', icon: <TrendingUp className="text-navy" size={24} />, trend: 'up' }
   ];
 
   if (loading) {
@@ -187,7 +187,7 @@ export default function AdminDashboard() {
           <div className="p-6 space-y-4 flex-1">
             {role === 'superadmin' && (
               <button onClick={() => router.push('/admin/students')} className="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-navy hover:shadow-sm transition-all text-left group">
-                <div className="bg-blue-50 text-blue-600 p-2 rounded-lg mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <div className="bg-slate-100 text-navy p-2 rounded-lg mr-4 group-hover:bg-navy group-hover:text-white transition-colors">
                   <UserPlus size={20} />
                 </div>
                 <div>
@@ -197,7 +197,7 @@ export default function AdminDashboard() {
               </button>
             )}
             <button onClick={() => router.push('/admin/cms')} className="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-navy hover:shadow-sm transition-all text-left group">
-              <div className="bg-purple-50 text-purple-600 p-2 rounded-lg mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+              <div className="bg-slate-100 text-navy p-2 rounded-lg mr-4 group-hover:bg-navy group-hover:text-white transition-colors">
                 <BookOpen size={20} />
               </div>
               <div>
@@ -208,7 +208,7 @@ export default function AdminDashboard() {
             
             {role === 'superadmin' && (
               <button className="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-navy hover:shadow-sm transition-all text-left group">
-                <div className="bg-slate-100 text-slate-600 p-2 rounded-lg mr-4 group-hover:bg-slate-700 group-hover:text-white transition-colors">
+                <div className="bg-slate-100 text-navy p-2 rounded-lg mr-4 group-hover:bg-navy group-hover:text-white transition-colors">
                   <Settings size={20} />
                 </div>
                 <div>

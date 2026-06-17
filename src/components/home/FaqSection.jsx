@@ -6,7 +6,7 @@ export default function FaqSection({ question, answer }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section className="py-6 bg-slate-50 relative z-10">
+    <section className="py-2 bg-white relative z-10">
       <div className="container mx-auto px-4 md:px-8 max-w-4xl">
         <div 
           className="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100 overflow-hidden cursor-pointer"

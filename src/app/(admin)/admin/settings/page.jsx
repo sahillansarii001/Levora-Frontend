@@ -11,6 +11,14 @@ export default function SettingsPage() {
     academyName: '',
     contactEmail: '',
     contactPhone: '',
+    address: '',
+    visitingHours: '',
+    facebookUrl: '',
+    instagramUrl: '',
+    youtubeUrl: '',
+    twitterUrl: '',
+    trustBadge1: '',
+    trustBadge2: '',
     academicYear: '',
     admissionsOpen: true,
     maintenanceMode: false
@@ -123,6 +131,60 @@ export default function SettingsPage() {
                 <Calendar size={14} className="mr-1.5 text-slate-400" /> Academic Year
               </label>
               <input type="text" name="academicYear" value={settings.academicYear} onChange={handleChange} placeholder="e.g. 2024-2025" required className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+          </div>
+        </div>
+
+        {/* Location & Contact Details */}
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-200 bg-slate-50">
+            <h2 className="font-bold text-slate-900 flex items-center text-lg">
+              <Building2 size={18} className="mr-2 text-slate-500" /> Location & Hours
+            </h2>
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5 md:col-span-2">
+              <label className="text-sm font-semibold text-slate-700">Full Address</label>
+              <textarea name="address" value={settings.address} onChange={handleChange} rows="2" className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <label className="text-sm font-semibold text-slate-700">Visiting Hours</label>
+              <input type="text" name="visitingHours" value={settings.visitingHours} onChange={handleChange} placeholder="e.g. Mon - Sun: 8:00 AM - 9:00 PM" className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+          </div>
+        </div>
+
+        {/* Social Media & Trust */}
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-200 bg-slate-50">
+            <h2 className="font-bold text-slate-900 flex items-center text-lg">
+              <ShieldCheck size={18} className="mr-2 text-slate-500" /> Social Links & Trust Badges
+            </h2>
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Facebook URL</label>
+              <input type="url" name="facebookUrl" value={settings.facebookUrl} onChange={handleChange} className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Instagram URL</label>
+              <input type="url" name="instagramUrl" value={settings.instagramUrl} onChange={handleChange} className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">YouTube URL</label>
+              <input type="url" name="youtubeUrl" value={settings.youtubeUrl} onChange={handleChange} className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Twitter / X URL</label>
+              <input type="url" name="twitterUrl" value={settings.twitterUrl} onChange={handleChange} className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Trust Badge 1</label>
+              <input type="text" name="trustBadge1" value={settings.trustBadge1} onChange={handleChange} placeholder="e.g. ISO Certified" className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Trust Badge 2</label>
+              <input type="text" name="trustBadge2" value={settings.trustBadge2} onChange={handleChange} placeholder="e.g. 15+ Years Trust" className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-navy focus:border-navy outline-none transition-all" />
             </div>
           </div>
         </div>

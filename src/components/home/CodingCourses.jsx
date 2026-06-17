@@ -44,7 +44,7 @@ export default function CodingCourses() {
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 <div className="relative z-10 flex justify-between items-start mb-6">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${course.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`w-12 h-12 rounded-2xl bg-gold flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                     {course.icon}
                   </div>
                   <span className="text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-500 group-hover:bg-[var(--color-navy)] group-hover:text-white transition-all duration-300">

@@ -56,10 +56,20 @@ export default async function PublicLayout({ children }) {
     <>
       <LiveReloader />
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pb-16 md:pb-0">
         {children}
       </main>
-      <Footer />
+      <Footer settings={settings} />
+      
+      {/* Mobile Sticky CTA */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-3 flex gap-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <a href={`tel:${settings?.contactPhone?.replace(/\s/g, '') || '+918169976265'}`} className="flex-1 bg-[var(--color-navy)] text-white text-center py-2.5 rounded-lg font-bold text-sm shadow-sm">
+          Call Now
+        </a>
+        <a href="/admissions" className="flex-1 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)] text-[var(--color-navy)] text-center py-2.5 rounded-lg font-bold text-sm shadow-sm">
+          Enquire
+        </a>
+      </div>
     </>
   );
 }

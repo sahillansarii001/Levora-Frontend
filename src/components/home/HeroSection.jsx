@@ -7,10 +7,9 @@ import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 export default function HeroSection({ title, subtitle, bg_image }) {
   return (
     <section className="relative min-h-screen flex items-center bg-gradient-to-br from-white via-slate-50 to-white overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-[var(--color-gold)]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-sky)]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[var(--color-navy)]/[0.02] rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative elements (reduced opacity and blur) */}
+      <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-[var(--color-gold)]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-sky)]/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
@@ -33,40 +32,40 @@ export default function HeroSection({ title, subtitle, bg_image }) {
             </Link>
 
             <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold font-poppins text-[var(--color-navy)] mb-4 leading-[1.05] tracking-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold font-poppins text-[var(--color-navy)] mb-4 leading-[1.1] tracking-tight"
             >
               {title ? (
                 <span>{title}</span>
               ) : (
-                <>Master Your Future with {' '}
-                  <span className="gradient-text">Premium Education.</span>
+                <>Personalized Coaching for <br className="hidden md:block" />
+                  <span className="gradient-text">KG–12 Students</span>
                 </>
               )}
             </motion.h1>
             
             <motion.p 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base lg:text-lg text-slate-500 mb-6 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+              className="text-base lg:text-lg text-slate-600 mb-6 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
             >
-              {subtitle || "Experience a world-class learning ecosystem. From school foundations to competitive exams like JEE and NEET, we build the leaders of tomorrow."}
+              {subtitle || "Expert guidance for CBSE, ICSE, State Board and Competitive Exam preparation with experienced faculty and small batch learning."}
             </motion.p>
             
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
             >
               <Link href="/admissions" className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2 text-base">
-                Start Learning <ArrowRight size={18} />
+                Book Free Demo Class <ArrowRight size={18} />
               </Link>
-              <Link href="/courses" className="btn-outline w-full sm:w-auto text-center text-base">
-                View All Courses
+              <Link href="/contact" className="btn-outline w-full sm:w-auto text-center text-base">
+                Contact Us
               </Link>
             </motion.div>
             
@@ -80,16 +79,14 @@ export default function HeroSection({ title, subtitle, bg_image }) {
             </motion.p>
 
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-8 flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 sm:gap-6"
+              className="mt-8 flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-5"
             >
-              {['Top Faculty', 'Smart Classrooms', 'High Success Rate'].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-slate-500 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-[var(--color-emerald)]/10 flex items-center justify-center">
-                    <CheckCircle2 size={12} className="text-[var(--color-emerald)]" />
-                  </div>
+              {['KG–12 Coaching', 'CBSE | ICSE | State Board', 'Small Batches', 'Experienced Faculty', 'Regular Assessments'].map((item) => (
+                <div key={item} className="flex items-center gap-2 text-sm text-[var(--color-navy)] font-semibold bg-white/50 border border-slate-200 px-3 py-1.5 rounded-full shadow-sm">
+                  <CheckCircle2 size={14} className="text-[var(--color-emerald)]" />
                   {item}
                 </div>
               ))}
@@ -124,8 +121,7 @@ export default function HeroSection({ title, subtitle, bg_image }) {
               >
                 <div className="flex items-center gap-4 mb-3">
                   <div 
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200/50"
-                    style={{ background: 'linear-gradient(to bottom right, #10B981, #34D399)' }}
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-[var(--color-gold)]/30 bg-gradient-to-br from-[var(--color-gold)] to-[var(--color-gold-dark)]"
                   >
                     <span className="text-white font-bold text-xl">99%</span>
                   </div>
@@ -139,22 +135,21 @@ export default function HeroSection({ title, subtitle, bg_image }) {
                     initial={{ width: 0 }}
                     animate={{ width: '99%' }}
                     transition={{ duration: 1.5, delay: 1, ease: 'easeOut' }}
-                    className="h-full rounded-full"
-                    style={{ background: 'linear-gradient(to right, #10B981, #34D399)' }}
+                    className="h-full rounded-full bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)]"
                   />
                 </div>
               </motion.div>
 
               {/* Floating badge */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
-                className="absolute -top-4 -right-4 bg-white/90 backdrop-blur-xl px-5 py-3 rounded-2xl shadow-xl border border-white/50"
+                className="absolute -top-4 -right-4 bg-white/95 px-5 py-3 rounded-2xl shadow-xl border border-slate-100"
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[var(--color-gold)] animate-pulse" />
-                  <span className="text-sm font-bold text-[var(--color-navy)]">5000+ Students</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-gold)]" />
+                  <span className="text-sm font-bold text-[var(--color-navy)]">Trusted by Students</span>
                 </div>
               </motion.div>
             </motion.div>

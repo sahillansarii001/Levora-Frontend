@@ -13,6 +13,8 @@ import NotesSystem from '@/components/home/NotesSystem';
 import CodingCourses from '@/components/home/CodingCourses';
 import WhyChooseLevora from '@/components/home/WhyChooseLevora';
 import SeoContentBlock from '@/components/home/SeoContentBlock';
+import ParentsSupport from '@/components/home/ParentsSupport';
+import CtaBlock from '@/components/home/CtaBlock';
 
 // New Page Widgets
 import AboutVision from './about/AboutVision';
@@ -64,6 +66,8 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
           else if (sectionId.startsWith('results_grid')) type = 'results_grid';
           else if (sectionId.startsWith('materials_grid')) type = 'materials_grid';
           else if (sectionId.startsWith('seo_content')) type = 'seo_content';
+          else if (sectionId.startsWith('parents_support')) type = 'parents_support';
+          else if (sectionId.startsWith('cta_block')) type = 'cta_block';
           
           sectionsMap[sectionId] = { id: sectionId, type, data: {} };
         }
@@ -95,9 +99,13 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
           case 'programs':
             return <ProgramsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'why':
-            return <WhyLevora key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
+            return <WhyLevora key={section.id} title={section.data.title} subtitle={section.data.subtitle} features={section.data} />;
           case 'why_choose':
             return <WhyChooseLevora key={section.id} title={section.data.title} featuresList={section.data.features} />;
+          case 'parents_support':
+            return <ParentsSupport key={section.id} title={section.data.title} subtitle={section.data.subtitle} features={section.data} />;
+          case 'cta_block':
+            return <CtaBlock key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'notes':
             return <NotesSystem key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'faculty_showcase':

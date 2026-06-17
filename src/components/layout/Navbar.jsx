@@ -19,6 +19,8 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [authData, setAuthData] = useState(null);
+  const [userRole, setUserRole] = useState('');
   const pathname = usePathname();
 
   const isActive = (href) => {
@@ -27,12 +29,37 @@ export default function Navbar() {
   };
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      const dataStr = localStorage.getItem('user');
+      const roleStr = localStorage.getItem('role');
+      if (token && dataStr) {
+        try {
+          setAuthData(JSON.parse(dataStr));
+          setUserRole(roleStr || '');
+        } catch(e) {}
+      } else if (token && roleStr) {
+        setUserRole(roleStr);
+        setAuthData({});
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const getDashboardHref = () => {
+    if (userRole === 'admin' || userRole === 'superadmin') return '/admin/dashboard';
+    if (userRole === 'student') return '/student/dashboard';
+    if (userRole === 'faculty') return '/faculty-portal/dashboard';
+    if (userRole === 'parent') return '/parent/dashboard';
+    return '/dashboard';
+  };
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -82,12 +109,36 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="btn-ghost text-sm">
-              Login
-            </Link>
-            <Link href="/signup" className="btn-primary text-sm">
-              Sign Up
-            </Link>
+            {authData ? (
+              <div className="flex items-center gap-3">
+                <Link href={getDashboardHref()} className="text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors">
+                  Hi, {authData.name?.split(' ')[0] || (userRole ? userRole.charAt(0).toUpperCase() + userRole.slice(1) : 'Student')}
+                </Link>
+                <button 
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('role');
+                    localStorage.removeItem('email');
+                    setAuthData(null);
+                    setUserRole('');
+                    window.location.reload();
+                  }} 
+                  className="btn-ghost text-sm text-red-500 hover:bg-red-50"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className="btn-ghost text-sm">
+                  Login
+                </Link>
+                <Link href="/login" className="btn-primary text-sm">
+                  Sign Up
+                </Link>
+              </>
+            )}
             <Link href="/admissions" className="btn-primary text-sm bg-slate-800 hover:bg-slate-700 text-white">
               Apply Now
             </Link>
@@ -131,20 +182,48 @@ export default function Navbar() {
           </div>
           
           <div className="mt-auto pt-8 border-t border-slate-100 space-y-3">
-            <Link 
-              href="/login" 
-              className="block w-full text-center px-4 py-3.5 text-base font-semibold text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Sign In
-            </Link>
-            <Link 
-              href="/signup" 
-              className="block w-full text-center btn-primary"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Sign Up
-            </Link>
+            {authData ? (
+              <>
+                <Link 
+                  href={getDashboardHref()} 
+                  className="block w-full text-center px-4 py-3.5 text-base font-semibold text-[var(--color-navy)] hover:bg-slate-50 rounded-xl transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Go to Dashboard
+                </Link>
+                <button  
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('user');
+                  localStorage.removeItem('role');
+                  localStorage.removeItem('email');
+                  setAuthData(null);
+                  setUserRole('');
+                  window.location.reload();
+                }}
+                className="block w-full text-center px-4 py-3.5 text-base font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
+              >
+                Logout ({authData.name?.split(' ')[0] || (userRole ? userRole.charAt(0).toUpperCase() + userRole.slice(1) : 'Student')})
+              </button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  href="/login" 
+                  className="block w-full text-center px-4 py-3.5 text-base font-semibold text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  href="/login" 
+                  className="block w-full text-center btn-primary"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
             <Link 
               href="/admissions" 
               className="block w-full text-center py-3.5 rounded-xl font-bold bg-slate-800 text-white hover:bg-slate-700 transition-colors"

@@ -47,7 +47,7 @@ export default function ProgramsSection({ title, subtitle }) {
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 {/* Icon */}
-                <div className={`relative z-10 w-12 h-12 rounded-2xl bg-gradient-to-br ${program.gradient} flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                <div className={`relative z-10 w-12 h-12 rounded-2xl bg-navy flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-500`}>
                   {program.icon}
                 </div>
                 

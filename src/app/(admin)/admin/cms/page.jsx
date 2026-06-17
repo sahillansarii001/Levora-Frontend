@@ -9,7 +9,7 @@ import 'react-quill/dist/quill.snow.css';
 
 export default function MegaCMS() {
   const [activeMenu, setActiveMenu] = useState('notices');
-  const [data, setData] = useState({ notices: [], courses: [], faculty: [], materials: [], results: [] });
+  const [data, setData] = useState({ notices: [], courses: [], faculty: [], materials: [], results: [], testimonials: [] });
   const [siteContent, setSiteContent] = useState({});
   const [activePageEdit, setActivePageEdit] = useState('homepage');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,6 +84,7 @@ export default function MegaCMS() {
       fetchData('faculty', 'faculty'),
       fetchData('materials', 'materials'),
       fetchData('results', 'results'),
+      fetchData('testimonials', 'testimonials'),
       fetchSiteContent()
     ]).then(() => setLoading(false));
   }, []);
@@ -276,7 +277,7 @@ export default function MegaCMS() {
       </div>
 
       {/* Main Workspace Area */}
-      <div className="flex-1 space-y-6">
+      <div className="flex-1 min-w-0 space-y-6">
         
         {/* Header bar */}
         <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -291,8 +292,8 @@ export default function MegaCMS() {
                </button>
              </div>
           ) : (
-             <button onClick={() => { setFormData({}); setEditId(null); setError(''); setIsModalOpen(true); }} className="btn-primary inline-flex items-center justify-center text-sm px-5 w-full md:w-auto">
-               <Plus size={18} className="mr-2" /> Add New
+             <button onClick={() => { setFormData({}); setEditId(null); setError(''); setIsModalOpen(true); }} className="btn-primary inline-flex items-center justify-center text-sm px-5 w-full md:w-auto whitespace-nowrap">
+               <Plus size={18} className="mr-2 shrink-0" /> Add New
              </button>
           )}
         </div>
@@ -322,8 +323,8 @@ export default function MegaCMS() {
             )}
 
             {activeMenu === 'materials' && renderTable(
-              ['Title', 'Category', 'Board', 'Premium'],
-              data.materials.map(m => ({ id: m._id, data: [<strong>{m.title}</strong>, m.category, m.board, m.isPremium ? 'Yes' : 'No'] })),
+              ['Title', 'Class & Subject', 'Chapter', 'Category', 'Premium'],
+              data.materials.map(m => ({ id: m._id, data: [<strong>{m.title}</strong>, `${m.className||'N/A'} - ${m.subject||'N/A'}`, m.lesson||'N/A', m.category, m.isPremium ? <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold">Yes</span> : <span className="px-2 py-1 bg-slate-100 text-slate-500 rounded text-xs font-bold">No</span>] })),
               (id) => handleDelete('materials', id, 'materials'),
               (id) => handleEditClick(id, 'materials')
             )}
@@ -333,6 +334,13 @@ export default function MegaCMS() {
               data.results.map(r => ({ id: r._id, data: [<strong>{r.studentName}</strong>, r.course, `AIR ${r.rank || '-'}`, r.score ? `${r.score}` : `${r.percentage}%`] })),
               (id) => handleDelete('results', id, 'results'),
               (id) => handleEditClick(id, 'results')
+            )}
+
+            {activeMenu === 'testimonials' && renderTable(
+              ['Name', 'Role', 'Quote'],
+              data.testimonials.map(t => ({ id: t._id, data: [<strong>{t.name}</strong>, t.role, t.quote?.substring(0, 50) + '...'] })),
+              (id) => handleDelete('testimonials', id, 'testimonials'),
+              (id) => handleEditClick(id, 'testimonials')
             )}
 
             {activeMenu === 'website' && (
@@ -547,11 +555,20 @@ export default function MegaCMS() {
               )}
               {activeMenu === 'faculty' && (
                 <>
-                  <input type="text" required placeholder="Name" value={formData.name||''} onChange={e=>setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="email" required placeholder="Email" value={formData.email||''} onChange={e=>setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="password" required={!editId} placeholder="Password" value={formData.password||''} onChange={e=>setFormData({...formData, password: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="text" required placeholder="Subject" value={formData.subject||''} onChange={e=>setFormData({...formData, subject: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="text" required placeholder="Phone" value={formData.phone||''} onChange={e=>setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input type="text" required placeholder="Name" value={formData.name||''} onChange={e=>setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="email" required placeholder="Email" value={formData.email||''} onChange={e=>setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input type="password" required={!editId} placeholder="Password" value={formData.password||''} onChange={e=>setFormData({...formData, password: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="text" required placeholder="Subject" value={formData.subject||''} onChange={e=>setFormData({...formData, subject: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <input type="text" required placeholder="Phone" value={formData.phone||''} onChange={e=>setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="text" placeholder="Qualification (e.g. M.Sc, B.Tech)" value={formData.qualification||''} onChange={e=>setFormData({...formData, qualification: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="number" placeholder="Years of Experience" value={formData.experience||''} onChange={e=>setFormData({...formData, experience: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  </div>
+                  <textarea placeholder="Short Introduction (1-2 sentences)" rows="2" value={formData.shortIntro||''} onChange={e=>setFormData({...formData, shortIntro: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <div className="flex gap-2">
                     <input type="text" placeholder="Profile Image URL" value={formData.profileImage||''} onChange={e=>setFormData({...formData, profileImage: e.target.value})} className="flex-1 px-4 py-2 border rounded-lg"/>
                     <div className="relative">
@@ -585,11 +602,60 @@ export default function MegaCMS() {
               )}
               {activeMenu === 'materials' && (
                 <>
-                  <input type="text" required placeholder="Title" value={formData.title||''} onChange={e=>setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <input type="text" required placeholder="File URL (e.g. PDF link)" value={formData.fileUrl||''} onChange={e=>setFormData({...formData, fileUrl: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <select required value={formData.category||'notes'} onChange={e=>setFormData({...formData, category: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
-                    <option value="notes">Notes</option><option value="pyqs">PYQs</option><option value="assignment">Assignment</option>
-                  </select>
+                  <input type="text" required placeholder="Title (e.g. Thermodynamics Part 1)" value={formData.title||''} onChange={e=>setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <div className="grid grid-cols-2 gap-4">
+                    <select required value={formData.className||'11th'} onChange={e=>setFormData({...formData, className: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="9th">Class 9th</option>
+                      <option value="10th">Class 10th</option>
+                      <option value="11th">Class 11th</option>
+                      <option value="12th">Class 12th</option>
+                    </select>
+                    <input type="text" required placeholder="Subject (e.g. Physics)" value={formData.subject||''} onChange={e=>setFormData({...formData, subject: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  </div>
+                  <input type="text" required placeholder="Chapter/Lesson Name (e.g. Chapter 1: Motion)" value={formData.lesson||''} onChange={e=>setFormData({...formData, lesson: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <div className="flex gap-2">
+                    <input type="text" required placeholder="File URL (e.g. PDF link)" value={formData.fileUrl||''} onChange={e=>setFormData({...formData, fileUrl: e.target.value})} className="flex-1 px-4 py-2 border rounded-lg"/>
+                    <div className="relative">
+                      <input 
+                        type="file" 
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={async (e) => {
+                          if(!e.target.files[0]) return;
+                          const fd = new FormData();
+                          fd.append('image', e.target.files[0]);
+                          try {
+                            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/upload`, {
+                              method: 'POST',
+                              headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                              body: fd
+                            });
+                            const data = await res.json();
+                            if(data.success) {
+                              setFormData({...formData, fileUrl: data.url});
+                            } else {
+                              toast.error(data.message);
+                            }
+                          } catch (err) { toast.error('Upload failed'); }
+                        }}
+                      />
+                      <button type="button" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium border border-slate-200 h-full whitespace-nowrap">
+                        Upload File
+                      </button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <select required value={formData.category||'notes'} onChange={e=>setFormData({...formData, category: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="notes">Levora Notes</option>
+                      <option value="textbook">Textbook</option>
+                      <option value="pyqs">PYQs</option>
+                      <option value="assignment">Assignment</option>
+                      <option value="formula">Formula Sheet</option>
+                    </select>
+                    <label className="flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">
+                      <input type="checkbox" checked={formData.isPremium||false} onChange={e=>setFormData({...formData, isPremium: e.target.checked})} className="w-4 h-4 text-gold focus:ring-gold rounded border-slate-300"/>
+                      <span className="text-sm font-medium text-slate-700">Is Premium Resource?</span>
+                    </label>
+                  </div>
                 </>
               )}
               {activeMenu === 'results' && (
@@ -598,6 +664,17 @@ export default function MegaCMS() {
                   <input type="text" placeholder="Course" value={formData.course||''} onChange={e=>setFormData({...formData, course: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <input type="number" placeholder="Rank (if applicable)" value={formData.rank||''} onChange={e=>setFormData({...formData, rank: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <input type="number" placeholder="Percentage" value={formData.percentage||''} onChange={e=>setFormData({...formData, percentage: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                </>
+              )}
+              {activeMenu === 'testimonials' && (
+                <>
+                  <input type="text" required placeholder="Name (e.g. Rahul Sharma)" value={formData.name||''} onChange={e=>setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <input type="text" required placeholder="Role (e.g. JEE Topper 2024 or Parent)" value={formData.role||''} onChange={e=>setFormData({...formData, role: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                  <textarea required placeholder="Testimonial Quote" rows="3" value={formData.quote||''} onChange={e=>setFormData({...formData, quote: e.target.value})} className="w-full px-4 py-2 border rounded-lg resize-y"/>
+                  <label className="flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">
+                    <input type="checkbox" checked={formData.isParent||false} onChange={e=>setFormData({...formData, isParent: e.target.checked})} className="w-4 h-4 text-gold focus:ring-gold rounded border-slate-300"/>
+                    <span className="text-sm font-medium text-slate-700">Is this a Parent Testimonial?</span>
+                  </label>
                 </>
               )}
 
@@ -673,7 +750,9 @@ export default function MegaCMS() {
                 { id: 'stats', name: 'Statistics', icon: <Target className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Display key numbers or achievements visually.', fields: ['stat_1_title', 'stat_1_value', 'stat_2_title', 'stat_2_value'] },
                 { id: 'faq', name: 'FAQ Block', icon: <Users className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'A list of questions and detailed answers.', fields: ['question', 'answer'] },
                 { id: 'programs', name: 'Programs Widget', icon: <BookOpen className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays the school and JEE/NEET programs', fields: ['title', 'subtitle'] },
-                { id: 'why', name: 'Why Levora Widget', icon: <Target className="text-green-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the key features of the academy', fields: ['title', 'subtitle'] },
+                { id: 'why', name: 'Why Levora Widget', icon: <Target className="text-green-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the key features of the academy', fields: ['title', 'subtitle', 'feature_1_title', 'feature_1_desc', 'feature_2_title', 'feature_2_desc', 'feature_3_title', 'feature_3_desc', 'feature_4_title', 'feature_4_desc'] },
+                { id: 'parents_support', name: 'Parents Support', icon: <Users className="text-pink-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'How we support parents (Reports, PTMs, etc.)', fields: ['title', 'subtitle', 'support_1_title', 'support_1_desc', 'support_2_title', 'support_2_desc', 'support_3_title', 'support_3_desc', 'support_4_title', 'support_4_desc'] },
+                { id: 'cta_block', name: 'Call To Action', icon: <Target className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Full-width banner for generating admissions.', fields: ['title', 'subtitle'] },
                 { id: 'notes', name: 'Notes System Widget', icon: <FileEdit className="text-blue-400 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the structured study materials', fields: ['title', 'subtitle'] },
                 { id: 'faculty_showcase', name: 'Faculty Widget', icon: <Users className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays top faculty members from database', fields: ['title', 'subtitle'] },
                 { id: 'results_showcase', name: 'Results Widget', icon: <Award className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays student results from database', fields: ['title', 'subtitle'] },
