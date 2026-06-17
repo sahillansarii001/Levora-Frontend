@@ -14,7 +14,7 @@ const codingCourses = [
   { id: 6, title: 'AI & Data Science', icon: <Cpu size={20} />, tag: 'Advanced', desc: "Machine learning fundamentals.", gradient: 'from-cyan-500 to-blue-600' },
 ];
 
-export default function CodingCourses() {
+export default function CodingCourses({ title, subtitle }) {
   return (
     <section className="py-28 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
@@ -22,8 +22,8 @@ export default function CodingCourses() {
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-14">
           <SectionHeading 
-            title="Future-Ready Tech Skills" 
-            subtitle="Equip yourself with the most in-demand technical skills for the modern digital economy."
+            title={title || "Future-Ready Tech Skills"} 
+            subtitle={subtitle || "Equip yourself with the most in-demand technical skills for the modern digital economy."}
           />
           <Link href="/courses?category=Computer" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
             View All Tech Courses <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />

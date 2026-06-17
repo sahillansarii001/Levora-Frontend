@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { name: 'Faculty', href: '/faculty' },
   { name: 'Materials', href: '/study-materials' },
   { name: 'Results', href: '/results' },
-  { name: 'Admissions', href: '/admissions' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {

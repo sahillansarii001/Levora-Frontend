@@ -13,7 +13,7 @@ const noteFeatures = [
   { icon: <DownloadCloud size={22} />, title: "Practice Worksheets", desc: "Daily practice problems (DPPs) with difficulty tiers." },
 ];
 
-export default function NotesSystem() {
+export default function NotesSystem({ title, subtitle }) {
   return (
     <section className="py-28 bg-gradient-to-br from-[var(--color-dark)] via-[var(--color-navy)] to-[var(--color-dark)] relative overflow-hidden">
       {/* Decorative blobs */}
@@ -36,10 +36,10 @@ export default function NotesSystem() {
               <span>Exclusive Resource</span>
             </motion.div>
             <h2 className="text-3xl md:text-5xl font-bold font-poppins text-white mb-6 tracking-tight leading-tight">
-              Levora <span className="gradient-text">Self Notes</span> System
+              {title ? title : <>Levora <span className="gradient-text">Self Notes</span> System</>}
             </h2>
             <p className="text-slate-400 max-w-2xl text-lg leading-relaxed">
-              Disorganized studying is a thing of the past. Our proprietary notes system provides structured, high-yield material designed scientifically for maximum retention.
+              {subtitle || "Disorganized studying is a thing of the past. Our proprietary notes system provides structured, high-yield material designed scientifically for maximum retention."}
             </p>
           </div>
           <div>

@@ -51,6 +51,7 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
           else if (sectionId.startsWith('faq')) type = 'faq';
           else if (sectionId.startsWith('gallery')) type = 'gallery';
           else if (sectionId.startsWith('programs')) type = 'programs';
+          else if (sectionId.startsWith('why_choose')) type = 'why_choose';
           else if (sectionId.startsWith('why')) type = 'why';
           else if (sectionId.startsWith('notes')) type = 'notes';
           else if (sectionId.startsWith('faculty_showcase')) type = 'faculty_showcase';
@@ -76,7 +77,20 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
     }
   });
 
-  const sections = Object.values(sectionsMap);
+  const layoutString = content[`${pageName}._layout`];
+  let sections = Object.values(sectionsMap);
+
+  if (layoutString) {
+    const layoutOrder = layoutString.split(',');
+    sections.sort((a, b) => {
+      const indexA = layoutOrder.indexOf(a.id);
+      const indexB = layoutOrder.indexOf(b.id);
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1; // Unordered items go to the end
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+  }
 
   if (sections.length === 0) {
     return null;
@@ -123,7 +137,7 @@ export default function DynamicRenderer({ content, pageName = 'homepage' }) {
           case 'admissions_form':
             return <AdmissionsForm key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'results_showcase':
-            return <ResultsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
+            return <ResultsSection key={section.id} title={section.data.title} subtitle={section.data.subtitle} linkText={section.data.link_text} achievementsData={section.data} />;
           case 'coding':
             return <CodingCourses key={section.id} title={section.data.title} subtitle={section.data.subtitle} />;
           case 'testimonials':

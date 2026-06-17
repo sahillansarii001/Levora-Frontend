@@ -63,7 +63,8 @@ export default function Testimonials({ title, subtitle }) {
     fetchTestimonials();
   }, []);
 
-  if (loading || testimonialsList.length === 0) return null;
+  if (loading) return null;
+  const displayTestimonials = testimonialsList.length > 0 ? testimonialsList : testimonials;
 
   return (
     <section className="py-24 bg-white relative overflow-hidden border-t border-slate-100">
@@ -77,9 +78,9 @@ export default function Testimonials({ title, subtitle }) {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 max-w-6xl mx-auto">
-          {testimonialsList.map((test, index) => (
+          {displayTestimonials.map((test, index) => (
             <motion.div
-              key={test._id}
+              key={test._id || test.id || index}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -129,14 +129,33 @@ export default function MegaCMS() {
 
   const saveWebsiteContent = async () => {
     try {
+      // Determine the current sequence of sections
+      const keys = Object.keys(siteContent).filter(k => k.startsWith(activePageEdit) && !k.endsWith('._layout'));
+      const grouped = keys.reduce((acc, key) => {
+        const parts = key.split('.');
+        const section = parts.length > 2 ? parts[1] : 'general';
+        if (!acc[section]) acc[section] = [];
+        acc[section].push(key);
+        return acc;
+      }, {});
+      const layoutOrder = Object.keys(grouped).join(',');
+
       const updates = Object.keys(siteContent)
-        .filter(key => key.startsWith(activePageEdit))
+        .filter(key => key.startsWith(activePageEdit) && !key.endsWith('._layout'))
         .map(key => {
           const parts = key.split('.');
           const page = parts[0];
           const section = parts.length > 2 ? parts[1] : 'general';
           return { key, value: siteContent[key], page, section };
         });
+
+      // Append layout definition
+      updates.push({
+        key: `${activePageEdit}._layout`,
+        value: layoutOrder,
+        page: activePageEdit,
+        section: 'system'
+      });
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/content`, {
         method: 'PUT',
@@ -346,7 +365,7 @@ export default function MegaCMS() {
             {activeMenu === 'website' && (
                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                  <div className="flex flex-wrap gap-2 mb-8 border-b border-slate-100 pb-4">
-                   {['homepage', 'about', 'contact'].map(p => (
+                   {['homepage', 'about', 'courses', 'faculty', 'study-materials', 'results', 'contact'].map(p => (
                      <button key={p} onClick={()=>setActivePageEdit(p)} className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors capitalize whitespace-nowrap ${activePageEdit===p?'bg-navy text-white':'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>{p.replace('-', ' ')}</button>
                    ))}
                  </div>
@@ -755,7 +774,7 @@ export default function MegaCMS() {
                 { id: 'cta_block', name: 'Call To Action', icon: <Target className="text-blue-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Full-width banner for generating admissions.', fields: ['title', 'subtitle'] },
                 { id: 'notes', name: 'Notes System Widget', icon: <FileEdit className="text-blue-400 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Highlights the structured study materials', fields: ['title', 'subtitle'] },
                 { id: 'faculty_showcase', name: 'Faculty Widget', icon: <Users className="text-purple-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays top faculty members from database', fields: ['title', 'subtitle'] },
-                { id: 'results_showcase', name: 'Results Widget', icon: <Award className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays student results from database', fields: ['title', 'subtitle'] },
+                { id: 'results_showcase', name: 'Results Widget', icon: <Award className="text-orange-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays student results from database', fields: ['title', 'subtitle', 'link_text', 'stat_1_value', 'stat_1_label', 'stat_2_value', 'stat_2_label', 'stat_3_value', 'stat_3_label', 'stat_4_value', 'stat_4_label'] },
                 { id: 'coding', name: 'Coding Courses Widget', icon: <Globe className="text-cyan-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Displays the Levora Coder courses', fields: ['title', 'subtitle'] },
                 { id: 'testimonials', name: 'Testimonials Widget', icon: <MessageSquare className="text-pink-500 mb-4 transition-transform group-hover:scale-110" size={36}/>, desc: 'Student testimonials carousel', fields: ['title', 'subtitle'] },
                 
