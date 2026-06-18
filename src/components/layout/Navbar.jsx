@@ -136,7 +136,7 @@ export default function Navbar() {
                 <Link href="/login" className="btn-ghost text-sm">
                   Login
                 </Link>
-                <Link href="/login" className="btn-primary text-sm">
+                <Link href="/signup" className="btn-primary text-sm">
                   Sign Up
                 </Link>
               </>
@@ -218,7 +218,7 @@ export default function Navbar() {
                   Sign In
                 </Link>
                 <Link 
-                  href="/login" 
+                  href="/signup" 
                   className="block w-full text-center btn-primary"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
