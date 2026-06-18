@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { User, Lock, Loader2, Sparkles, ArrowLeft } from 'lucide-react';
+import { User, Lock, Loader2, Sparkles, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function UnifiedLogin() {
@@ -11,6 +11,7 @@ export default function UnifiedLogin() {
   
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -118,20 +119,27 @@ export default function UnifiedLogin() {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label className="block text-xs font-bold text-slate-700">Password</label>
-              <a href="#" className="text-xs text-[var(--color-sky)] hover:text-[var(--color-navy)] font-bold transition-colors">Forgot Password?</a>
+              <Link href="/forgot-password" className="text-xs text-[var(--color-sky)] hover:text-[var(--color-navy)] font-bold transition-colors">Forgot Password?</Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                 <Lock size={16} />
               </div>
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"} 
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-sm" 
+                className="w-full pl-10 pr-12 py-2.5 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-sm" 
                 placeholder="••••••••" 
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-[var(--color-gold)] transition-colors"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
 
