@@ -27,7 +27,7 @@ export default function FacultySidebar({ isOpen, setIsOpen }) {
         />
       )}
       
-      <aside className={`w-64 bg-slate-900 text-white border-r border-slate-800 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40 transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`w-64 bg-navy text-white border-r border-white/10 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40 transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-6 border-b border-white/10 flex justify-between items-center">
           <Image 
             src="/Logo.png" 
@@ -42,7 +42,7 @@ export default function FacultySidebar({ isOpen, setIsOpen }) {
         </div>
       
       <div className="flex-1 py-8 px-4 flex flex-col gap-2 overflow-y-auto">
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-4 shrink-0">Faculty Portal</p>
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-4 shrink-0">Faculty Portal</p>
         
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -53,8 +53,8 @@ export default function FacultySidebar({ isOpen, setIsOpen }) {
               onClick={() => setIsOpen && setIsOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 isActive 
-                  ? 'bg-sky text-white font-bold' 
-                  : 'text-slate-400 hover:bg-white/10 hover:text-white font-medium'
+                  ? 'bg-gold text-navy font-bold' 
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
               }`}
             >
               {item.icon}
@@ -68,7 +68,7 @@ export default function FacultySidebar({ isOpen, setIsOpen }) {
         <Link 
           href="/login" 
           onClick={() => localStorage.clear()}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors font-medium"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-colors font-medium"
         >
           <LogOut size={20} />
           Logout

@@ -53,16 +53,16 @@ export default function StudentSidebar({ isOpen, setIsOpen }) {
         />
       )}
       
-      <aside className={`w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
-      <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+      <aside className={`w-64 bg-navy text-white border-r border-white/10 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <div className="p-6 border-b border-white/10 flex justify-between items-center">
         <Image 
           src="/Logo.png" 
           alt="Levora Student" 
           width={220} 
           height={60} 
-          className="h-16 w-auto"
+          className="h-16 w-auto filter brightness-0 invert"
         />
-        <button className="lg:hidden text-slate-400 hover:text-slate-600" onClick={() => setIsOpen && setIsOpen(false)}>
+        <button className="lg:hidden text-slate-400 hover:text-white transition-colors" onClick={() => setIsOpen && setIsOpen(false)}>
           <X size={24} />
         </button>
       </div>
@@ -79,8 +79,8 @@ export default function StudentSidebar({ isOpen, setIsOpen }) {
               onClick={() => setIsOpen && setIsOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 isActive 
-                  ? 'bg-sky/10 text-sky font-bold' 
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-navy font-medium'
+                  ? 'bg-gold text-navy font-bold' 
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
               }`}
             >
               {item.icon}
@@ -90,7 +90,7 @@ export default function StudentSidebar({ isOpen, setIsOpen }) {
         })}
       </div>
 
-      <div className="p-4 border-t border-slate-200">
+      <div className="p-4 border-t border-white/10">
         <Link 
           href="/login" 
           onClick={() => {
@@ -99,7 +99,7 @@ export default function StudentSidebar({ isOpen, setIsOpen }) {
             localStorage.removeItem('email');
             localStorage.removeItem('user');
           }}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors font-medium"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-colors font-medium"
         >
           <LogOut size={20} />
           Logout
