@@ -36,3 +36,8 @@ This is the frontend application for Levora Academy, built with Next.js 14, Tail
 - `npm run build` - Build the application for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+
+## ⚡ Performance Optimizations
+- **Next.js Link Prefetching:** All `<Link>` components use `prefetch={false}` to prevent aggressive background fetching of React Server Component payloads (`?_rsc=...`) during scroll.
+- **Removed Polling Mechanisms:** Eliminated arbitrary `setInterval` background polling across all data grids and layouts (including `LiveReloader`) to vastly reduce server load and unnecessary database queries.
+- **Mobile Responsiveness:** Improved UI scaling on the Study Materials page for smaller screens.
