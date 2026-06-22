@@ -18,7 +18,8 @@ export default function RegistrationsPage() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/admin/registrations", {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_URL}/admin/registrations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,7 +45,8 @@ export default function RegistrationsPage() {
   const handleStatusUpdate = async (id, role, status) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/admin/registrations/${id}/status`, {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_URL}/admin/registrations/${id}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
