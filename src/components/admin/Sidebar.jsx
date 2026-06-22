@@ -66,6 +66,11 @@ const navItems = [
     href: "/admin/results",
     icon: <TrendingUp size={20} />,
   },
+  {
+    name: "Registrations",
+    href: "/admin/registrations",
+    icon: <UserCog size={20} />,
+  },
 ];
 
 const superAdminItems = [
