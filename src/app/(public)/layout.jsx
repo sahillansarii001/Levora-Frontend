@@ -1,6 +1,5 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import LiveReloader from "@/components/shared/LiveReloader";
 import { AlertTriangle } from "lucide-react";
 
 
@@ -33,7 +32,6 @@ export default async function PublicLayout({ children }) {
       <html lang="en">
         <body>
           <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-            <LiveReloader />
             <div className="bg-white p-8 rounded-2xl shadow-xl text-center max-w-md w-full border border-red-100">
               <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <AlertTriangle size={32} />
@@ -54,7 +52,6 @@ export default async function PublicLayout({ children }) {
 
   return (
     <>
-      <LiveReloader />
       <Navbar />
       <main className="flex-grow pb-16 md:pb-0">
         {children}
