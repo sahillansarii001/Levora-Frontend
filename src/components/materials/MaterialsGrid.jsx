@@ -37,8 +37,8 @@ export default function MaterialsGrid({ title, subtitle }) {
       setLoading(false);
     };
     loadData();
-    const interval = setInterval(loadData, 10000);
-    return () => clearInterval(interval);
+    // Removed aggressive polling
+    
   }, []);
 
   const groupedMaterials = useMemo(() => {

@@ -79,8 +79,8 @@ export default function AdminDashboard() {
     };
 
     fetchLogsCount();
-    const interval = setInterval(fetchLogsCount, 5000);
-    return () => clearInterval(interval);
+    // Removed aggressive polling
+    
   }, [role]);
 
   const stats = [

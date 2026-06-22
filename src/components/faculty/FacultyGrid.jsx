@@ -21,8 +21,8 @@ export default function FacultyGrid({ title, subtitle }) {
       setLoading(false);
     };
     loadFaculty();
-    const interval = setInterval(loadFaculty, 3000);
-    return () => clearInterval(interval);
+    // Removed aggressive polling
+    
   }, []);
 
   return (

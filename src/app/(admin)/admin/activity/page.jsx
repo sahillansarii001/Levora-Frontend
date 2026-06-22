@@ -45,8 +45,8 @@ export default function ActivityLog() {
 
   useEffect(() => {
     fetchLogs();
-    const interval = setInterval(fetchLogs, 5000); // Polling every 5s for real-time updates
-    return () => clearInterval(interval);
+    // Removed aggressive polling // Polling every 5s for real-time updates
+    
   }, []);
 
   const handleDelete = async (id) => {

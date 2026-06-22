@@ -23,8 +23,8 @@ export default function ResultsGrid({ title, subtitle }) {
       setLoading(false);
     };
     loadResults();
-    const interval = setInterval(loadResults, 3000);
-    return () => clearInterval(interval);
+    // Removed aggressive polling
+    
   }, []);
 
   return (

@@ -40,8 +40,8 @@ export default function CoursesGrid({ title, subtitle }) {
       }
     };
     loadCourses();
-    const interval = setInterval(loadCourses, 3000);
-    return () => clearInterval(interval);
+    // Removed aggressive polling
+    
   }, []);
 
   const filteredCourses = filter === 'All' 
