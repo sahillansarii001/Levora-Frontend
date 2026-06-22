@@ -49,7 +49,7 @@ export default function ParentSidebar({ isOpen, setIsOpen }) {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link 
+            <Link prefetch={false}
               key={item.name} 
               href={item.href}
               onClick={() => setIsOpen && setIsOpen(false)}
@@ -67,7 +67,7 @@ export default function ParentSidebar({ isOpen, setIsOpen }) {
       </div>
 
       <div className="p-4 border-t border-white/10">
-        <Link 
+        <Link prefetch={false}
           href="/login" 
           onClick={() => {
             localStorage.removeItem('token');

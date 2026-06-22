@@ -37,7 +37,7 @@ export default function FacultyShowcase() {
             title="Learn from the Best" 
             subtitle="Our faculty comprises top educators and industry experts dedicated to your success."
           />
-          <Link href="/faculty" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
+          <Link prefetch={false}href="/faculty" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
             View All Faculty <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -61,7 +61,7 @@ export default function FacultyShowcase() {
         )}
         
         <div className="mt-10 text-center md:hidden">
-          <Link href="/faculty" className="btn-outline w-full inline-block">
+          <Link prefetch={false}href="/faculty" className="btn-outline w-full inline-block">
             View All Faculty
           </Link>
         </div>

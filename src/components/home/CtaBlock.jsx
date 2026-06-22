@@ -27,7 +27,7 @@ export default function CtaBlock({ title, subtitle }) {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-            <Link href="/admissions" className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2">
+            <Link prefetch={false}href="/admissions" className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2">
               Book Free Demo Class <ArrowRight size={18} />
             </Link>
             <a href="tel:+919876543210" className="w-full sm:w-auto px-7 py-3 rounded-lg font-bold text-white border-2 border-white/20 hover:bg-white/10 transition-all duration-300 inline-flex items-center justify-center gap-2">

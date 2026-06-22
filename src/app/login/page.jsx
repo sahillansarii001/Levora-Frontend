@@ -71,7 +71,7 @@ export default function UnifiedLogin() {
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-sky)]/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Back Button */}
-      <Link href="/" className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex items-center gap-2 text-slate-500 hover:text-[var(--color-navy)] transition-colors font-semibold group">
+      <Link prefetch={false}href="/" className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex items-center gap-2 text-slate-500 hover:text-[var(--color-navy)] transition-colors font-semibold group">
         <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:shadow-md transition-all">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
         </div>
@@ -119,7 +119,7 @@ export default function UnifiedLogin() {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label className="block text-xs font-bold text-slate-700">Password</label>
-              <Link href="/forgot-password" className="text-xs text-[var(--color-sky)] hover:text-[var(--color-navy)] font-bold transition-colors">Forgot Password?</Link>
+              <Link prefetch={false}href="/forgot-password" className="text-xs text-[var(--color-sky)] hover:text-[var(--color-navy)] font-bold transition-colors">Forgot Password?</Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
@@ -160,7 +160,7 @@ export default function UnifiedLogin() {
 
         <div className="relative z-10 text-center mt-6 text-sm text-slate-500">
           Not registered yet?{' '}
-          <Link href="/signup" className="text-[var(--color-gold)] font-bold hover:underline">
+          <Link prefetch={false}href="/signup" className="text-[var(--color-gold)] font-bold hover:underline">
             Create Account
           </Link>
         </div>

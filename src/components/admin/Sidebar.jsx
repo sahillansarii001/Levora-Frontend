@@ -164,7 +164,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
-              <Link
+              <Link prefetch={false}
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsOpen?.(false)}
@@ -204,7 +204,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                           {item.subItems.map(subItem => {
                             const isSubActive = pathname === subItem.href;
                             return (
-                              <Link
+                              <Link prefetch={false}
                                 key={subItem.name}
                                 href={subItem.href}
                                 onClick={() => setIsOpen?.(false)}
@@ -226,7 +226,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
                 const isActive = pathname === item.href;
                 return (
-                  <Link
+                  <Link prefetch={false}
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsOpen?.(false)}

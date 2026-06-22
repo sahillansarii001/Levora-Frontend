@@ -280,7 +280,7 @@ export default function StudentDashboard() {
                 <button className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-slate-200 hover:border-navy hover:text-navy hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
                   Download ID Card <Download size={16} className="text-slate-400" />
                 </button>
-                <Link href="/student/materials" className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-slate-200 hover:border-navy hover:text-navy hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
+                <Link prefetch={false}href="/student/materials" className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-slate-200 hover:border-navy hover:text-navy hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
                   Premium Notes <FileText size={16} className="text-slate-400" />
                 </Link>
               </div>

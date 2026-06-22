@@ -31,7 +31,7 @@ export default function CourseCard({ course }) {
       
       <div className="px-7 py-5 bg-gradient-to-r from-slate-50 to-white border-t border-slate-100 flex items-center justify-between mt-auto group-hover:from-[var(--color-navy)] group-hover:to-[var(--color-navy-light)] transition-all duration-500">
         <span className="font-bold text-xl text-[var(--color-navy)] group-hover:text-white transition-colors duration-500">{course.fees || `₹${course.fee}`}</span>
-        <Link 
+        <Link prefetch={false}
           href={`/courses/${course.slug || course.courseCode || course._id}`} 
           className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] group-hover:text-[var(--color-gold)] transition-colors duration-500"
         >

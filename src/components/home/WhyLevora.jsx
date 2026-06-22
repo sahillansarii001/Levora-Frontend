@@ -67,7 +67,7 @@ export default function WhyLevora({ title, subtitle, features = {} }) {
               ))}
             </div>
             
-            <Link href="/admissions" className="btn-primary inline-flex items-center gap-2">
+            <Link prefetch={false}href="/admissions" className="btn-primary inline-flex items-center gap-2">
               Enroll for 2025 Batch <ArrowRight size={18} />
             </Link>
           </div>

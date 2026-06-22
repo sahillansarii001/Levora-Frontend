@@ -89,7 +89,7 @@ export default function ResultsSection({ title, subtitle, achievementsData, link
               ))}
             </div>
             
-            <Link href="/results" className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors mt-8 group">
+            <Link prefetch={false}href="/results" className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors mt-8 group">
               {linkText || "View All Results"} <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>

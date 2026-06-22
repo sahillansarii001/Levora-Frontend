@@ -16,7 +16,7 @@ export default function Footer({ settings = {} }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
           {/* Brand Column (Span 2) */}
           <div className="lg:col-span-2">
-            <Link prefetch={false} href="/" className="inline-block mb-6" aria-label="Levora Academy Home">
+            <Link prefetch={false}href="/" className="inline-block mb-6" aria-label="Levora Academy Home">
               <Image 
                 src="/Logo.png" 
                 alt="Levora Academy Logo" 
@@ -67,7 +67,7 @@ export default function Footer({ settings = {} }) {
             <ul className="space-y-3.5">
               {['School Foundation', 'JEE / NEET Prep', 'Coding & Tech', 'Skill Development', 'Premium Materials'].map((item) => (
                 <li key={item}>
-                  <Link prefetch={false} href="/courses" className="text-sm text-slate-400 hover:text-[var(--color-gold)] transition-colors duration-200 flex items-center gap-2 group">
+                  <Link prefetch={false}href="/courses" className="text-sm text-slate-400 hover:text-[var(--color-gold)] transition-colors duration-200 flex items-center gap-2 group">
                     <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-[var(--color-gold)] transition-colors" />
                     {item}
                   </Link>
@@ -88,7 +88,7 @@ export default function Footer({ settings = {} }) {
                 { name: 'Contact Support', href: '/contact' },
               ].map((item) => (
                 <li key={item.name}>
-                  <Link prefetch={false} href={item.href} className="text-sm text-slate-400 hover:text-[var(--color-gold)] transition-colors duration-200 flex items-center gap-2 group">
+                  <Link prefetch={false}href={item.href} className="text-sm text-slate-400 hover:text-[var(--color-gold)] transition-colors duration-200 flex items-center gap-2 group">
                     <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-[var(--color-gold)] transition-colors" />
                     {item.name}
                   </Link>
@@ -149,8 +149,8 @@ export default function Footer({ settings = {} }) {
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
           <p>&copy; {new Date().getFullYear()} Levora Academy. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link prefetch={false} href="/privacy" className="hover:text-[var(--color-gold)] transition-colors">Privacy Policy</Link>
-            <Link prefetch={false} href="/terms" className="hover:text-[var(--color-gold)] transition-colors">Terms of Service</Link>
+            <Link prefetch={false}href="/privacy" className="hover:text-[var(--color-gold)] transition-colors">Privacy Policy</Link>
+            <Link prefetch={false}href="/terms" className="hover:text-[var(--color-gold)] transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

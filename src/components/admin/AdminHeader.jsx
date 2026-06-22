@@ -104,7 +104,7 @@ export default function AdminHeader({ onMenuClick }) {
                   )}
                 </div>
                 <div className="p-3 border-t border-slate-100 text-center bg-slate-50/50">
-                  <Link href="/admin/activity" onClick={() => setShowNotifications(false)} className="text-sm font-semibold text-slate-500 hover:text-navy block w-full">View All Activity</Link>
+                  <Link prefetch={false}href="/admin/activity" onClick={() => setShowNotifications(false)} className="text-sm font-semibold text-slate-500 hover:text-navy block w-full">View All Activity</Link>
                 </div>
               </div>
             </>

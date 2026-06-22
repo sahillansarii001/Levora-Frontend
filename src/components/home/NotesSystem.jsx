@@ -43,7 +43,7 @@ export default function NotesSystem({ title, subtitle }) {
             </p>
           </div>
           <div>
-            <Link href="/study-materials" className="btn-primary inline-flex items-center gap-2 text-base">
+            <Link prefetch={false}href="/study-materials" className="btn-primary inline-flex items-center gap-2 text-base">
               Access Library <ArrowRight size={18} />
             </Link>
           </div>

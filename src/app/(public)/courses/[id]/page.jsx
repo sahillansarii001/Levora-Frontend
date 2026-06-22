@@ -8,7 +8,7 @@ export default function CourseDetailsPage({ params }) {
   return (
     <div className="bg-slate-50 min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4 md:px-8 max-w-4xl">
-        <Link href="/courses" className="inline-flex items-center text-slate-500 hover:text-navy mb-8 transition-colors">
+        <Link prefetch={false}href="/courses" className="inline-flex items-center text-slate-500 hover:text-navy mb-8 transition-colors">
           <ArrowLeft size={16} className="mr-2" />
           Back to Courses
         </Link>
@@ -43,10 +43,10 @@ export default function CourseDetailsPage({ params }) {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" className="btn-outline px-8 py-3 text-center">
+            <Link prefetch={false}href="/contact" className="btn-outline px-8 py-3 text-center">
               Contact Us
             </Link>
-            <Link href="/admissions" className="btn-primary px-8 py-3 text-center">
+            <Link prefetch={false}href="/admissions" className="btn-primary px-8 py-3 text-center">
               Apply for Admission
             </Link>
           </div>

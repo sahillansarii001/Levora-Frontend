@@ -19,7 +19,7 @@ export default function HeroSection({ title, subtitle, bg_image }) {
           
           {/* Text Content */}
           <div className="lg:w-1/2 text-center lg:text-left">
-            <Link href="/admissions">
+            <Link prefetch={false}href="/admissions">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -61,10 +61,10 @@ export default function HeroSection({ title, subtitle, bg_image }) {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
             >
-              <Link href="/admissions" className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2 text-base">
+              <Link prefetch={false}href="/admissions" className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2 text-base">
                 Book Free Demo Class <ArrowRight size={18} />
               </Link>
-              <Link href="/contact" className="btn-outline w-full sm:w-auto text-center text-base">
+              <Link prefetch={false}href="/contact" className="btn-outline w-full sm:w-auto text-center text-base">
                 Contact Us
               </Link>
             </motion.div>

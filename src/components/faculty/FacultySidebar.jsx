@@ -47,7 +47,7 @@ export default function FacultySidebar({ isOpen, setIsOpen }) {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link 
+            <Link prefetch={false}
               key={item.name} 
               href={item.href}
               onClick={() => setIsOpen && setIsOpen(false)}
@@ -65,7 +65,7 @@ export default function FacultySidebar({ isOpen, setIsOpen }) {
       </div>
 
       <div className="p-4 border-t border-white/10">
-        <Link 
+        <Link prefetch={false}
           href="/login" 
           onClick={() => localStorage.clear()}
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-colors font-medium"
