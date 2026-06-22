@@ -90,12 +90,12 @@ export default function MaterialsGrid({ title, subtitle }) {
 
         {/* Class Selection Tabs */}
         <div className="flex justify-center mb-10 mt-8">
-          <div className="inline-flex bg-slate-50 p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="flex flex-wrap justify-center bg-slate-50 p-1.5 rounded-2xl border border-slate-200 shadow-sm gap-1 sm:gap-0">
             {CLASS_OPTIONS.map(cls => (
               <button
                 key={cls}
                 onClick={() => setSelectedClass(cls)}
-                className={`px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 ${
+                className={`px-4 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 flex items-center gap-1.5 sm:gap-2 ${
                   selectedClass === cls
                     ? 'bg-white text-[var(--color-navy)] shadow-md border border-slate-100'
                     : 'text-slate-500 hover:text-[var(--color-navy)] hover:bg-slate-100'
@@ -112,10 +112,10 @@ export default function MaterialsGrid({ title, subtitle }) {
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-12 gap-6 bg-white p-4 md:p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40">
           <div className="flex flex-col gap-4 w-full xl:w-auto">
             {/* Notes vs Textbooks Toggle */}
-            <div className="flex bg-slate-100 p-1 rounded-xl w-max">
+            <div className="flex bg-slate-100 p-1 rounded-xl w-full sm:w-max">
               <button
                 onClick={() => setActiveTab('notes')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${
+                className={`flex-1 sm:flex-none justify-center px-4 sm:px-6 py-2.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 transition-all ${
                   activeTab === 'notes' ? 'bg-white text-[var(--color-navy)] shadow-sm' : 'text-slate-500 hover:text-[var(--color-navy)]'
                 }`}
               >
@@ -123,7 +123,7 @@ export default function MaterialsGrid({ title, subtitle }) {
               </button>
               <button
                 onClick={() => setActiveTab('textbooks')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${
+                className={`flex-1 sm:flex-none justify-center px-4 sm:px-6 py-2.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 transition-all ${
                   activeTab === 'textbooks' ? 'bg-white text-[var(--color-navy)] shadow-sm' : 'text-slate-500 hover:text-[var(--color-navy)]'
                 }`}
               >
@@ -148,15 +148,15 @@ export default function MaterialsGrid({ title, subtitle }) {
             </div>
           </div>
           
-          <div className="relative w-full xl:w-80 flex-shrink-0 self-end">
+          <div className="relative w-full xl:w-80 flex-shrink-0 mt-4 xl:mt-0">
             <input 
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={`Search in ${selectedSubject}...`} 
-              className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-[var(--color-gold)] focus:ring-4 focus:ring-[var(--color-gold)]/10 focus:bg-white transition-all text-sm font-medium" 
+              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-[var(--color-gold)] focus:ring-4 focus:ring-[var(--color-gold)]/10 focus:bg-white transition-all text-sm font-medium" 
             />
-            <Search className="absolute left-4 top-3.5 text-slate-400" size={20} />
+            <Search className="absolute left-4 top-3.5 text-slate-400" size={18} />
           </div>
         </div>
 
