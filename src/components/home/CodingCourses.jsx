@@ -25,7 +25,7 @@ export default function CodingCourses({ title, subtitle }) {
             title={title || "Future-Ready Tech Skills"} 
             subtitle={subtitle || "Equip yourself with the most in-demand technical skills for the modern digital economy."}
           />
-          <Link href="/courses?category=Computer" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
+          <Link prefetch={false} href="/courses?category=Computer" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
             View All Tech Courses <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -39,7 +39,7 @@ export default function CodingCourses({ title, subtitle }) {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
             >
-              <Link href={`/courses?category=Computer`} className="group relative block bg-white border border-slate-100 hover:shadow-2xl hover:-translate-y-1 p-7 rounded-2xl transition-all duration-500 overflow-hidden">
+              <Link prefetch={false} href={`/courses?category=Computer`} className="group relative block bg-white border border-slate-100 hover:shadow-2xl hover:-translate-y-1 p-7 rounded-2xl transition-all duration-500 overflow-hidden">
                 {/* Hover gradient background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 

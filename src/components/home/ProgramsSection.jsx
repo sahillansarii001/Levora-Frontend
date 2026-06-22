@@ -27,7 +27,7 @@ export default function ProgramsSection({ title, subtitle }) {
             title={title || "Premium Programs"} 
             subtitle={subtitle || "Expertly crafted curriculums designed to nurture potential at every stage of learning."}
           />
-          <Link href="/courses" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
+          <Link prefetch={false} href="/courses" className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-navy)] hover:text-[var(--color-gold)] transition-colors pb-6 group">
             Explore All Programs 
             <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
@@ -42,7 +42,7 @@ export default function ProgramsSection({ title, subtitle }) {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
             >
-              <Link href={`/courses?category=${program.title}`} className="group relative block bg-white rounded-2xl p-7 border border-slate-100 hover:border-transparent transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden">
+              <Link prefetch={false} href={`/courses?category=${program.title}`} className="group relative block bg-white rounded-2xl p-7 border border-slate-100 hover:border-transparent transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden">
                 {/* Hover gradient background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
@@ -68,7 +68,7 @@ export default function ProgramsSection({ title, subtitle }) {
         </div>
         
         <div className="mt-10 text-center md:hidden">
-          <Link href="/courses" className="btn-outline w-full inline-block">
+          <Link prefetch={false} href="/courses" className="btn-outline w-full inline-block">
             Explore All Programs
           </Link>
         </div>
