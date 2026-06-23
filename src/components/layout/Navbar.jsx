@@ -156,7 +156,7 @@ export default function Navbar() {
                 <Link prefetch={false}href="/login" className="btn-ghost text-sm">
                   Login
                 </Link>
-                <Link prefetch={false}href="/signup" className="btn-primary text-sm">
+                <Link prefetch={false}href="/signup" className="btn-primary text-sm text-white">
                   Sign Up
                 </Link>
               </>
