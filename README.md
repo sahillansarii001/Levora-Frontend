@@ -37,7 +37,8 @@ This is the frontend application for Levora Academy, built with Next.js 14, Tail
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 
-## ⚡ Performance Optimizations
+## ⚡ Features & Optimizations
+- **AI Virtual Counselor:** Integrated a global floating Chatbot powered by Gemini (`gemini-flash-latest`) with scroll-locking and click-outside dismissal optimizations.
 - **Next.js Link Prefetching:** All `<Link>` components use `prefetch={false}` to prevent aggressive background fetching of React Server Component payloads (`?_rsc=...`) during scroll.
 - **Removed Polling Mechanisms:** Eliminated arbitrary `setInterval` background polling across all data grids and layouts (including `LiveReloader`) to vastly reduce server load and unnecessary database queries.
-- **Mobile Responsiveness:** Improved UI scaling on the Study Materials page for smaller screens.
+- **Mobile Responsiveness:** Improved UI scaling on the Study Materials page and Navigation bar for smaller screens.
