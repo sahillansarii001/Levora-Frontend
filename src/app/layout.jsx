@@ -1,5 +1,6 @@
 import { Poppins, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import Chatbot from "@/components/shared/Chatbot";
 import "./globals.css";
 
 const poppins = Poppins({ 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
       <body className="font-sans min-h-screen flex flex-col bg-slate-50 text-slate-800 overflow-x-clip">
         <Toaster position="top-right" />
         {children}
+        <Chatbot />
       </body>
     </html>
   );

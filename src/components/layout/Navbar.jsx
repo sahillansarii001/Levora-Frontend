@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -61,13 +61,33 @@ export default function Navbar() {
     return '/dashboard';
   };
 
+  const mobileMenuRef = useRef(null);
+
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      // If clicking outside the mobile drawer and not on the toggle button itself
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current && 
+        !mobileMenuRef.current.contains(event.target) &&
+        !event.target.closest('#mobile-menu-toggle')
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
+      document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.body.style.overflow = '';
+      document.removeEventListener('mousedown', handleClickOutside);
     }
-    return () => { document.body.style.overflow = ''; };
+
+    return () => { 
+      document.body.style.overflow = ''; 
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [isMobileMenuOpen]);
 
   return (
@@ -148,6 +168,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <button 
+            id="mobile-menu-toggle"
             className="lg:hidden relative z-10 p-2.5 rounded-xl text-slate-600 hover:text-[var(--color-navy)] hover:bg-slate-100 transition-all duration-200"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -162,7 +183,9 @@ export default function Navbar() {
       )}
 
       {/* Mobile Nav Drawer */}
-      <div className={`fixed top-20 right-0 h-[calc(100vh-5rem)] w-full max-w-sm bg-white shadow-2xl lg:hidden transition-transform duration-500 ease-out ${
+      <div 
+        ref={mobileMenuRef}
+        className={`fixed top-20 right-0 h-[calc(100vh-5rem)] w-full max-w-sm bg-white shadow-2xl lg:hidden transition-transform duration-500 ease-out ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex flex-col pt-4 pb-32 px-6 h-full overflow-y-auto">
