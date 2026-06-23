@@ -15,7 +15,7 @@ export default function MyClassesPage() {
         if (userStr) {
           try {
             const user = JSON.parse(userStr);
-            const facultyId = user.id || user._id;
+            const facultyId = user.id || user.id;
             if (!facultyId) {
               // If there's no faculty ID (e.g., an Admin is previewing the page), show no assigned classes.
               setClasses([]);
@@ -86,7 +86,7 @@ export default function MyClassesPage() {
             </div>
           ) : (
             classes.map((cls) => (
-              <div key={cls._id || cls.id} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 group">
+              <div key={cls.id || cls.id} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-sky/10 rounded-xl group-hover:scale-110 transition-transform">
                     <BookOpen className="text-sky" size={24} />

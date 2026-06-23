@@ -17,7 +17,7 @@ export default function ProfilePage() {
 
         // Fetch full profile from API
         try {
-          const id = parsedUser._id || parsedUser.id;
+          const id = parsedUser.id || parsedUser.id;
           if (id) {
             const res = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/student/profile`,

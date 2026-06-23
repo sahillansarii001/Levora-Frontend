@@ -31,7 +31,7 @@ export default function AssignmentsPage() {
       let facultyIdQuery = '';
       if (userStr) {
         const user = JSON.parse(userStr);
-        const facultyId = user.id || user._id;
+        const facultyId = user.id || user.id;
         if (facultyId) facultyIdQuery = `?facultyId=${facultyId}`;
       }
       
@@ -138,7 +138,7 @@ export default function AssignmentsPage() {
               </div>
             ) : (
               assignments.map((assignment) => (
-                <div key={assignment._id || assignment.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-slate-50 transition-colors group">
+                <div key={assignment.id || assignment.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-slate-50 transition-colors group">
                   <div className="flex items-start gap-4">
                     <div className={`p-3 rounded-xl mt-1 ${assignment.status === 'active' ? 'bg-slate-100 text-gold-dark' : 'bg-slate-100 text-emerald'}`}>
                       <FileText size={24} />
@@ -220,7 +220,7 @@ export default function AssignmentsPage() {
                     >
                       {myClasses.length === 0 && <option value="">Loading...</option>}
                       {myClasses.map(c => (
-                        <option key={c._id || c.id} value={c.title}>{c.title}</option>
+                        <option key={c.id || c.id} value={c.title}>{c.title}</option>
                       ))}
                     </select>
                   </div>

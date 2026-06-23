@@ -28,7 +28,7 @@ export default function StudyMaterialsPage() {
           };
 
           const formattedMaterials = data.data.map(m => ({
-            id: m._id,
+            id: m.id,
             title: m.title,
             type: m.type || 'PDF', // Assuming you might add this later
             size: m.size || '2.4 MB', // Placeholder for file size

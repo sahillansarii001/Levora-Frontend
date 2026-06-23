@@ -47,7 +47,7 @@ export default function AdminAdmissionsPage() {
         body: JSON.stringify({ status, remarks: 'Updated by admin' })
       });
       if (res.ok) {
-        setAdmissions(prev => prev.map(adm => adm._id === id ? { ...adm, status } : adm));
+        setAdmissions(prev => prev.map(adm => adm.id === id ? { ...adm, status } : adm));
       } else {
         const errorData = await res.json();
         toast.error(`Error: ${errorData.message}`);
@@ -68,7 +68,7 @@ export default function AdminAdmissionsPage() {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
-        setAdmissions(prev => prev.filter(adm => adm._id !== id));
+        setAdmissions(prev => prev.filter(adm => adm.id !== id));
       } else {
         const errorData = await res.json();
         toast.error(`Error: ${errorData.message}`);
@@ -149,20 +149,20 @@ export default function AdminAdmissionsPage() {
               </tr>
             ) : (
               filteredAdmissions.map((adm) => (
-                <React.Fragment key={adm._id}>
+                <React.Fragment key={adm.id}>
                 <tr 
-                  onClick={() => setExpandedId(expandedId === adm._id ? null : adm._id)}
+                  onClick={() => setExpandedId(expandedId === adm.id ? null : adm.id)}
                   className="bg-white shadow-sm hover:shadow-md transition-shadow group cursor-pointer"
                 >
                   {/* Name */}
-                  <td className={`px-6 py-4 rounded-l-xl border-l border-slate-200 group-hover:border-slate-300 ${expandedId === adm._id ? 'border-t rounded-bl-none' : 'border-y'}`}>
+                  <td className={`px-6 py-4 rounded-l-xl border-l border-slate-200 group-hover:border-slate-300 ${expandedId === adm.id ? 'border-t rounded-bl-none' : 'border-y'}`}>
                     <div className="font-bold text-slate-900 text-base">
                       {adm.name || adm.studentId?.name || 'Unknown'}
                     </div>
                   </td>
 
                   {/* Type */}
-                  <td className={`px-6 py-4 border-slate-200 group-hover:border-slate-300 ${expandedId === adm._id ? 'border-t' : 'border-y'}`}>
+                  <td className={`px-6 py-4 border-slate-200 group-hover:border-slate-300 ${expandedId === adm.id ? 'border-t' : 'border-y'}`}>
                     <span className={`inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-md whitespace-nowrap ${
                       adm.inquiryType === 'Take Admission' ? 'bg-purple-100 text-purple-700' :
                       adm.inquiryType === 'Need Counselling' ? 'bg-blue-100 text-blue-700' :
@@ -173,7 +173,7 @@ export default function AdminAdmissionsPage() {
                   </td>
 
                   {/* Status */}
-                  <td className={`px-6 py-4 border-slate-200 group-hover:border-slate-300 ${expandedId === adm._id ? 'border-t' : 'border-y'}`}>
+                  <td className={`px-6 py-4 border-slate-200 group-hover:border-slate-300 ${expandedId === adm.id ? 'border-t' : 'border-y'}`}>
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold capitalize whitespace-nowrap
                       ${adm.status?.toLowerCase() === 'approved' ? 'bg-green-100 text-green-700' : 
                         adm.status?.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-700' : 
@@ -184,25 +184,25 @@ export default function AdminAdmissionsPage() {
                   </td>
 
                   {/* Actions */}
-                  <td className={`px-6 py-4 rounded-r-xl border-r border-slate-200 group-hover:border-slate-300 ${expandedId === adm._id ? 'border-t rounded-br-none' : 'border-y'}`}>
+                  <td className={`px-6 py-4 rounded-r-xl border-r border-slate-200 group-hover:border-slate-300 ${expandedId === adm.id ? 'border-t rounded-br-none' : 'border-y'}`}>
                     <div className="flex items-center justify-end gap-2 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       {adm.status?.toLowerCase() === 'pending' && (
                         <>
-                          <button onClick={() => handleStatusUpdate(adm._id, 'approved')} className="flex items-center justify-center bg-green-50 text-green-600 hover:bg-green-600 hover:text-white transition-colors p-2 rounded-lg" title="Approve">
+                          <button onClick={() => handleStatusUpdate(adm.id, 'approved')} className="flex items-center justify-center bg-green-50 text-green-600 hover:bg-green-600 hover:text-white transition-colors p-2 rounded-lg" title="Approve">
                             <CheckCircle size={18} />
                           </button>
-                          <button onClick={() => handleStatusUpdate(adm._id, 'rejected')} className="flex items-center justify-center bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors p-2 rounded-lg" title="Reject">
+                          <button onClick={() => handleStatusUpdate(adm.id, 'rejected')} className="flex items-center justify-center bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors p-2 rounded-lg" title="Reject">
                             <XCircle size={18} />
                           </button>
                         </>
                       )}
-                      <button onClick={() => handleDelete(adm._id)} className="flex items-center justify-center bg-red-50 text-red-500 hover:bg-red-600 hover:text-white transition-colors p-2 rounded-lg lg:ml-2" title="Delete">
+                      <button onClick={() => handleDelete(adm.id)} className="flex items-center justify-center bg-red-50 text-red-500 hover:bg-red-600 hover:text-white transition-colors p-2 rounded-lg lg:ml-2" title="Delete">
                         <Trash2 size={18} />
                       </button>
                     </div>
                   </td>
                 </tr>
-                {expandedId === adm._id && (
+                {expandedId === adm.id && (
                   <tr>
                     <td colSpan="4" className="px-6 py-6 bg-slate-50 border-b border-x border-slate-200 rounded-b-xl shadow-inner">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

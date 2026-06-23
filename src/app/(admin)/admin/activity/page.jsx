@@ -26,7 +26,7 @@ export default function ActivityLog() {
           
           const d = new Date(log.createdAt);
           return {
-            id: log._id,
+            id: log.id,
             type: log.type,
             title: log.title,
             desc: log.desc,

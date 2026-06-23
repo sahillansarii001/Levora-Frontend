@@ -7,12 +7,12 @@ import { Users, Trophy, TrendingUp, ChevronRight, BookOpen } from 'lucide-react'
 import Link from 'next/link';
 
 const defaultToppers = [
-  { _id: '1', studentName: "Rahul Deshmukh", course: "JEE Advanced", rank: "AIR 45", percentage: 99.8, color: "from-amber-500 to-orange-600" },
-  { _id: '2', studentName: "Priya Sharma", course: "NEET UG", rank: "AIR 112", percentage: 99.5, color: "from-green-500 to-teal-600" },
-  { _id: '3', studentName: "Amit Patel", course: "CBSE 12th", percentage: 99.2, color: "from-blue-500 to-indigo-600" },
-  { _id: '4', studentName: "Neha Gupta", course: "MHT CET", percentage: 99.9, color: "from-purple-500 to-pink-600" },
-  { _id: '5', studentName: "Rohan Das", course: "JEE Main", percentage: 99.8, color: "from-amber-500 to-orange-600" },
-  { _id: '6', studentName: "Aditi Rao", course: "ICSE 10th", percentage: 98.8, color: "from-blue-500 to-indigo-600" },
+  { id: '1', studentName: "Rahul Deshmukh", course: "JEE Advanced", rank: "AIR 45", percentage: 99.8, color: "from-amber-500 to-orange-600" },
+  { id: '2', studentName: "Priya Sharma", course: "NEET UG", rank: "AIR 112", percentage: 99.5, color: "from-green-500 to-teal-600" },
+  { id: '3', studentName: "Amit Patel", course: "CBSE 12th", percentage: 99.2, color: "from-blue-500 to-indigo-600" },
+  { id: '4', studentName: "Neha Gupta", course: "MHT CET", percentage: 99.9, color: "from-purple-500 to-pink-600" },
+  { id: '5', studentName: "Rohan Das", course: "JEE Main", percentage: 99.8, color: "from-amber-500 to-orange-600" },
+  { id: '6', studentName: "Aditi Rao", course: "ICSE 10th", percentage: 98.8, color: "from-blue-500 to-indigo-600" },
 ];
 
 const defaultAchievements = [
@@ -102,7 +102,7 @@ export default function ResultsSection({ title, subtitle, achievementsData, link
                 
                 return (
                   <motion.div
-                    key={topper._id || index}
+                    key={topper.id || index}
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}

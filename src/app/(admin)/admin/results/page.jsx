@@ -184,7 +184,7 @@ export default function AdminResultsPage() {
                   const percentage = ((res.marksObtained / res.totalMarks) * 100).toFixed(1);
                   const isPass = percentage >= 40;
                   return (
-                    <tr key={res._id} className="hover:bg-slate-50">
+                    <tr key={res.id} className="hover:bg-slate-50">
                       <td className="px-6 py-4">
                         <p className="font-bold text-slate-900">{res.studentId?.name || 'Unknown Student'}</p>
                         <p className="text-xs text-slate-500">{res.studentId?.className || 'N/A'}</p>
@@ -202,7 +202,7 @@ export default function AdminResultsPage() {
                       </td>
                       <td className="px-6 py-4 text-slate-500 max-w-[200px] truncate">{res.remarks || '-'}</td>
                       <td className="px-6 py-4 text-right">
-                        <button onClick={() => handleDelete(res._id)} className="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
+                        <button onClick={() => handleDelete(res.id)} className="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
                       </td>
                     </tr>
                   );
@@ -230,7 +230,7 @@ export default function AdminResultsPage() {
                 <label className="text-sm font-semibold text-slate-700">Select Student</label>
                 <select name="studentId" value={formData.studentId} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm">
                   <option value="">-- Choose Student --</option>
-                  {students.map(s => <option key={s._id} value={s._id}>{s.name} ({s.className || 'No Class'})</option>)}
+                  {students.map(s => <option key={s.id} value={s.id}>{s.name} ({s.className || 'No Class'})</option>)}
                 </select>
               </div>
 
@@ -244,7 +244,7 @@ export default function AdminResultsPage() {
                   <select name="subject" value={formData.subject} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm">
                     <option value="">-- Select Subject --</option>
                     {subjects.map(sub => (
-                      <option key={sub._id} value={sub.title}>{sub.title}</option>
+                      <option key={sub.id} value={sub.title}>{sub.title}</option>
                     ))}
                     <option value="Other">Other</option>
                   </select>

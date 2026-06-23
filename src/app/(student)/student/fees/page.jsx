@@ -102,7 +102,7 @@ export default function StudentFeesPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {fees.map(f => (
-                    <tr key={f._id} className="hover:bg-slate-50">
+                    <tr key={f.id} className="hover:bg-slate-50">
                       <td className="py-4 px-6">
                         <p className="font-bold text-slate-900">{f.receiptId || 'Fee Payment'}</p>
                         {f.remarks && <p className="text-xs text-slate-500 mt-0.5">{f.remarks}</p>}

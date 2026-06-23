@@ -91,7 +91,7 @@ export default function FacultySalaryPage() {
                   </tr>
                 ) : (
                   salaries.map((salary) => (
-                    <tr key={salary._id} className="hover:bg-slate-50/50 transition-colors">
+                    <tr key={salary.id} className="hover:bg-slate-50/50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="font-semibold text-slate-900">{salary.month}</div>
                         {salary.transactionId && (

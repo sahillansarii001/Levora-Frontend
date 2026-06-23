@@ -42,7 +42,7 @@ export default function StudentsPage() {
   const handleOpenModal = (student = null) => {
     if (student) {
       setIsEditing(true);
-      setEditId(student._id);
+      setEditId(student.id);
       setFormData({
         name: student.name || '',
         email: student.email || '',
@@ -220,7 +220,7 @@ export default function StudentsPage() {
                 <tr><td colSpan="6" className="px-6 py-8 text-center text-slate-500">No students found.</td></tr>
               ) : (
                 studentList.map((student) => (
-                  <tr key={student._id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={student.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 font-medium text-slate-500">{student.studentId}</td>
                     <td className="px-6 py-4">
                       <p className="font-bold text-slate-900 flex items-center gap-2">
@@ -251,13 +251,13 @@ export default function StudentsPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenPasswordModal(student._id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
+                        <button onClick={() => handleOpenPasswordModal(student.id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
                           <Key size={16} />
                         </button>
                         <button onClick={() => handleOpenModal(student)} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors" title="Edit">
                           <Edit size={16} />
                         </button>
-                        <button onClick={() => handleDelete(student._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
+                        <button onClick={() => handleDelete(student.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
                           <Trash2 size={16} />
                         </button>
                       </div>

@@ -112,7 +112,7 @@ export default function AdminSchedule() {
   };
 
   const handleEdit = (session) => {
-    setEditingId(session._id);
+    setEditingId(session.id);
     setFormData({
       className: session.className,
       date: new Date(session.date).toISOString().split('T')[0],
@@ -173,7 +173,7 @@ export default function AdminSchedule() {
               </thead>
               <tbody className="text-sm">
                 {schedule.map((session) => (
-                  <tr key={session._id} className="border-b border-slate-50 hover:bg-slate-50">
+                  <tr key={session.id} className="border-b border-slate-50 hover:bg-slate-50">
                     <td className="py-4 px-4">
                       <div className="font-bold text-slate-900">{session.startTime}</div>
                       <div className="text-slate-400 text-xs">{session.endTime}</div>
@@ -184,7 +184,7 @@ export default function AdminSchedule() {
                     <td className="py-4 px-4 text-slate-700 font-medium">{session.instructor}</td>
                     <td className="py-4 px-4 text-right">
                       <button onClick={() => handleEdit(session)} className="text-slate-400 hover:text-navy mr-3"><Edit size={18} /></button>
-                      <button onClick={() => handleDelete(session._id)} className="text-slate-400 hover:text-red-500"><Trash2 size={18} /></button>
+                      <button onClick={() => handleDelete(session.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={18} /></button>
                     </td>
                   </tr>
                 ))}
@@ -242,7 +242,7 @@ export default function AdminSchedule() {
                     <select required value={formData.instructor} onChange={e=>setFormData({...formData, instructor: e.target.value})} className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy bg-white">
                       <option value="">Select Instructor</option>
                       {faculties.filter(f => !formData.subject || f.subject === formData.subject).map(fac => (
-                        <option key={fac._id} value={fac.name}>{fac.name}</option>
+                        <option key={fac.id} value={fac.name}>{fac.name}</option>
                       ))}
                     </select>
                   </div>

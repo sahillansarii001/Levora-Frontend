@@ -58,7 +58,7 @@ export default function RegistrationsPage() {
       const data = await res.json();
       if (data.success) {
         toast.success(data.message);
-        setRegistrations(registrations.filter((r) => r._id !== id));
+        setRegistrations(registrations.filter((r) => r.id !== id));
       } else {
         toast.error(data.message || "Failed to update status");
       }
@@ -100,7 +100,7 @@ export default function RegistrationsPage() {
               </thead>
               <tbody>
                 {registrations.map((user) => (
-                  <tr key={user._id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                  <tr key={user.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td className="py-4 px-6">
                       <div className="font-medium text-navy">{user.name}</div>
                     </td>
@@ -120,14 +120,14 @@ export default function RegistrationsPage() {
                     <td className="py-4 px-6">
                       <div className="flex justify-end gap-2">
                         <button
-                          onClick={() => handleStatusUpdate(user._id, user.role, 'active')}
+                          onClick={() => handleStatusUpdate(user.id, user.role, 'active')}
                           className="flex items-center gap-1 px-3 py-1.5 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-sm font-medium transition-colors"
                         >
                           <Check size={16} />
                           Approve
                         </button>
                         <button
-                          onClick={() => handleStatusUpdate(user._id, user.role, 'rejected')}
+                          onClick={() => handleStatusUpdate(user.id, user.role, 'rejected')}
                           className="flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-sm font-medium transition-colors"
                         >
                           <X size={16} />

@@ -127,7 +127,7 @@ export default function AdminAssignments() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {assignments.map((assignment) => (
-                  <tr key={assignment._id} className="hover:bg-slate-50/50 transition-colors">
+                  <tr key={assignment.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-bold text-slate-900">{assignment.title}</div>
                       <div className="text-xs text-slate-500 mt-0.5">{assignment.subject}</div>
@@ -164,7 +164,7 @@ export default function AdminAssignments() {
                     <td className="px-6 py-4">
                       <div className="flex justify-end">
                         <button 
-                          onClick={() => handleDelete(assignment._id)} 
+                          onClick={() => handleDelete(assignment.id)} 
                           className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg"
                         >
                           <Trash2 size={16} />

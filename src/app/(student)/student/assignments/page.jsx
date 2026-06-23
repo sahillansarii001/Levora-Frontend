@@ -74,7 +74,7 @@ export default function AssignmentsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {assignments.map(assignment => (
-              <div key={assignment._id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+              <div key={assignment.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
                 <div className={`h-2 w-full ${assignment.isCompleted ? 'bg-emerald-500' : 'bg-gold'}`}></div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">
@@ -101,7 +101,7 @@ export default function AssignmentsPage() {
                     
                     {!assignment.isCompleted ? (
                       <button 
-                        onClick={() => handleMarkComplete(assignment._id)}
+                        onClick={() => handleMarkComplete(assignment.id)}
                         className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg transition-colors flex justify-center items-center"
                       >
                         <CheckCircle2 size={18} className="mr-2" /> Mark as Completed

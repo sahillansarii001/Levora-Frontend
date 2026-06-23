@@ -21,7 +21,7 @@ export default function ClassSchedulePage() {
         if (data.success) {
           // Map DB schema to UI schema
           const formattedSchedule = data.data.map(s => ({
-            id: s._id,
+            id: s.id,
             time: s.startTime,
             endTime: s.endTime,
             subject: s.subject,

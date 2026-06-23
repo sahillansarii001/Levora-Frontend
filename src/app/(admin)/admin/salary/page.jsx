@@ -49,9 +49,9 @@ export default function SalaryPage() {
   const handleOpenModal = (record = null) => {
     if (record) {
       setIsEditing(true);
-      setEditId(record._id);
+      setEditId(record.id);
       setFormData({
-        facultyId: record.facultyId?._id || '',
+        facultyId: record.facultyId?.id || record.facultyId || '',
         amount: record.amount,
         paymentDate: new Date(record.paymentDate).toISOString().split('T')[0],
         month: record.month,
@@ -141,9 +141,9 @@ export default function SalaryPage() {
                 <tr><td colSpan="7" className="px-6 py-8 text-center text-slate-500">No records found.</td></tr>
               ) : (
                 records.map((record) => (
-                  <tr key={record._id} className="hover:bg-slate-50">
+                  <tr key={record.id} className="hover:bg-slate-50">
                     <td className="px-6 py-4 font-mono text-xs text-slate-500">{record.transactionId}</td>
-                    <td className="px-6 py-4 font-bold text-slate-900">{record.facultyId?.name}</td>
+                    <td className="px-6 py-4 font-bold text-slate-900">{record.faculty?.name || 'Unknown'}</td>
                     <td className="px-6 py-4 font-semibold text-slate-700">{record.month}</td>
                     <td className="px-6 py-4 font-semibold text-slate-700">₹{record.amount}</td>
                     <td className="px-6 py-4">
@@ -158,7 +158,7 @@ export default function SalaryPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button onClick={() => handleOpenModal(record)} className="text-blue-500 p-1.5"><Edit size={16} /></button>
-                        <button onClick={() => handleDelete(record._id)} className="text-red-500 p-1.5"><Trash2 size={16} /></button>
+                        <button onClick={() => handleDelete(record.id)} className="text-red-500 p-1.5"><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -181,7 +181,7 @@ export default function SalaryPage() {
                 <label className="text-sm font-semibold text-slate-700">Faculty Member</label>
                 <select name="facultyId" value={formData.facultyId} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm">
                   <option value="">Select Faculty...</option>
-                  {faculties.map(f => <option key={f._id} value={f._id}>{f.name} - {f.subject}</option>)}
+                  {faculties.map(f => <option key={f.id} value={f.id}>{f.name} - {f.subject}</option>)}
                 </select>
               </div>
 

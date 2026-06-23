@@ -13,7 +13,7 @@ export default function ResultsGrid({ title, subtitle }) {
     const loadResults = async () => {
       const data = await fetchResults();
       const mapped = data.map(r => ({
-        id: r._id,
+        id: r.id,
         name: r.studentName,
         exam: r.board || r.course,
         rank: r.rank ? `AIR ${r.rank}` : (r.percentage ? `${r.percentage}%` : r.score),

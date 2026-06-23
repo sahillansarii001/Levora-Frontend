@@ -45,11 +45,11 @@ export default function AdminSubjectsPage() {
       courseCode: sub.courseCode,
       fee: sub.fee || 0,
       batches: nextBatches,
-      facultyId: sub.facultyId?._id || sub.facultyId || '',
+      facultyId: sub.facultyId?.id || sub.facultyId || '',
       totalStudents: sub.totalStudents || 0
     });
     setCustomBatch(nextCustomBatch);
-    setEditingId(sub._id);
+    setEditingId(sub.id);
     setIsModalOpen(true);
   };
 
@@ -157,7 +157,7 @@ export default function AdminSubjectsPage() {
     if (!subjectToDelete) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses/${subjectToDelete._id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/courses/${subjectToDelete.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -232,7 +232,7 @@ export default function AdminSubjectsPage() {
                 <tr><td colSpan="5" className="px-6 py-8 text-center text-slate-500">No subjects found.</td></tr>
               ) : (
                 filteredSubjects.map(sub => (
-                  <tr key={sub._id} className="hover:bg-slate-50 transition-colors group">
+                  <tr key={sub.id} className="hover:bg-slate-50 transition-colors group">
                     <td className="px-6 py-4 font-bold text-slate-900 flex items-center gap-3">
                       <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
                         <BookOpen size={16} />
@@ -308,7 +308,7 @@ export default function AdminSubjectsPage() {
                 <select name="facultyId" value={formData.facultyId} onChange={handleInputChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy text-sm bg-white">
                   <option value="">-- Unassigned --</option>
                   {faculties.map(faculty => (
-                    <option key={faculty._id} value={faculty._id}>{faculty.name} ({faculty.subject})</option>
+                    <option key={faculty.id} value={faculty.id}>{faculty.name} ({faculty.subject})</option>
                   ))}
                 </select>
                 <p className="text-xs text-slate-500 mt-1">This subject will appear in the selected faculty member's "My Classes" view.</p>

@@ -13,7 +13,7 @@ export default function AttendancePage() {
     if (userStr) {
       const parsedUser = JSON.parse(userStr);
       setStudent(parsedUser);
-      if (!parsedUser._id && !parsedUser.id) {
+      if (!parsedUser.id && !parsedUser.id) {
         setLoading(false);
       }
     } else {
@@ -23,7 +23,7 @@ export default function AttendancePage() {
 
   useEffect(() => {
     if (student) {
-      if (student._id || student.id) {
+      if (student.id || student.id) {
         fetchAttendance();
       } else {
         setLoading(false);
@@ -35,7 +35,7 @@ export default function AttendancePage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const studentId = student._id || student.id;
+      const studentId = student.id || student.id;
       // Fetch all attendance for the student to calculate overall percentage
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=student&studentId=${studentId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -103,7 +103,7 @@ export default function AttendancePage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {attendanceRecords.map(r => (
-                    <tr key={r._id} className="hover:bg-slate-50">
+                    <tr key={r.id} className="hover:bg-slate-50">
                       <td className="py-3 px-6 font-medium text-slate-700">{new Date(r.date).toLocaleDateString()}</td>
                       <td className="py-3 px-6 text-right">
                         <span className={`inline-flex px-3 py-1 text-xs font-bold rounded-full border ${

@@ -42,7 +42,7 @@ export default function FacultyPage() {
   const handleOpenModal = (faculty = null) => {
     if (faculty) {
       setIsEditing(true);
-      setEditId(faculty._id);
+      setEditId(faculty.id);
       setFormData({
         name: faculty.name || '',
         email: faculty.email || '',
@@ -202,7 +202,7 @@ export default function FacultyPage() {
                 <tr><td colSpan="5" className="px-6 py-8 text-center text-slate-500">No faculty members found.</td></tr>
               ) : (
                 facultyList.map((faculty) => (
-                  <tr key={faculty._id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={faculty.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
                       <p className="font-bold text-slate-900">{faculty.name}</p>
                       <p className="text-xs text-slate-500">{faculty.email}</p>
@@ -218,13 +218,13 @@ export default function FacultyPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenPasswordModal(faculty._id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
+                        <button onClick={() => handleOpenPasswordModal(faculty.id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
                           <Key size={16} />
                         </button>
                         <button onClick={() => handleOpenModal(faculty)} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors" title="Edit">
                           <Edit size={16} />
                         </button>
-                        <button onClick={() => handleDelete(faculty._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
+                        <button onClick={() => handleDelete(faculty.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
                           <Trash2 size={16} />
                         </button>
                       </div>

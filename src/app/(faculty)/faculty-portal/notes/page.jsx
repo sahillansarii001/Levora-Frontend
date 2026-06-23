@@ -203,7 +203,7 @@ export default function UploadNotesPage() {
                   <div className="p-12 text-center text-slate-500 font-medium">No notes uploaded yet.</div>
                 ) : (
                   notes.map((note) => (
-                    <div key={note._id || note.id} className="p-4 sm:p-6 flex items-center justify-between hover:bg-slate-50 transition-colors group">
+                    <div key={note.id || note.id} className="p-4 sm:p-6 flex items-center justify-between hover:bg-slate-50 transition-colors group">
                       <div className="flex items-center gap-4">
                         <div className="p-3 bg-red-50 text-red-500 rounded-xl">
                           <File size={24} />

@@ -18,7 +18,7 @@ export default function MyCoursesPage() {
         if (data.success) {
           // Map DB schema to UI schema
           const formattedCourses = data.data.map((c, i) => ({
-            id: c._id,
+            id: c.id,
             title: c.title,
             instructor: c.facultyId?.name || 'TBA',
             progress: Math.floor(Math.random() * 100), // Placeholder for real progress

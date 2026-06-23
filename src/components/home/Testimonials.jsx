@@ -80,7 +80,7 @@ export default function Testimonials({ title, subtitle }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 max-w-6xl mx-auto">
           {displayTestimonials.map((test, index) => (
             <motion.div
-              key={test._id || test.id || index}
+              key={test.id || test.id || index}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -34,7 +34,7 @@ export default function FacultyDashboardClient() {
   }, []);
 
   useEffect(() => {
-    if (faculty?._id) {
+    if (faculty?.id) {
       fetchAttendance();
       fetchLogs();
     }
@@ -44,7 +44,7 @@ export default function FacultyDashboardClient() {
     setAttLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=faculty&facultyId=${faculty._id}&fromDate=${fromDate}&toDate=${toDate}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance?userType=faculty&facultyId=${faculty.id}&fromDate=${fromDate}&toDate=${toDate}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -61,7 +61,7 @@ export default function FacultyDashboardClient() {
   const fetchLogs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/lecture-logs?facultyId=${faculty._id}&limit=5`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/lecture-logs?facultyId=${faculty.id}&limit=5`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -84,7 +84,7 @@ export default function FacultyDashboardClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
-          facultyId: faculty._id,
+          facultyId: faculty.id,
           date: new Date().toISOString(),
           subject: logForm.subject,
           topics: logForm.topics,
@@ -138,7 +138,7 @@ export default function FacultyDashboardClient() {
               <table className="w-full text-sm text-left">
                 <tbody>
                   {attendanceRecords.map(r => (
-                    <tr key={r._id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                    <tr key={r.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
                       <td className="py-3 px-4 font-medium text-slate-700">{new Date(r.date).toLocaleDateString()}</td>
                       <td className="py-3 px-4 text-right">
                         <span className={`inline-flex px-2 py-1 text-xs font-bold rounded-md ${r.status === 'Present' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{r.status}</span>
@@ -229,7 +229,7 @@ export default function FacultyDashboardClient() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {recentLogs.map(log => (
-                  <tr key={log._id} className="hover:bg-slate-50">
+                  <tr key={log.id} className="hover:bg-slate-50">
                     <td className="px-4 py-3 whitespace-nowrap font-medium text-slate-700">{new Date(log.date).toLocaleDateString()}</td>
                     <td className="px-4 py-3">{log.subject}</td>
                     <td className="px-4 py-3 font-medium text-slate-800">{log.lesson}</td>

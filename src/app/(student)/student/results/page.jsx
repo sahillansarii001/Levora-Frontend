@@ -57,7 +57,7 @@ export default function StudentResultsPage() {
               const percentage = ((res.marksObtained / res.totalMarks) * 100).toFixed(1);
               const isPass = percentage >= 40;
               return (
-                <div key={res._id} className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div key={res.id} className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="text-lg font-bold text-slate-900">{res.examName}</h3>

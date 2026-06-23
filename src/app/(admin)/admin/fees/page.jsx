@@ -51,9 +51,9 @@ export default function FeesPage() {
   const handleOpenModal = (record = null) => {
     if (record) {
       setIsEditing(true);
-      setEditId(record._id);
+      setEditId(record.id);
       setFormData({
-        studentId: record.studentId?._id || '',
+        studentId: record.studentId?.id || '',
         amount: record.amount,
         paymentDate: new Date(record.paymentDate).toISOString().split('T')[0],
         paymentMethod: record.paymentMethod,
@@ -167,7 +167,7 @@ export default function FeesPage() {
                 <tr><td colSpan="6" className="px-6 py-8 text-center text-slate-500">No records found.</td></tr>
               ) : (
                 records.map((record) => (
-                  <tr key={record._id} className="hover:bg-slate-50">
+                  <tr key={record.id} className="hover:bg-slate-50">
                     <td className="px-6 py-4 font-mono text-xs text-slate-500">{record.receiptId}</td>
                     <td className="px-6 py-4 font-bold text-slate-900">{record.studentId?.name}</td>
                     <td className="px-6 py-4 font-semibold text-slate-700">₹{record.amount}</td>
@@ -183,7 +183,7 @@ export default function FeesPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button onClick={() => handleOpenModal(record)} className="text-blue-500 p-1.5"><Edit size={16} /></button>
-                        <button onClick={() => handleDelete(record._id)} className="text-red-500 p-1.5"><Trash2 size={16} /></button>
+                        <button onClick={() => handleDelete(record.id)} className="text-red-500 p-1.5"><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -206,12 +206,12 @@ export default function FeesPage() {
                 <label className="text-sm font-semibold text-slate-700">Student</label>
                 <select name="studentId" value={formData.studentId} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm">
                   <option value="">Select Student...</option>
-                  {students.map(s => <option key={s._id} value={s._id}>{s.name} ({s.studentId})</option>)}
+                  {students.map(s => <option key={s.id} value={s.id}>{s.name} ({s.studentId})</option>)}
                 </select>
                 {formData.studentId && (() => {
-                  const selectedStudent = students.find(s => s._id === formData.studentId);
+                  const selectedStudent = students.find(s => s.id === formData.studentId);
                   const totalCourseFee = selectedStudent?.totalFees || 0;
-                  const studentRecords = records.filter(r => r.studentId?._id === formData.studentId);
+                  const studentRecords = records.filter(r => r.studentId?.id === formData.studentId);
                   const studentPaid = studentRecords.filter(r => r.status === 'Paid').reduce((sum, r) => sum + r.amount, 0);
                   const studentPending = Math.max(0, totalCourseFee - studentPaid);
                   const isFeeMissing = totalCourseFee === 0;
@@ -248,7 +248,7 @@ export default function FeesPage() {
               </div>
 
               {/* Only show rest of form if fees are configured */}
-              {(!formData.studentId || (students.find(s => s._id === formData.studentId)?.totalFees > 0)) && (
+              {(!formData.studentId || (students.find(s => s.id === formData.studentId)?.totalFees > 0)) && (
                 <>
                   <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
@@ -291,7 +291,7 @@ export default function FeesPage() {
 
               <div className="pt-4 flex justify-end gap-3">
                 <button type="button" onClick={handleCloseModal} className="px-4 py-2 text-sm text-slate-600 border border-slate-200 rounded-lg">Cancel</button>
-                {(!formData.studentId || (students.find(s => s._id === formData.studentId)?.totalFees > 0)) && (
+                {(!formData.studentId || (students.find(s => s.id === formData.studentId)?.totalFees > 0)) && (
                   <button type="submit" className="btn-primary text-sm px-6 py-2">Save Payment</button>
                 )}
               </div>

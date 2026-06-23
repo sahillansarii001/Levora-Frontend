@@ -98,7 +98,7 @@ export default function MegaCMS() {
   };
 
   const handleEditClick = (id, endpoint) => {
-    const item = data[endpoint].find(i => i._id === id);
+    const item = data[endpoint].find(i => i.id === id);
     if (!item) return;
     setFormData(item);
     setEditId(id);
@@ -322,42 +322,42 @@ export default function MegaCMS() {
           <>
             {activeMenu === 'notices' && renderTable(
               ['Title', 'Type', 'Audience', 'Date'],
-              data.notices.map(n => ({ id: n._id, data: [<strong key={n._id}>{n.title}</strong>, <span key={n._id+"1"} className="uppercase text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">{n.type}</span>, n.targetAudience, new Date(n.createdAt).toLocaleDateString()] })),
+              data.notices.map(n => ({ id: n.id, data: [<strong key={n.id}>{n.title}</strong>, <span key={n.id+"1"} className="uppercase text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">{n.type}</span>, n.targetAudience, new Date(n.createdAt).toLocaleDateString()] })),
               (id) => handleDelete('notices', id, 'notices'),
               (id) => handleEditClick(id, 'notices')
             )}
             
             {activeMenu === 'courses' && renderTable(
               ['Code', 'Title', 'Category', 'Fee'],
-              data.courses.map(c => ({ id: c._id, data: [c.courseCode, <strong>{c.title}</strong>, c.category, `₹${c.fee}`] })),
+              data.courses.map(c => ({ id: c.id, data: [c.courseCode, <strong>{c.title}</strong>, c.category, `₹${c.fee}`] })),
               (id) => handleDelete('courses', id, 'courses'),
               (id) => handleEditClick(id, 'courses')
             )}
 
             {activeMenu === 'faculty' && renderTable(
               ['Name', 'Subject', 'Email', 'Role'],
-              data.faculty.map(f => ({ id: f._id, data: [<strong>{f.name}</strong>, f.subject, f.email, <span key={f._id} className="uppercase text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">{f.role}</span>] })),
+              data.faculty.map(f => ({ id: f.id, data: [<strong>{f.name}</strong>, f.subject, f.email, <span key={f.id} className="uppercase text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">{f.role}</span>] })),
               (id) => handleDelete('faculty', id, 'faculty'),
               (id) => handleEditClick(id, 'faculty')
             )}
 
             {activeMenu === 'materials' && renderTable(
               ['Title', 'Class & Subject', 'Chapter', 'Category', 'Premium'],
-              data.materials.map(m => ({ id: m._id, data: [<strong>{m.title}</strong>, `${m.className||'N/A'} - ${m.subject||'N/A'}`, m.lesson||'N/A', m.category, m.isPremium ? <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold">Yes</span> : <span className="px-2 py-1 bg-slate-100 text-slate-500 rounded text-xs font-bold">No</span>] })),
+              data.materials.map(m => ({ id: m.id, data: [<strong>{m.title}</strong>, `${m.className||'N/A'} - ${m.subject||'N/A'}`, m.lesson||'N/A', m.category, m.isPremium ? <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold">Yes</span> : <span className="px-2 py-1 bg-slate-100 text-slate-500 rounded text-xs font-bold">No</span>] })),
               (id) => handleDelete('materials', id, 'materials'),
               (id) => handleEditClick(id, 'materials')
             )}
 
             {activeMenu === 'results' && renderTable(
               ['Student Name', 'Course', 'Rank', 'Score/Percentage'],
-              data.results.map(r => ({ id: r._id, data: [<strong>{r.studentName}</strong>, r.course, `AIR ${r.rank || '-'}`, r.score ? `${r.score}` : `${r.percentage}%`] })),
+              data.results.map(r => ({ id: r.id, data: [<strong>{r.studentName}</strong>, r.course, `AIR ${r.rank || '-'}`, r.score ? `${r.score}` : `${r.percentage}%`] })),
               (id) => handleDelete('results', id, 'results'),
               (id) => handleEditClick(id, 'results')
             )}
 
             {activeMenu === 'testimonials' && renderTable(
               ['Name', 'Role', 'Quote'],
-              data.testimonials.map(t => ({ id: t._id, data: [<strong>{t.name}</strong>, t.role, t.quote?.substring(0, 50) + '...'] })),
+              data.testimonials.map(t => ({ id: t.id, data: [<strong>{t.name}</strong>, t.role, t.quote?.substring(0, 50) + '...'] })),
               (id) => handleDelete('testimonials', id, 'testimonials'),
               (id) => handleEditClick(id, 'testimonials')
             )}

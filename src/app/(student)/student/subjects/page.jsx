@@ -36,7 +36,7 @@ export default function MySubjectsPage() {
         const data = await res.json();
         if (data.success) {
           const formattedCourses = data.data.map((c, i) => ({
-            id: c._id,
+            id: c.id,
             title: c.title,
             instructor: c.facultyName || c.facultyId?.name || 'TBA',
             progress: c.totalLessons > 0 ? Math.round((c.completedLessons / c.totalLessons) * 100) : 0,
@@ -262,7 +262,7 @@ export default function MySubjectsPage() {
                 ) : (
                   <div className="space-y-4">
                     {lectureLogs.map((log) => (
-                      <div key={log._id} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                      <div key={log.id} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-navy)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-3">
                           <div>

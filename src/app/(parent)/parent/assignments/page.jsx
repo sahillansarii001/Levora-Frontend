@@ -56,7 +56,7 @@ export default function ParentAssignmentsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {assignments.map(assignment => (
-              <div key={assignment._id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col">
+              <div key={assignment.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col">
                 <div className={`h-2 w-full ${assignment.isCompleted ? 'bg-emerald-500' : 'bg-gold'}`}></div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">

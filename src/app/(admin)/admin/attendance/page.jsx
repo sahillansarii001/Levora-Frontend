@@ -51,7 +51,7 @@ export default function AttendancePage() {
         // Map attendance records by userId for quick lookup
         const recordMap = {};
         attData.data.forEach(record => {
-          const userId = userTypeFilter === 'student' ? record.studentId?._id : record.facultyId?._id;
+          const userId = userTypeFilter === 'student' ? record.studentId?.id : record.facultyId?.id;
           if (userId) {
             recordMap[userId] = record;
           }
@@ -92,7 +92,7 @@ export default function AttendancePage() {
         let method = 'POST';
         
         if (existingRecord) {
-          url = `${url}/${existingRecord._id}`;
+          url = `${url}/${existingRecord.id}`;
           method = 'PUT';
         }
 
@@ -132,7 +132,7 @@ export default function AttendancePage() {
     
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance/${existingRecord._id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/attendance/${existingRecord.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -236,15 +236,15 @@ export default function AttendancePage() {
                 <tr><td colSpan="4" className="px-6 py-12 text-center text-slate-500">No {userTypeFilter}s found.</td></tr>
               ) : (
                 users.map((user) => {
-                  const savedRecord = attendanceRecords[user._id];
-                  const pendingStatus = pendingChanges[user._id];
+                  const savedRecord = attendanceRecords[user.id];
+                  const pendingStatus = pendingChanges[user.id];
                   
                   const isMarked = !!savedRecord || !!pendingStatus;
                   const currentStatus = pendingStatus || (savedRecord ? savedRecord.status : null);
                   const isPending = !!pendingStatus;
                   
                   return (
-                    <tr key={user._id} className="hover:bg-slate-50 transition-colors">
+                    <tr key={user.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 font-bold text-slate-900 whitespace-nowrap">
                         {user.name}
                       </td>
@@ -270,7 +270,7 @@ export default function AttendancePage() {
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2 items-center">
                           <button 
-                            onClick={() => handleQuickMark(user._id, 'Present')}
+                            onClick={() => handleQuickMark(user.id, 'Present')}
                             className={`inline-flex items-center px-4 py-1.5 text-sm font-semibold rounded-lg transition-colors border ${
                               currentStatus === 'Present' 
                                 ? 'bg-green-600 text-white border-green-600 shadow-sm' 
@@ -280,7 +280,7 @@ export default function AttendancePage() {
                             <Check size={16} className="mr-1" /> Present
                           </button>
                           <button 
-                            onClick={() => handleQuickMark(user._id, 'Absent')}
+                            onClick={() => handleQuickMark(user.id, 'Absent')}
                             className={`inline-flex items-center px-4 py-1.5 text-sm font-semibold rounded-lg transition-colors border ${
                               currentStatus === 'Absent' 
                                 ? 'bg-red-600 text-white border-red-600 shadow-sm' 
@@ -292,7 +292,7 @@ export default function AttendancePage() {
                           
                           {!!savedRecord && !isPending && (
                             <button 
-                              onClick={() => handleReset(user._id)}
+                              onClick={() => handleReset(user.id)}
                               title="Clear attendance from server"
                               className="inline-flex items-center text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 transition-colors ml-2"
                             >
@@ -304,7 +304,7 @@ export default function AttendancePage() {
                             <button 
                               onClick={() => setPendingChanges(prev => {
                                 const newChanges = {...prev};
-                                delete newChanges[user._id];
+                                delete newChanges[user.id];
                                 return newChanges;
                               })}
                               title="Discard unsaved change"

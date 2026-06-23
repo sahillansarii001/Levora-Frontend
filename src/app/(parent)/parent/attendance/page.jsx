@@ -83,7 +83,7 @@ export default function AttendancePage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {attendanceRecords.map(r => (
-                    <tr key={r._id} className="hover:bg-slate-50">
+                    <tr key={r.id} className="hover:bg-slate-50">
                       <td className="py-3 px-6 font-medium text-slate-700">{new Date(r.date).toLocaleDateString()}</td>
                       <td className="py-3 px-6 text-right">
                         <span className={`inline-flex px-3 py-1 text-xs font-bold rounded-full border ${

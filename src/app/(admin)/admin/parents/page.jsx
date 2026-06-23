@@ -42,7 +42,7 @@ export default function ParentsPage() {
   const handleOpenModal = (parent = null) => {
     if (parent) {
       setIsEditing(true);
-      setEditId(parent._id);
+      setEditId(parent.id);
       setFormData({
         name: parent.name || '',
         email: parent.email || '',
@@ -200,7 +200,7 @@ export default function ParentsPage() {
                 <tr><td colSpan="4" className="px-6 py-8 text-center text-slate-500">No parent accounts found.</td></tr>
               ) : (
                 parentList.map((parent) => (
-                  <tr key={parent._id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={parent.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 font-bold text-slate-900">{parent.name}</td>
                     <td className="px-6 py-4">
                       <p className="font-semibold text-slate-700">{parent.email}</p>
@@ -213,13 +213,13 @@ export default function ParentsPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenPasswordModal(parent._id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
+                        <button onClick={() => handleOpenPasswordModal(parent.id)} className="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded-md transition-colors" title="Change Password">
                           <Key size={16} />
                         </button>
                         <button onClick={() => handleOpenModal(parent)} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors" title="Edit">
                           <Edit size={16} />
                         </button>
-                        <button onClick={() => handleDelete(parent._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
+                        <button onClick={() => handleDelete(parent.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete">
                           <Trash2 size={16} />
                         </button>
                       </div>

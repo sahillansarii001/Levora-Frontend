@@ -72,7 +72,7 @@ export default function LectureLogsPage() {
                 <tr><td colSpan="5" className="px-6 py-12 text-center text-slate-500">No lecture logs found.</td></tr>
               ) : (
                 logs.map(log => (
-                  <tr key={log._id} className="hover:bg-slate-50">
+                  <tr key={log.id} className="hover:bg-slate-50">
                     <td className="px-6 py-4 whitespace-nowrap font-medium text-slate-700">
                       {new Date(log.date).toLocaleDateString()}
                     </td>
