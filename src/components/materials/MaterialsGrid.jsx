@@ -72,7 +72,21 @@ export default function MaterialsGrid({ title, subtitle }) {
       groups[chapter].push(item);
     });
 
-    return groups;
+    const sortedGroups = {};
+    Object.keys(groups)
+      .sort((a, b) => {
+        const matchA = a.match(/Chapter\s*(\d+)/i);
+        const matchB = b.match(/Chapter\s*(\d+)/i);
+        if (matchA && matchB) {
+          return parseInt(matchA[1], 10) - parseInt(matchB[1], 10);
+        }
+        return a.localeCompare(b);
+      })
+      .forEach(key => {
+        sortedGroups[key] = groups[key];
+      });
+
+    return sortedGroups;
   }, [materials, selectedClass, selectedSubject, searchQuery, activeTab]);
 
   return (
