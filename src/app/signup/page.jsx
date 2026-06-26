@@ -329,7 +329,7 @@ export default function SignupPage() {
                   value={otp} 
                   onChange={(e) => setOtp(e.target.value)} 
                   maxLength={6} 
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-sm text-center text-xl tracking-[0.2em] font-bold" 
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--color-gold)] focus:ring-2 focus:ring-[var(--color-gold)]/20 outline-none transition-all bg-slate-50 focus:bg-white text-xl text-center tracking-[0.2em] font-bold" 
                   placeholder="------" 
                 />
               </div>
