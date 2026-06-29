@@ -622,14 +622,38 @@ export default function MegaCMS() {
               {activeMenu === 'materials' && (
                 <>
                   <input type="text" required placeholder="Title (e.g. Thermodynamics Part 1)" value={formData.title||''} onChange={e=>setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
-                  <div className="grid grid-cols-2 gap-4">
-                    <select required value={formData.className||'11th'} onChange={e=>setFormData({...formData, className: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                  
+                  <div className="grid grid-cols-3 gap-4">
+                    <select required value={formData.board||'All'} onChange={e=>setFormData({...formData, board: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="All">All Boards</option>
+                      <option value="CBSE">CBSE</option>
+                      <option value="ICSE">ICSE</option>
+                      <option value="SSC">SSC</option>
+                      <option value="HSC">HSC</option>
+                    </select>
+                    <select required value={formData.className||''} onChange={e=>setFormData({...formData, className: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="" disabled>Select Class</option>
+                      <option value="Primary">Primary</option>
+                      <option value="1st">Class 1st</option>
+                      <option value="2nd">Class 2nd</option>
+                      <option value="3rd">Class 3rd</option>
+                      <option value="4th">Class 4th</option>
+                      <option value="5th">Class 5th</option>
+                      <option value="6th">Class 6th</option>
+                      <option value="7th">Class 7th</option>
+                      <option value="8th">Class 8th</option>
                       <option value="9th">Class 9th</option>
                       <option value="10th">Class 10th</option>
                       <option value="11th">Class 11th</option>
                       <option value="12th">Class 12th</option>
+                      <option value="" disabled>--- Competitive & Batches ---</option>
+                      <option value="JEE">JEE</option>
+                      <option value="NEET">NEET</option>
+                      <option value="MHT-CET">MHT-CET</option>
+                      <option value="Foundation">Foundation</option>
+                      <option value="Other">Other Batch</option>
                     </select>
-                    <input type="text" required placeholder="Subject (e.g. Physics)" value={formData.subject||''} onChange={e=>setFormData({...formData, subject: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
+                    <input type="text" required placeholder="Subject" value={formData.subject||''} onChange={e=>setFormData({...formData, subject: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   </div>
                   <input type="text" required placeholder="Chapter/Lesson Name (e.g. Chapter 1: Motion)" value={formData.lesson||''} onChange={e=>setFormData({...formData, lesson: e.target.value})} className="w-full px-4 py-2 border rounded-lg"/>
                   <div className="flex gap-2">

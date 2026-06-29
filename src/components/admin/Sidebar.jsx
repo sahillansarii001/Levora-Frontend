@@ -30,6 +30,16 @@ const navItems = [
     href: "/admin/dashboard",
     icon: <LayoutDashboard size={20} />,
   },
+  {
+    name: "User Management",
+    icon: <Users size={20} />,
+    subItems: [
+      { name: "Users", href: "/admin/users" },
+      { name: "Students", href: "/admin/students" },
+      { name: "Faculty", href: "/admin/faculty" },
+      { name: "Parents", href: "/admin/parents" },
+    ]
+  },
   { name: "Mega CMS", href: "/admin/cms", icon: <FileEdit size={20} /> },
   {
     name: "Activity Logs",
@@ -74,15 +84,6 @@ const navItems = [
 ];
 
 const superAdminItems = [
-  {
-    name: "User Management",
-    icon: <Users size={20} />,
-    subItems: [
-      { name: "Students", href: "/admin/students" },
-      { name: "Faculty", href: "/admin/faculty" },
-      { name: "Parents", href: "/admin/parents" },
-    ]
-  },
   { name: "Student Fees", href: "/admin/fees", icon: <Banknote size={20} /> },
   {
     name: "Faculty Salary",
@@ -105,7 +106,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   // Open the menu initially if a sub-item is active
   useEffect(() => {
-    const isAnySubActive = superAdminItems.some(item => 
+    const isAnySubActive = [...navItems, ...superAdminItems].some(item => 
       item.subItems && item.subItems.some(sub => pathname === sub.href)
     );
     if (isAnySubActive) {
@@ -125,6 +126,66 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     localStorage.removeItem("role");
     localStorage.removeItem("email");
     router.push("/login");
+  };
+
+  const renderItem = (item) => {
+    if (item.subItems) {
+      const isAnySubActive = item.subItems.some(sub => pathname === sub.href);
+
+      return (
+        <div key={item.name} className="flex flex-col mb-1">
+          <button
+            onClick={() => setIsUsersMenuOpen(!isUsersMenuOpen)}
+            className={`flex items-center justify-between px-4 py-3 rounded-xl transition-colors font-medium w-full ${isAnySubActive ? 'text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}`}
+          >
+            <div className="flex items-center gap-3">
+              {item.icon}
+              {item.name}
+            </div>
+            {isUsersMenuOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+          
+          {isUsersMenuOpen && (
+            <div className="flex flex-col gap-1 pl-11 pr-2 py-1 mt-1 border-l border-white/10 ml-6">
+              {item.subItems.map(subItem => {
+                const isSubActive = pathname === subItem.href;
+                return (
+                  <Link prefetch={false}
+                    key={subItem.name}
+                    href={subItem.href}
+                    onClick={() => setIsOpen?.(false)}
+                    className={`block px-4 py-2 rounded-lg text-sm transition-colors ${
+                      isSubActive
+                        ? "bg-gold text-navy font-bold shadow-sm"
+                        : "text-slate-400 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {subItem.name}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const isActive = pathname === item.href;
+    return (
+      <Link prefetch={false}
+        key={item.name}
+        href={item.href}
+        onClick={() => setIsOpen?.(false)}
+        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+          isActive
+            ? "bg-gold text-navy font-bold"
+            : "text-slate-300 hover:bg-white/10 hover:text-white font-medium"
+        }`}
+      >
+        {item.icon}
+        {item.name}
+      </Link>
+    );
   };
 
   return (
@@ -161,86 +222,11 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             Menu
           </p>
 
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link prefetch={false}
-                key={item.name}
-                href={item.href}
-                onClick={() => setIsOpen?.(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
-                  isActive
-                    ? "bg-gold text-navy font-bold"
-                    : "text-slate-300 hover:bg-white/10 hover:text-white font-medium"
-                }`}
-              >
-                {item.icon}
-                {item.name}
-              </Link>
-            );
-          })}
+          {navItems.map(renderItem)}
 
           {role === "superadmin" && (
             <>
-              {superAdminItems.map((item) => {
-                if (item.subItems) {
-                  const isAnySubActive = item.subItems.some(sub => pathname === sub.href);
-
-                  return (
-                    <div key={item.name} className="flex flex-col mb-1">
-                      <button
-                        onClick={() => setIsUsersMenuOpen(!isUsersMenuOpen)}
-                        className={`flex items-center justify-between px-4 py-3 rounded-xl transition-colors font-medium w-full ${isAnySubActive ? 'text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          {item.icon}
-                          {item.name}
-                        </div>
-                        {isUsersMenuOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                      </button>
-                      
-                      {isUsersMenuOpen && (
-                        <div className="flex flex-col gap-1 pl-11 pr-2 py-1 mt-1 border-l border-white/10 ml-6">
-                          {item.subItems.map(subItem => {
-                            const isSubActive = pathname === subItem.href;
-                            return (
-                              <Link prefetch={false}
-                                key={subItem.name}
-                                href={subItem.href}
-                                onClick={() => setIsOpen?.(false)}
-                                className={`block px-4 py-2 rounded-lg text-sm transition-colors ${
-                                  isSubActive
-                                    ? "bg-gold text-navy font-bold shadow-sm"
-                                    : "text-slate-400 hover:text-white hover:bg-white/5"
-                                }`}
-                              >
-                                {subItem.name}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-
-                const isActive = pathname === item.href;
-                return (
-                  <Link prefetch={false}
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsOpen?.(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
-                      isActive
-                        ? "bg-gold text-navy font-bold"
-                        : "text-slate-300 hover:bg-white/10 hover:text-white font-medium"
-                    }`}
-                  >
-                    {item.icon}
-                    {item.name}
-                  </Link>
-                );
-              })}
+              {superAdminItems.map(renderItem)}
             </>
           )}
         </div>

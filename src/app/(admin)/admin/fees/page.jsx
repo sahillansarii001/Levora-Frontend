@@ -53,7 +53,7 @@ export default function FeesPage() {
       setIsEditing(true);
       setEditId(record.id);
       setFormData({
-        studentId: record.studentId?.id || '',
+        studentId: record.studentId?.id || record.studentId || '',
         amount: record.amount,
         paymentDate: new Date(record.paymentDate).toISOString().split('T')[0],
         paymentMethod: record.paymentMethod,
@@ -169,7 +169,7 @@ export default function FeesPage() {
                 records.map((record) => (
                   <tr key={record.id} className="hover:bg-slate-50">
                     <td className="px-6 py-4 font-mono text-xs text-slate-500">{record.receiptId}</td>
-                    <td className="px-6 py-4 font-bold text-slate-900">{record.studentId?.name}</td>
+                    <td className="px-6 py-4 font-bold text-slate-900">{students.find(s => s.id === (record.studentId?.id || record.studentId))?.name || 'Unknown Student'}</td>
                     <td className="px-6 py-4 font-semibold text-slate-700">₹{record.amount}</td>
                     <td className="px-6 py-4">
                       <p className="text-slate-700">{new Date(record.paymentDate).toLocaleDateString()}</p>
@@ -211,8 +211,17 @@ export default function FeesPage() {
                 {formData.studentId && (() => {
                   const selectedStudent = students.find(s => s.id === formData.studentId);
                   const totalCourseFee = selectedStudent?.totalFees || 0;
-                  const studentRecords = records.filter(r => r.studentId?.id === formData.studentId);
-                  const studentPaid = studentRecords.filter(r => r.status === 'Paid').reduce((sum, r) => sum + r.amount, 0);
+                  const studentRecords = records.filter(r => (r.studentId?.id || r.studentId) === formData.studentId);
+                  
+                  // Calculate historically paid, excluding the current record being edited
+                  const historicalPaid = studentRecords
+                    .filter(r => r.status === 'Paid' && r.id !== editId)
+                    .reduce((sum, r) => sum + r.amount, 0);
+                    
+                  // Add the currently entered amount if the status is 'Paid'
+                  const currentInputAmount = formData.status === 'Paid' ? (parseFloat(formData.amount) || 0) : 0;
+                  const studentPaid = historicalPaid + currentInputAmount;
+                  
                   const studentPending = Math.max(0, totalCourseFee - studentPaid);
                   const isFeeMissing = totalCourseFee === 0;
 
