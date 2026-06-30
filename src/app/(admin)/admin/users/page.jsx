@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Filter, Download, UserCog, BookOpen, Plus, X, Check } from 'lucide-react';
+import { Search, Filter, Download, UserCog, BookOpen, Plus, X, Check, Trash2, Ban, Play } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function UsersPage() {
@@ -40,6 +40,46 @@ export default function UsersPage() {
       toast.error('Error fetching users');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this user?')) return;
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { 'Authorization': `Bearer ${token}` };
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${baseUrl}/users/${id}`, { method: 'DELETE', headers });
+      const data = await res.json();
+      if (data.success) {
+        toast.success('User deleted successfully');
+        fetchNoteBuyers();
+      } else {
+        toast.error(data.message || 'Failed to delete user');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error deleting user');
+    }
+  };
+
+  const handleToggleStatus = async (id, currentStatus) => {
+    if (!window.confirm(`Are you sure you want to ${currentStatus === 'active' ? 'suspend' : 'activate'} this user?`)) return;
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { 'Authorization': `Bearer ${token}` };
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${baseUrl}/users/${id}/status`, { method: 'PATCH', headers });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`User ${currentStatus === 'active' ? 'suspended' : 'activated'} successfully`);
+        fetchNoteBuyers();
+      } else {
+        toast.error(data.message || 'Failed to update status');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error updating status');
     }
   };
 
@@ -209,8 +249,11 @@ export default function UsersPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                         <button className="text-slate-400 hover:text-navy hover:bg-slate-100 p-1.5 rounded-md transition-colors" title="Manage User">
-                          <UserCog size={18} />
+                         <button onClick={() => handleToggleStatus(user.id, user.status)} className="text-slate-400 hover:text-amber-600 hover:bg-amber-50 p-1.5 rounded-md transition-colors" title={user.status === 'active' ? 'Suspend User' : 'Activate User'}>
+                          {user.status === 'active' ? <Ban size={18} /> : <Play size={18} />}
+                        </button>
+                        <button onClick={() => handleDeleteUser(user.id)} className="text-slate-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-md transition-colors" title="Delete User">
+                          <Trash2 size={18} />
                         </button>
                       </div>
                     </td>
