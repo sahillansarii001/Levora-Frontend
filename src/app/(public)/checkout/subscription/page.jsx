@@ -58,7 +58,7 @@ export default function SubscriptionCheckoutPage() {
 
       // 2. Open Razorpay Checkout
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_StD2ExcM7XOJ5B', 
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_T7jRQr4rQSfknL', 
         amount: orderData.data.amount,
         currency: orderData.data.currency,
         name: "Levora Academy",
