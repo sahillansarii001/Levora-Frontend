@@ -3,7 +3,7 @@ export default function robots() {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin', '/student', '/faculty', '/parent', '/login'],
+      disallow: ['/admin', '/student', '/faculty', '/parent', '/login', '/checkout'],
     },
     sitemap: 'https://levoraacademy.vercel.app/sitemap.xml',
   }
