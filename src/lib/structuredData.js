@@ -23,6 +23,25 @@ export const generateEducationalOrganizationSchema = () => {
   };
 };
 
+export const generateLocalBusinessSchema = () => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Levora Academy",
+    "image": "https://levoraacademy.vercel.app/Logo.png",
+    "@id": "https://levoraacademy.vercel.app",
+    "url": "https://levoraacademy.vercel.app",
+    "telephone": "+918169976265",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Shop no-74, Mohite Patil Nagar, Mankhurd West",
+      "addressLocality": "Mumbai",
+      "postalCode": "400043",
+      "addressCountry": "IN"
+    }
+  };
+};
+
 export const generateCourseSchema = (courseName, courseDescription) => {
   return {
     "@context": "https://schema.org",

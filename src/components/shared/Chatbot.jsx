@@ -87,8 +87,7 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-16 right-0 w-[calc(100vw-2rem)] md:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col origin-bottom-right"
-            style={{ height: '500px', maxHeight: 'calc(100vh - 180px)' }}
+            className="absolute bottom-16 right-0 w-[calc(100vw-2rem)] md:w-96 h-[500px] max-h-[calc(100vh-180px)] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col origin-bottom-right"
           >
             {/* Header */}
             <div className="bg-[var(--color-navy)] text-white px-4 py-3 flex justify-between items-center">

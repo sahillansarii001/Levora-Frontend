@@ -1,6 +1,7 @@
 import { Poppins, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import Chatbot from "@/components/shared/Chatbot";
+import Script from "next/script";
 import "./globals.css";
 
 const poppins = Poppins({ 
@@ -44,6 +45,44 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
+      <head>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-LEVORA12345`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-LEVORA12345', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+        <Script
+          id="facebook-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '999999999999999');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+      </head>
       <body className="font-sans min-h-screen flex flex-col bg-slate-50 text-slate-800 overflow-x-clip">
         <Toaster position="top-right" />
         {children}

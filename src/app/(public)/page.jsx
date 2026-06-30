@@ -1,23 +1,23 @@
 import DynamicRenderer from '@/components/DynamicRenderer';
 import SeoContentBlock from '@/components/home/SeoContentBlock';
-import { generateEducationalOrganizationSchema } from '@/lib/structuredData';
+import { generateEducationalOrganizationSchema, generateLocalBusinessSchema } from '@/lib/structuredData';
 
 export const metadata = {
-  title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
-  description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. Trusted by students, 99% board success rate. Admissions open for 2025–26.",
+  title: "Levora Academy | Top JEE & NEET Coaching Institute",
+  description: "Levora Academy offers expert coaching for JEE, NEET, and Classes 6-12. Trusted by students with a 99% success rate. Admissions open for 2025-26!",
   keywords: ["JEE coaching India", "NEET preparation academy", "Class 10 tuition", "best coaching institute India", "online education India", "school tuition Mumbai"],
   alternates: {
     canonical: 'https://levoraacademy.vercel.app',
   },
   openGraph: {
-    title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
-    description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. Trusted by students, 99% board success rate. Admissions open for 2025–26.",
+    title: "Levora Academy | Top JEE & NEET Coaching Institute",
+    description: "Levora Academy offers expert coaching for JEE, NEET, and Classes 6-12. Trusted by students with a 99% success rate. Admissions open for 2025-26!",
     url: 'https://levoraacademy.vercel.app',
     images: [{ url: 'https://levoraacademy.vercel.app/api/og', width: 1200, height: 630 }],
   },
   twitter: {
-    title: "Levora Academy | Best Coaching Institute for JEE, NEET & School in India",
-    description: "Levora Academy offers expert coaching for JEE, NEET, Class 6–12, Coding, and Spoken English. Trusted by students, 99% board success rate. Admissions open for 2025–26.",
+    title: "Levora Academy | Top JEE & NEET Coaching Institute",
+    description: "Levora Academy offers expert coaching for JEE, NEET, and Classes 6-12. Trusted by students with a 99% success rate. Admissions open for 2025-26!",
     images: ['https://levoraacademy.vercel.app/api/og'],
   }
 };
@@ -30,7 +30,7 @@ export default async function Home() {
 
     // Fetch dynamic content for homepage
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/cms/content?page=homepage`, { 
-      next: { revalidate: 0 }, // Disable cache so it updates instantly
+      next: { revalidate: 60 }, // Cache for 60 seconds (ISR) to fix slow server response time
       signal: controller.signal
     });
     clearTimeout(timeoutId);
@@ -47,7 +47,12 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEducationalOrganizationSchema()) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateLocalBusinessSchema()) }}
+      />
       <DynamicRenderer content={content} pageName="homepage" />
+      <SeoContentBlock />
     </>
   );
 }

@@ -125,12 +125,13 @@ export default function Footer({ settings = {} }) {
 
         {/* Contact bar */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8 border-t border-slate-800 mb-8">
-          <div className="flex items-start gap-3 text-sm text-slate-400">
+          <address className="flex items-start gap-3 text-sm text-slate-400 not-italic">
             <MapPin size={18} className="text-[var(--color-gold)] flex-shrink-0 mt-0.5" />
             <a href="https://maps.app.goo.gl/jcSsZwDrkeG2WaJEA" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-gold)] transition-colors leading-relaxed whitespace-pre-line">
+              <strong>Address:</strong><br />
               {settings.address || 'Mohite Patil Nagar, Shop no-74, Mankhurd West, Mumbai - 400043'}
             </a>
-          </div>
+          </address>
           <div className="flex items-center gap-3 text-sm text-slate-400 md:justify-center">
             <Phone size={18} className="text-[var(--color-gold)] flex-shrink-0" />
             <a href={`tel:${settings?.contactPhone?.replace(/\s/g, '') || '+918169976265'}`} className="hover:text-[var(--color-gold)] transition-colors font-bold text-lg text-white tracking-wide">

@@ -1,0 +1,18 @@
+# Levora Academy
+
+Levora Academy is a premium education institute in India providing expert coaching for JEE, NEET, and Classes 6-12. 
+We offer specialized study materials, highly experienced faculty, and a 99% success rate in board exams.
+
+## Services & Courses
+- JEE Coaching
+- NEET Preparation
+- Class 6-12 Tuitions
+- Coding Classes
+- Spoken English
+
+## Contact & Admissions
+Admissions are currently open for the 2025-26 batch.
+Website: https://levoraacademy.vercel.app
+
+## About Us
+Our vision is shaping bright futures through premium education, batch empowering learning, and comprehensive study materials.
