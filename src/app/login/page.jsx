@@ -45,7 +45,9 @@ export default function UnifiedLogin() {
       localStorage.setItem('email', identifier);
       localStorage.setItem('user', JSON.stringify(userObj));
 
-      if (role === 'admin' || role === 'superadmin') {
+      if (userObj.needsPasswordReset) {
+        router.push('/setup-account');
+      } else if (role === 'admin' || role === 'superadmin') {
         router.push('/admin/dashboard');
       } else if (role === 'student') {
         router.push('/student/dashboard');
@@ -53,6 +55,8 @@ export default function UnifiedLogin() {
         router.push('/faculty-portal/dashboard');
       } else if (role === 'parent') {
         router.push('/parent/dashboard');
+      } else if (role === 'user') {
+        router.push('/user/dashboard');
       } else {
         router.push('/dashboard');
       }

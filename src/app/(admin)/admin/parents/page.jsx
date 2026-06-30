@@ -9,7 +9,7 @@ export default function ParentsPage() {
   const [parentList, setParentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', parentOf: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', parentOf: '', password: '', materialsAccess: false });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -48,23 +48,25 @@ export default function ParentsPage() {
         email: parent.email || '',
         phone: parent.phone || '',
         parentOf: parent.parentOf || '',
-        password: ''
+        password: '',
+        materialsAccess: parent.materialsAccess || false
       });
     } else {
       setIsEditing(false);
       setEditId(null);
-      setFormData({ name: '', email: '', phone: '', parentOf: '', password: '' });
+      setFormData({ name: '', email: '', phone: '', parentOf: '', password: '', materialsAccess: false });
     }
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ name: '', email: '', phone: '', parentOf: '', password: '' });
+    setFormData({ name: '', email: '', phone: '', parentOf: '', password: '', materialsAccess: false });
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = async (e) => {
@@ -205,6 +207,11 @@ export default function ParentsPage() {
                     <td className="px-6 py-4">
                       <p className="font-semibold text-slate-700">{parent.email}</p>
                       <p className="text-xs text-slate-500 mt-0.5">{parent.phone}</p>
+                      {parent.materialsAccess && (
+                        <span className="px-2.5 py-1 text-xs font-bold rounded-md inline-block bg-blue-100 text-blue-700 mt-1">
+                          Materials Access
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-slate-500">
                       <span className="px-2 py-1 bg-slate-100 border border-slate-200 rounded-md text-xs font-mono">
@@ -268,6 +275,20 @@ export default function ParentsPage() {
                 <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-slate-700">Password {isEditing && <span className="text-slate-400 font-normal">(Leave blank to keep)</span>}</label>
                   <input type="text" name="password" value={formData.password} onChange={handleChange} required={!isEditing} placeholder={isEditing ? 'Enter new password' : 'Initial Password'} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                
+                <div className="col-span-2 flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    id="materialsAccess"
+                    name="materialsAccess"
+                    checked={formData.materialsAccess}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-navy border-slate-300 rounded focus:ring-navy"
+                  />
+                  <label htmlFor="materialsAccess" className="ml-2 text-sm font-medium text-slate-700">
+                    Grant Access to Premium Study Materials
+                  </label>
                 </div>
               </div>
               

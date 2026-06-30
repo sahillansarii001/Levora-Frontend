@@ -9,7 +9,7 @@ export default function FacultyPage() {
   const [facultyList, setFacultyList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '', materialsAccess: false });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -49,23 +49,25 @@ export default function FacultyPage() {
         phone: faculty.phone || '',
         subject: faculty.subject || '',
         qualification: faculty.qualification || '',
-        experience: faculty.experience || ''
+        experience: faculty.experience || '',
+        materialsAccess: faculty.materialsAccess || false
       });
     } else {
       setIsEditing(false);
       setEditId(null);
-      setFormData({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '' });
+      setFormData({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '', materialsAccess: false });
     }
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '' });
+    setFormData({ name: '', email: '', phone: '', subject: '', qualification: '', experience: '', materialsAccess: false });
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = async (e) => {
@@ -215,6 +217,11 @@ export default function FacultyPage() {
                       }`}>
                         {faculty.status}
                       </span>
+                      {faculty.materialsAccess && (
+                        <span className="ml-2 px-2.5 py-1 text-xs font-bold rounded-md inline-block bg-blue-100 text-blue-700 mt-1">
+                          Materials Access
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
@@ -273,6 +280,20 @@ export default function FacultyPage() {
                 <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-slate-700">Years of Experience</label>
                   <input type="number" name="experience" value={formData.experience} onChange={handleChange} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                
+                <div className="col-span-2 flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    id="materialsAccess"
+                    name="materialsAccess"
+                    checked={formData.materialsAccess}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-navy border-slate-300 rounded focus:ring-navy"
+                  />
+                  <label htmlFor="materialsAccess" className="ml-2 text-sm font-medium text-slate-700">
+                    Grant Access to Premium Study Materials
+                  </label>
                 </div>
               </div>
               

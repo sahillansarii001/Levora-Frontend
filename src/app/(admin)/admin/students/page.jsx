@@ -9,7 +9,7 @@ export default function StudentsPage() {
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '', materialsAccess: false });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -54,23 +54,25 @@ export default function StudentsPage() {
         parentName: student.parentName || '',
         schoolName: student.schoolName || '',
         collegeName: student.collegeName || '',
-        totalFees: student.totalFees || ''
+        totalFees: student.totalFees || '',
+        materialsAccess: student.materialsAccess || false
       });
     } else {
       setIsEditing(false);
       setEditId(null);
-      setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '' });
+      setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '', materialsAccess: false });
     }
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '' });
+    setFormData({ name: '', email: '', phone: '', className: '', board: '', course: '', batch: '', parentName: '', schoolName: '', collegeName: '', totalFees: '', materialsAccess: false });
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = async (e) => {
@@ -248,6 +250,11 @@ export default function StudentsPage() {
                       }`}>
                         {student.status}
                       </span>
+                      {student.materialsAccess && (
+                        <span className="ml-2 px-2.5 py-1 text-xs font-bold rounded-md inline-block bg-blue-100 text-blue-700 mt-1">
+                          Materials Access
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
@@ -352,6 +359,20 @@ export default function StudentsPage() {
                 <div className="space-y-1.5 col-span-2">
                   <label className="text-sm font-semibold text-slate-700">Total Course Fee (₹) <span className="text-red-500">*</span></label>
                   <input type="number" name="totalFees" value={formData.totalFees} onChange={handleChange} required placeholder="e.g. 50000" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-navy focus:border-navy outline-none" />
+                </div>
+                
+                <div className="col-span-2 flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    id="materialsAccess"
+                    name="materialsAccess"
+                    checked={formData.materialsAccess}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-navy border-slate-300 rounded focus:ring-navy"
+                  />
+                  <label htmlFor="materialsAccess" className="ml-2 text-sm font-medium text-slate-700">
+                    Grant Access to Premium Study Materials
+                  </label>
                 </div>
               </div>
               

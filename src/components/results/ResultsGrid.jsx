@@ -38,21 +38,21 @@ export default function ResultsGrid({ title, subtitle }) {
 
         {/* Board Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-20 mt-4 max-w-4xl mx-auto">
-          <div className="relative bg-gold p-8 rounded-2xl text-center text-white shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-            <Trophy size={44} className="mx-auto mb-4 text-white group-hover:scale-110 transition-transform duration-500" />
+          <div className="relative bg-[var(--color-navy)] p-8 rounded-2xl text-center text-white shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+            <Trophy size={44} className="mx-auto mb-4 text-[var(--color-gold)] group-hover:scale-110 transition-transform duration-500" />
             <h3 className="text-4xl font-bold font-poppins mb-2 text-white">250+</h3>
             <p className="text-white/80 font-medium">Students scored above 95% in Board Exams</p>
           </div>
-          <div className="relative bg-gold p-8 rounded-2xl text-center text-white shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-            <Medal size={44} className="mx-auto mb-4 text-white group-hover:scale-110 transition-transform duration-500" />
+          <div className="relative bg-[var(--color-navy)] p-8 rounded-2xl text-center text-white shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+            <Medal size={44} className="mx-auto mb-4 text-[var(--color-gold)] group-hover:scale-110 transition-transform duration-500" />
             <h3 className="text-4xl font-bold font-poppins mb-2 text-white">150+</h3>
             <p className="text-white/80 font-medium">IIT & NIT Selections in 2024</p>
           </div>
-          <div className="relative bg-gold p-8 rounded-2xl text-center text-white shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-            <Star size={44} className="mx-auto mb-4 text-white group-hover:scale-110 transition-transform duration-500" />
+          <div className="relative bg-[var(--color-navy)] p-8 rounded-2xl text-center text-white shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+            <Star size={44} className="mx-auto mb-4 text-[var(--color-gold)] group-hover:scale-110 transition-transform duration-500" />
             <h3 className="text-4xl font-bold font-poppins mb-2 text-white">50+</h3>
             <p className="text-white/80 font-medium">Top Medical College Admissions</p>
           </div>
