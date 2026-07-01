@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { ClipboardCheck, LineChart, MessageSquare, Clock } from 'lucide-react';
 
@@ -60,12 +59,8 @@ export default function ParentsSupport({ title, subtitle, features = {} }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 max-w-6xl mx-auto">
           {displayFeatures.map((feature, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.color} text-white flex items-center justify-center mb-6 shadow-md`}>
@@ -73,7 +68,7 @@ export default function ParentsSupport({ title, subtitle, features = {} }) {
               </div>
               <h3 className="text-lg font-bold text-[var(--color-navy)] mb-3">{feature.title}</h3>
               <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

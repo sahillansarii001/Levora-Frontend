@@ -21,6 +21,8 @@ export const metadata = {
   }
 };
 
+export const revalidate = 60; // Cache the entire page at the edge for 60 seconds
+
 export default async function Home() {
   let content = {};
   try {
@@ -54,5 +56,3 @@ export default async function Home() {
     </>
   );
 }
-
-// touch

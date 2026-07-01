@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { CheckCircle2, ArrowRight, Star, Zap, Trophy, Users } from 'lucide-react';
 import Link from 'next/link';
@@ -48,13 +47,9 @@ export default function WhyLevora({ title, subtitle, features = {} }) {
             
             <div className="space-y-3 mb-10">
               {displayFeatures.map((feature, index) => (
-                <motion.div 
+                <div 
                   key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-[var(--color-gold)]/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+              className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-[var(--color-gold)]/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[var(--color-gold)] to-[var(--color-gold-dark)] flex items-center justify-center text-white flex-shrink-0">
                     {feature.icon || <Star size={18} />}
@@ -63,7 +58,7 @@ export default function WhyLevora({ title, subtitle, features = {} }) {
                     <span className="text-slate-800 font-semibold text-sm">{feature.title || feature.text}</span>
                     {feature.desc && <span className="text-slate-500 text-xs mt-0.5">{feature.desc}</span>}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
             

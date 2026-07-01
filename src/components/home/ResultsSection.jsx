@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { Users, Trophy, TrendingUp, ChevronRight, BookOpen } from 'lucide-react';
 import Link from 'next/link';
@@ -70,13 +69,9 @@ export default function ResultsSection({ title, subtitle, achievementsData, link
             
             <div className="space-y-4 mt-10">
               {formattedAchievements.map((item, index) => (
-                <motion.div 
+                <div 
                   key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-[var(--color-gold)]/20 hover:shadow-md transition-all duration-300"
+              className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-[var(--color-gold)]/20 hover:shadow-md transition-all duration-300"
                 >
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[var(--color-gold)] to-[var(--color-gold-dark)] flex items-center justify-center flex-shrink-0 text-white">
                     {item.icon}
@@ -85,7 +80,7 @@ export default function ResultsSection({ title, subtitle, achievementsData, link
                     <h3 className="text-2xl font-bold text-[var(--color-navy)] tracking-tight">{item.value}</h3>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">{item.label}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
             
@@ -101,13 +96,9 @@ export default function ResultsSection({ title, subtitle, achievementsData, link
                 const displayRank = topper.rank ? `AIR ${topper.rank}` : (topper.percentage ? `${topper.percentage}%` : 'Top Ranker');
                 
                 return (
-                  <motion.div
+                  <div
                     key={topper.id || index}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group relative bg-white rounded-xl lg:rounded-2xl p-3 sm:p-4 lg:p-8 text-center border border-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden flex flex-col items-center justify-center w-full"
+              className="group relative bg-white rounded-xl lg:rounded-2xl p-3 sm:p-4 lg:p-8 text-center border border-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden flex flex-col items-center justify-center w-full"
                   >
                     {/* Gradient top border */}
                     <div className={`absolute top-0 left-0 right-0 h-1 bg-navy opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
@@ -124,7 +115,7 @@ export default function ResultsSection({ title, subtitle, achievementsData, link
                     <span className="inline-block bg-slate-50 border border-slate-200 text-slate-600 font-bold text-[9px] sm:text-[10px] lg:text-xs px-2 py-1 lg:px-4 lg:py-2 rounded lg:rounded-lg uppercase tracking-wider group-hover:bg-[var(--color-navy)] group-hover:text-white group-hover:border-[var(--color-navy)] transition-all duration-300 w-full lg:w-auto truncate">
                       {topper.course}
                     </span>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>

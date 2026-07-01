@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 
 export default function SeoContentBlock({ content }) {
@@ -16,13 +13,7 @@ export default function SeoContentBlock({ content }) {
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
           
           {/* Left Title Column */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8 }}
-            className="md:w-1/3 text-center md:text-left"
-          >
+          <div className="md:w-1/3 text-center md:text-left">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-gold px-4 py-2 rounded-full mb-6">
               <Sparkles size={16} />
               <span className="text-sm font-semibold tracking-wide uppercase">Levora Academy</span>
@@ -31,16 +22,10 @@ export default function SeoContentBlock({ content }) {
               Premium Education <br/> for JEE NEET & All Students
             </h2>
             <div className="w-16 h-1 bg-gold mt-6 mx-auto md:mx-0 rounded-full"></div>
-          </motion.div>
+          </div>
 
           {/* Right Content Column */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="md:w-2/3"
-          >
+          <div className="md:w-2/3">
             {content ? (
               <div 
                 className="space-y-6 text-lg text-slate-300 leading-relaxed font-light [&>p]:mb-6 [&>p:last-child]:mb-0 seo-content-html" 
@@ -61,7 +46,7 @@ export default function SeoContentBlock({ content }) {
                 </p>
               </div>
             )}
-          </motion.div>
+          </div>
           
         </div>
       </div>

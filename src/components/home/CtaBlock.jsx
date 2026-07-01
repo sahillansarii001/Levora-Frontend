@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Phone, ArrowRight } from 'lucide-react';
 
@@ -8,12 +7,8 @@ export default function CtaBlock({ title, subtitle }) {
   return (
     <section className="py-20 relative overflow-hidden bg-white">
       <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-br from-[var(--color-navy)] to-[var(--color-navy-light)] rounded-3xl p-10 md:p-16 text-center relative overflow-hidden shadow-xl"
+        <div 
+              className="bg-gradient-to-br from-[var(--color-navy)] to-[var(--color-navy-light)] rounded-3xl p-10 md:p-16 text-center relative overflow-hidden shadow-xl"
         >
           {/* Decorative circles */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
@@ -34,7 +29,7 @@ export default function CtaBlock({ title, subtitle }) {
               <Phone size={18} /> Call Us Now
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

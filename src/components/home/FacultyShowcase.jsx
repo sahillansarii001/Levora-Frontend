@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import FacultyCard from '@/components/shared/FacultyCard';
 import Link from 'next/link';
@@ -47,15 +46,15 @@ export default function FacultyShowcase() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {faculties.map((faculty, index) => (
-              <motion.div
+              <div
                 key={faculty.id}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
+                
+                
+                
+                
               >
                 <FacultyCard faculty={faculty} />
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

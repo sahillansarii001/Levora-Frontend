@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { Quote, Star } from 'lucide-react';
 
@@ -79,12 +78,8 @@ export default function Testimonials({ title, subtitle }) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 max-w-6xl mx-auto">
           {displayTestimonials.map((test, index) => (
-            <motion.div
+            <div
               key={test.id || test.id || index}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group relative bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
             >
               {/* Gradient top border */}
@@ -114,7 +109,7 @@ export default function Testimonials({ title, subtitle }) {
                   <p className="text-xs text-slate-500 font-medium mt-0.5">{test.role}</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

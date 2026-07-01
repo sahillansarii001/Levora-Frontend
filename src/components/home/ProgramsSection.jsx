@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { Book, Code, GraduationCap, Laptop, Atom, Languages, BrainCircuit, ChevronRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
@@ -35,12 +34,12 @@ export default function ProgramsSection({ title, subtitle }) {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {programs.map((program, index) => (
-            <motion.div
+            <div
               key={program.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
+              
+              
+              
+              
             >
               <Link prefetch={false}href={`/courses?category=${program.title}`} className="group relative block bg-white rounded-2xl p-7 border border-slate-100 hover:border-transparent transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden">
                 {/* Hover gradient background */}
@@ -63,7 +62,7 @@ export default function ProgramsSection({ title, subtitle }) {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
         

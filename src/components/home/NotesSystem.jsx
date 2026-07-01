@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { FileText, Edit3, BookOpen, Layers, Code2, DownloadCloud, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,15 +25,12 @@ export default function NotesSystem({ title, subtitle }) {
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 gap-8">
           <div className="lg:w-2/3">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <div
               className="inline-flex items-center gap-2 bg-[var(--color-gold)]/10 px-4 py-2 rounded-full text-sm font-bold text-[var(--color-gold)] border border-[var(--color-gold)]/20 mb-6"
             >
               <Sparkles size={14} />
               <span>Exclusive Resource</span>
-            </motion.div>
+            </div>
             <h2 className="text-3xl md:text-5xl font-bold font-poppins text-white mb-6 tracking-tight leading-tight">
               {title ? title : <>Levora <span className="gradient-text">Self Notes</span> System</>}
             </h2>
@@ -51,12 +47,8 @@ export default function NotesSystem({ title, subtitle }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {noteFeatures.map((feature, index) => (
-            <motion.div 
+            <div 
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
               className="group relative card-dark p-8 overflow-hidden"
             >
               {/* Hover glow */}
@@ -69,7 +61,7 @@ export default function NotesSystem({ title, subtitle }) {
                 <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{feature.title}</h3>
                 <p className="text-slate-400 leading-relaxed text-sm">{feature.desc}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

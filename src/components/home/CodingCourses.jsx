@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { Terminal, Database, Smartphone, Globe, LayoutTemplate, Cpu, ChevronRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
@@ -32,12 +31,12 @@ export default function CodingCourses({ title, subtitle }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {codingCourses.map((course, index) => (
-            <motion.div
+            <div
               key={course.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
+              
+              
+              
+              
             >
               <Link prefetch={false}href={`/courses?category=Computer`} className="group relative block bg-white border border-slate-100 hover:shadow-2xl hover:-translate-y-1 p-7 rounded-2xl transition-all duration-500 overflow-hidden">
                 {/* Hover gradient background */}
@@ -56,7 +55,7 @@ export default function CodingCourses({ title, subtitle }) {
                   <p className="text-sm text-slate-500 font-medium">{course.desc}</p>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
