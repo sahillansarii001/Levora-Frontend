@@ -1,5 +1,4 @@
 import DynamicRenderer from '@/components/DynamicRenderer';
-import SeoContentBlock from '@/components/home/SeoContentBlock';
 import { generateEducationalOrganizationSchema, generateLocalBusinessSchema } from '@/lib/structuredData';
 
 export const metadata = {
@@ -52,7 +51,6 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateLocalBusinessSchema()) }}
       />
       <DynamicRenderer content={content} pageName="homepage" />
-      <SeoContentBlock />
     </>
   );
 }
